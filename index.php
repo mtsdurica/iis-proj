@@ -10,7 +10,7 @@
 
 <body>
     <h1 class="text-3xl font-bold underline">
-        Hello!
+        Hello World!
     </h1>
     <a href="pages/second.php">Click me!</a>
 </body>
