@@ -7,11 +7,20 @@ CREATE TABLE users
     user_password varchar(255) NOT NULL,
     user_first_name varchar(255),
     user_surname varchar(255),
+    user_gender int DEFAULT 2,
+    user_date_of_reg date NOT NULL,
     user_age int NOT NULL,
-    PRIMARY KEY (user_id)
+    PRIMARY KEY (user_id)    
 );
 
-/*Add foreign keys for group and OP*/
+CREATE TABLE groups
+(
+    group_id varchar(255) NOT NULL,
+    group_bio varchar(255),
+    group_public_flag boolean DEFAULT 1,
+    PRIMARY KEY (group_id)
+);
+
 CREATE TABLE threads
 (
     thread_id int NOT NULL AUTO_INCREMENT,
@@ -21,8 +30,10 @@ CREATE TABLE threads
     thread_positive_rating int DEFAULT 0,
     thread_negative_rating int DEFAULT 0,
     poster_id int NOT NULL,
+    group_id varchar(255) NOT NULL,
     PRIMARY KEY (thread_id),
-    FOREIGN KEY (poster_id) REFERENCES users(user_id)
+    FOREIGN KEY (poster_id) REFERENCES users(user_id),
+    FOREIGN KEY (group_id) REFERENCES groups(group_id)
 );
 
 CREATE TABLE comments
@@ -53,14 +64,6 @@ CREATE TABLE comment_replies
     FOREIGN KEY (poster_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE groups
-(
-    group_name varchar(255) NOT NULL,
-    group_bio varchar(255),
-    group_public_flag boolean DEFAULT 1,
-    PRIMARY KEY (group_name)
-);
-
 CREATE TABLE group_members
 (
     group_member_id int NOT NULL AUTO_INCREMENT,
@@ -68,7 +71,7 @@ CREATE TABLE group_members
     user_id int NOT NULL,
     group_admin boolean NOT NULL DEFAULT 0,
     PRIMARY KEY (group_member_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_name),
+    FOREIGN KEY (group_id) REFERENCES groups(group_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
@@ -78,7 +81,7 @@ CREATE TABLE group_moderators
     group_id varchar(255) NOT NULL,
     member_id int NOT NULL,
     PRIMARY KEY (group_moderator_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_name),
+    FOREIGN KEY (group_id) REFERENCES groups(group_id),
     FOREIGN KEY (member_id) REFERENCES group_members(group_member_id)
 );
 
@@ -102,28 +105,40 @@ user_age
     25
 );
 
-INSERT INTO threads(
-thread_title,
-thread_text,
-thread_date,
-poster_id
+INSERT INTO groups(
+group_id,
+group_bio
 ) VALUES(
-    'Test title',
-    'Test thread body',
-    CURRENT_DATE(),
-    1
+    'testgroup',
+    'This is a test group for threads!'
 );
 
 INSERT INTO threads(
 thread_title,
 thread_text,
 thread_date,
-poster_id
+poster_id,
+group_id
+) VALUES(
+    'Test title',
+    'Test thread body',
+    CURRENT_DATE(),
+    1,
+    'testgroup'
+);
+
+INSERT INTO threads(
+thread_title,
+thread_text,
+thread_date,
+poster_id,
+group_id
 ) VALUES(
     'Second thread',
     'Hi im second thread',
     CURRENT_DATE(),
-    2
+    2,
+    'testgroup'
 );
 
 INSERT INTO comments(

@@ -18,7 +18,7 @@ try {
     die();
 }
 
-$query = $db->prepare('SELECT threads.thread_id, threads.thread_title, threads.thread_text, users.user_nick AS "thread_poster" FROM threads
+$query = $db->prepare('SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, users.user_nick AS "thread_poster" FROM threads
 LEFT JOIN users ON threads.poster_id = users.user_id');
 
 $query->execute();
@@ -28,6 +28,7 @@ while ($thread = $query->fetch(PDO::FETCH_ASSOC)) {
     $threadText = $thread["thread_text"];
     $threadPoster = $thread["thread_poster"];
     $threadId = $thread["thread_id"];
+    $groupId = $thread["group_id"];
     include "./components/thread.php";
 }
 ?>

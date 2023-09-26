@@ -4,7 +4,7 @@
              	<?= $threadTitle ?>
         	</div>
 			<div>
-				Posted by: <?= $threadPoster ?>
+				Posted by: <?= $threadPoster ?> in <?= $groupId ?>
 			</div>
         <div>
 			<?= $threadText ?>
