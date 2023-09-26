@@ -546,14 +546,6 @@ video {
   align-items: center;
 }
 
-.justify-center {
-  justify-content: center;
-}
-
-.justify-items-center {
-  justify-items: center;
-}
-
 .border-2 {
   border-width: 2px;
 }
@@ -574,8 +566,4 @@ video {
 
 .underline {
   text-decoration-line: underline;
-}
-
-.outline-1 {
-  outline-width: 1px;
 }
