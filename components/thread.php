@@ -13,13 +13,13 @@
 </div>
 <?php
 
-$replyQuery = $db->prepare('SELECT reply.reply_text, user.user_nick FROM reply LEFT JOIN user ON reply.poster_id = user.user_id WHERE reply.thread_id = ?');
+$commentQuery = $db->prepare('SELECT comments.comment_text, users.user_nick FROM comments LEFT JOIN users ON comments.poster_id = users.user_id WHERE comments.thread_id = ?');
 
-$replyQuery->execute([$threadId]);
-while($reply = $replyQuery->fetch(PDO::FETCH_ASSOC))
+$commentQuery->execute([$threadId]);
+while($comment = $commentQuery->fetch(PDO::FETCH_ASSOC))
 {
-	$replyText  = $reply["reply_text"];
-	$replyPoster = $reply["user_nick"];
-	include "reply.php";
+	$commentText  = $comment["comment_text"];
+	$commentPoster = $comment["user_nick"];
+	include "comment.php";
 }
 ?>

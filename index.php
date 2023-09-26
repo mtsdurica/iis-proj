@@ -18,8 +18,8 @@ try {
     die();
 }
 
-$query = $db->prepare('SELECT thread.thread_id, thread.thread_title, thread.thread_text, user.user_nick AS "thread_poster" FROM thread
-LEFT JOIN user ON thread.poster_id = user.user_id');
+$query = $db->prepare('SELECT threads.thread_id, threads.thread_title, threads.thread_text, users.user_nick AS "thread_poster" FROM threads
+LEFT JOIN users ON threads.poster_id = users.user_id');
 
 $query->execute();
 

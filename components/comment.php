@@ -1,10 +1,10 @@
 <div class="border-2">
 	<div class="flex flex-col items-center">
 		<div>
-			Posted by: <?= $replyPoster ?>
+			Posted by: <?= $commentPoster ?>
 		</div>
         <div>
-			<?= $replyText ?>
+			<?= $commentText ?>
 		</div>
 	</div>
 </div>

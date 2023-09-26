@@ -1,10 +1,6 @@
-DROP TABLE user;
-DROP TABLE thread;
-DROP TABLE reply;
-
 /*user_gender*/
 /*user_date_of_reg*/
-CREATE TABLE user
+CREATE TABLE users
 (
     user_id int NOT NULL AUTO_INCREMENT,
     user_nick varchar(20) NOT NULL,
@@ -16,7 +12,7 @@ CREATE TABLE user
 );
 
 /*Add foreign keys for group and OP*/
-CREATE TABLE thread
+CREATE TABLE threads
 (
     thread_id int NOT NULL AUTO_INCREMENT,
     thread_title varchar(255) NOT NULL,
@@ -26,24 +22,67 @@ CREATE TABLE thread
     thread_negative_rating int DEFAULT 0,
     poster_id int NOT NULL,
     PRIMARY KEY (thread_id),
-    FOREIGN KEY (poster_id) REFERENCES user(user_id)
+    FOREIGN KEY (poster_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE reply
+CREATE TABLE comments
 (
-    reply_id int NOT NULL AUTO_INCREMENT,
-    reply_text varchar(500),
-    reply_date date NOT NULL,
-    reply_positive_rating int DEFAULT 0,
-    reply_negative_rating int DEFAULT 0,
+    comment_id int NOT NULL AUTO_INCREMENT,
+    comment_text varchar(500),
+    comment_date date NOT NULL,
+    comment_positive_rating int DEFAULT 0,
+    comment_negative_rating int DEFAULT 0,
     thread_id int NOT NULL,
     poster_id int NOT NULL,
-    PRIMARY KEY (reply_id),
-    FOREIGN KEY (thread_id) REFERENCES thread(thread_id),
-    FOREIGN KEY (poster_id) REFERENCES user(user_id)
+    PRIMARY KEY (comment_id),
+    FOREIGN KEY (thread_id) REFERENCES threads(thread_id),
+    FOREIGN KEY (poster_id) REFERENCES users(user_id)
 );
 
-INSERT INTO user(
+CREATE TABLE comment_replies
+(
+    comment_reply_id int NOT NULL AUTO_INCREMENT,
+    comment_reply_text varchar(500),
+    comment_reply_date date NOT NULL,
+    comment_reply_positive_rating int DEFAULT 0,
+    comment_reply_negative_rating int DEFAULT 0,
+    comment_id int NOT NULL,
+    poster_id int NOT NULL,
+    PRIMARY KEY (comment_reply_id),
+    FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
+    FOREIGN KEY (poster_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE groups
+(
+    group_name varchar(255) NOT NULL,
+    group_bio varchar(255),
+    group_public_flag boolean DEFAULT 1,
+    PRIMARY KEY (group_name)
+);
+
+CREATE TABLE group_members
+(
+    group_member_id int NOT NULL AUTO_INCREMENT,
+    group_id varchar(255) NOT NULL,
+    user_id int NOT NULL,
+    group_admin boolean NOT NULL DEFAULT 0,
+    PRIMARY KEY (group_member_id),
+    FOREIGN KEY (group_id) REFERENCES groups(group_name),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE group_moderators
+(
+    group_moderator_id int NOT NULL AUTO_INCREMENT,
+    group_id varchar(255) NOT NULL,
+    member_id int NOT NULL,
+    PRIMARY KEY (group_moderator_id),
+    FOREIGN KEY (group_id) REFERENCES groups(group_name),
+    FOREIGN KEY (member_id) REFERENCES group_members(group_member_id)
+);
+
+INSERT INTO users(
 user_nick,
 user_password,
 user_age
@@ -53,7 +92,7 @@ user_age
     23
 );
 
-INSERT INTO user(
+INSERT INTO users(
 user_nick,
 user_password,
 user_age
@@ -63,7 +102,7 @@ user_age
     25
 );
 
-INSERT INTO thread(
+INSERT INTO threads(
 thread_title,
 thread_text,
 thread_date,
@@ -75,7 +114,7 @@ poster_id
     1
 );
 
-INSERT INTO thread(
+INSERT INTO threads(
 thread_title,
 thread_text,
 thread_date,
@@ -87,10 +126,10 @@ poster_id
     2
 );
 
-INSERT INTO reply(
-reply_text,
-reply_date,
-reply_positive_rating,
+INSERT INTO comments(
+comment_text,
+comment_date,
+comment_positive_rating,
 thread_id,
 poster_id
 ) VALUES(
@@ -101,9 +140,9 @@ poster_id
     2
 );
 
-INSERT INTO reply(
-reply_text,
-reply_date,
+INSERT INTO comments(
+comment_text,
+comment_date,
 thread_id,
 poster_id
 ) VALUES(
