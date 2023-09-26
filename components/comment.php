@@ -2,7 +2,7 @@
 	<div>
 		Posted by: <?= $commentPoster ?>
 	</div>
-    <p>
+	<p>
 		<?= $commentText ?>
 	</p>
 </div>
