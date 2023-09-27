@@ -20,7 +20,7 @@ try {
 <body class="h-full">
     <div class="flex flex-col h-full">
         <?php
-        include "./components/header.php";
+        require_once "./components/header.php";
         ?>
         <div class="overflow-hidden flex h-full">
             <aside class="flex-1 p-2 min-w-fit  border border-black rounded-md m-1 items-center">
@@ -34,7 +34,7 @@ try {
 
                 while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
                     $groupId = $group["group_id"];
-                    include "./components/main_page_group.php";
+                    require "./components/mainPageGroup.php";
                 }
                 ?>
             </aside>
@@ -56,7 +56,7 @@ try {
                             $threadPoster = $thread["thread_poster"];
                             $threadId = $thread["thread_id"];
                             $groupId = $thread["group_id"];
-                            include "./components/thread.php";
+                            require "./components/thread.php";
                         }
                         ?>
                     </div>

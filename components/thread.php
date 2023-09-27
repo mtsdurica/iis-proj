@@ -15,7 +15,7 @@
 	while ($comment = $commentsQuery->fetch(PDO::FETCH_ASSOC)) {
 		$commentText  = $comment["comment_text"];
 		$commentPoster = $comment["user_nick"];
-		include "comment.php";
+		require "comment.php";
 	}
 	?>
 </div>
