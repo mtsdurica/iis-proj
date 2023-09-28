@@ -10,4 +10,10 @@ switch ($request) {
     case ($context . '/profile'):
         require_once  __DIR__ . "/views/profilePageView.php";
         break;
+    case ($context . '/submit'):
+        require_once __DIR__ . "/views/threadCreationView.php";
+        break;
+    case ($context . '/browse'):
+        require_once __DIR__ . "/views/groupsBrowserView.php";
+        break;
 }

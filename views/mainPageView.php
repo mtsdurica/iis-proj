@@ -9,6 +9,7 @@
 </head>
 
 <?php
+$context = $_SERVER["CONTEXT_PREFIX"];
 try {
     $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
 } catch (PDOException $e) {
@@ -23,20 +24,31 @@ try {
         require_once "./components/header.php";
         ?>
         <div class="overflow-hidden flex h-full">
-            <aside class="flex-1 p-2 min-w-fit  border border-black rounded-md m-1 items-center">
-                <h2 class="text-2xl font-bold mx-16">
-                    Your Groups
-                </h2>
-                <?php
-                $groupsQuery = $db->prepare('SELECT group_id FROM groups');
+            <!-- TODO: CSS needs to be fixed, this is just wrong -->
+            <aside class="flex-1 p-2 min-w-fit border border-black rounded-md m-1 items-center">
+                <div class="p-2 flex-col">
+                    <div class="bg-green-500 text-white hover:bg-green-600 text-center text-2xl font-bold mx-12 p-2 border border-black rounded-md">
+                        <a href="<?= $context ?>/submit">
+                            + New Thread
+                        </a>
+                    </div>
+                    <div class="flex-col mt-4 border-b border-black"></div>
+                    <div class="flex-col text-2xl font-bold mx-16 p-2">
+                        <h2>
+                            Your Groups
+                        </h2>
+                    </div>
+                    <?php
+                    $groupsQuery = $db->prepare('SELECT group_id FROM groups');
 
-                $groupsQuery->execute();
+                    $groupsQuery->execute();
 
-                while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                    $groupId = $group["group_id"];
-                    require "./components/mainPageGroup.php";
-                }
-                ?>
+                    while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
+                        $groupId = $group["group_id"];
+                        require "./components/mainPageGroup.php";
+                    }
+                    ?>
+                </div>
             </aside>
             <div class="flex flex-col w-full border border-black rounded-md p-2 m-1">
                 <h2 class="text-2xl font-bold mx-40">

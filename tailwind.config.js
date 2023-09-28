@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     './index.php',
-    './pages/**/*.php',
+    './views/**/*.php',
     './components/**/*.php'
   ],
   presets: [],
