@@ -1,5 +1,5 @@
 <div>
-	<div class="my-2 mx-40 p-1 border border-black rounded-md">
+	<div class="my-2 mx-40 p-1 bg-gray-200 drop-shadow rounded-md">
 		<h3 class="text-xl">
 			<?= $threadTitle ?>
 		</h3>
