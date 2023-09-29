@@ -5,7 +5,17 @@
     <title>Threads demo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="dist/style.css" rel="stylesheet">
+    <link href="./dist/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+            localStorage.theme = 'dark';
+        } else {
+            document.documentElement.classList.remove('dark')
+            localStorage.theme = 'light';
+        }
+    </script>
 </head>
 
 <?php
@@ -19,21 +29,21 @@ try {
 ?>
 
 <body class="h-full">
-    <div class="flex flex-col bg-slate-100 h-full">
+    <div class="flex flex-col main-background-colorscheme h-full">
         <?php
         require_once "./components/header.php";
         ?>
         <div class="overflow-hidden flex h-full">
             <!-- TODO: CSS needs to be fixed, this is just wrong -->
-            <aside class="flex-1 p-2 min-w-fit m-1 items-center">
-                <div class="p-2 flex-col">
-                    <div class="bg-green-500 text-white transition-all hover:bg-green-600 text-center text-2xl font-bold mx-12 p-2 rounded-full">
-                        <a href="<?= $context ?>/submit">
+            <aside class="flex-1 p-2 min-w-fit m-1 ">
+                <div class="p-2 flex-col items-center ">
+                    <div class="bg-green-400 text-white transition-all hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600 duration-300 text-center text-2xl font-bold mx-12 p-2 rounded-full cursor-pointer">
+                        <a href="<?= $context ?>/submit" class="px-4">
                             + New Thread
                         </a>
                     </div>
-                    <div class="flex-col mt-4 border-b border-slate-300"></div>
-                    <div class="flex-col text-2xl font-bold mx-16 p-2">
+                    <div class="flex-col mt-4 border-b divider-colorscheme"></div>
+                    <div class="flex-col text-2xl font-bold p-2 text-colorscheme items-left">
                         <h2>
                             Your Groups
                         </h2>
@@ -51,7 +61,7 @@ try {
                 </div>
             </aside>
             <div class="flex flex-col w-full p-2 m-1">
-                <h2 class="text-2xl font-bold mx-40">
+                <h2 class="text-2xl font-bold mx-40 text-colorscheme">
                     Your Feed
                 </h2>
                 <div class="overflow-auto no-scrollbar">
@@ -76,6 +86,7 @@ try {
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="./scripts/main.js"></script>
 </body>
 
 </html>

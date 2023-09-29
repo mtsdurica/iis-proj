@@ -1,15 +1,18 @@
 <?php
 $context = $_SERVER["CONTEXT_PREFIX"];
+$page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
 ?>
-<header class="flex flex-row justify-between bg-white drop-shadow p-2">
-    <div class="text-3xl font-bold pl-2">
-        <a href="<?= $context ?>/">Home</a>
-    </div>
-    <div class="text-3xl font-bold pl-2">
-        <a href="<?= $context ?>/browse">Browse Groups</a>
-    </div>
-    <div class="text-3xl font-bold pr-2">
-        <a href="<?= $context ?>/profile">Profile</a>
-    </div>
-
+<header class="flex flex-row justify-between header-colorscheme text-colorscheme drop-shadow p-2">
+    <a id="/" class="header-element" href="<?= $context ?>/">
+        <i class="fa-solid fa-house"></i>
+    </a>
+    <a id="/browse" class="header-element" href="<?= $context ?>/browse">
+        <i class="fa-solid fa-users"></i>
+    </a>
+    <button class="toggle-dark header-element">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+    <a id="/profile" class="header-element" href="<?= $context ?>/profile">
+        <i class="fa-solid fa-circle-user"></i>
+    </a>
 </header>
