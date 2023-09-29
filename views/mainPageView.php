@@ -27,7 +27,7 @@ try {
         ?>
         <div class="flex h-full overflow-hidden">
             <!-- TODO: CSS needs to be fixed, this is just wrong -->
-            <aside class="flex-1 p-2 m-1 min-w-fit ">
+            <aside class="flex-1 p-1 m-1 min-w-fit ">
                 <div class="flex-col items-center p-2 ">
                     <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
                         + New Thread

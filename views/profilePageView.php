@@ -11,7 +11,7 @@
 </head>
 
 <body class="h-full">
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col h-full main-background-colorscheme">
         <?php
         require_once "./components/header.php";
         ?>
