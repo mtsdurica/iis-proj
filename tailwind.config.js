@@ -2,7 +2,8 @@
 module.exports = {
   content: [
     './index.php',
-    './pages/**/*.php'
+    './pages/**/*.php',
+    './components/**/*.php'
   ],
   presets: [],
   darkMode: 'media', // or 'class'
