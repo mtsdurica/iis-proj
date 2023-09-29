@@ -555,6 +555,8 @@ video {
 }
 
 .header-element {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
   cursor: pointer;
   align-items: center;
   border-radius: 0.5rem;
@@ -633,7 +635,7 @@ video {
   background-color: rgb(71 85 105 / var(--tw-bg-opacity));
 }
 
-.animated-hidden {
+.animated-invisible {
   visibility: hidden;
   opacity: 0;
 }
@@ -736,6 +738,10 @@ body * {
 
 .flex {
   display: flex;
+}
+
+.hidden {
+  display: none;
 }
 
 .h-full {

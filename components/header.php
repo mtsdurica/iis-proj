@@ -7,15 +7,22 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
         <a id="/" class="header-element" href="<?= $context ?>/">
             <i class="fa-solid fa-house"></i>
         </a>
-        <!-- TODO: Animation: Swipe left reveal buttons groups, users to browse different things -->
-        <a id="/browse" class="header-element" href="<?= $context ?>/browse">
-            <i class="fa-solid fa-users"></i>
-        </a>
+        <div class="flex flex-row">
+            <button id="/browse" class="browser-button header-element">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <a id="hiddenButtonBrowseGroups" class="hidden header-element" href="<?= $context ?>/browse/groups">
+                <i class="fa-solid fa-users"></i>
+            </a>
+            <a id="hiddenButtonBrowseUsers" class="hidden header-element" href="<?= $context ?>/browse/users">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div>
         <div>
             <button id="/profile" class="toggle-profile-dropdown header-element">
                 <i class="fa-solid fa-circle-user toggle-profile-dropdown"></i>
             </button>
-            <ul class="absolute right-0 p-2 m-2 mt-4 transition-all rounded-lg animated-hidden header-colorscheme w-fit drop-shadow-xl profile-dropdown">
+            <ul class="absolute right-0 p-2 m-2 mt-4 transition-all rounded-lg animated-invisible header-colorscheme w-fit drop-shadow-xl profile-dropdown">
                 <!-- TODO: Only show when logged in, otherwise display text saying you need to login (same would apply to your groups, settings) -->
                 <a class="block header-dropdown-element" href="<?= $context ?>/profile">
                     <i class=" fa-solid fa-user"></i>
