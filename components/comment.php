@@ -1,10 +1,8 @@
-<div class="border-2">
-	<div class="flex flex-col items-center">
-		<div>
-			Posted by: <?= $commentPoster ?>
-		</div>
-        <div>
-			<?= $commentText ?>
-		</div>
+<div class="p-2 px-4 my-2 rounded-lg mx-60 thread-colorscheme text-colorscheme drop-shadow">
+	<div>
+		Posted by: <?= $commentPoster ?>
 	</div>
+	<p>
+		<?= $commentText ?>
+	</p>
 </div>

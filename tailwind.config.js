@@ -2,11 +2,15 @@
 module.exports = {
   content: [
     './index.php',
-    './pages/**/*.php',
-    './components/**/*.php'
+    './views/**/*.php',
+    './components/**/*.php',
+    './scripts/**/*.js'
   ],
   presets: [],
-  darkMode: 'media', // or 'class'
+  darkMode: 'class', // or 'class'
+  safelist: [
+    'header-element-active'
+  ],
   theme: {
     accentColor: ({ theme }) => ({
       ...theme('colors'),

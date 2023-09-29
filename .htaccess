@@ -1,0 +1,7 @@
+# taken from https://stackoverflow.com/questions/24662883/htaccess-not-redirecting-to-index-php
+DirectoryIndex index.php
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
