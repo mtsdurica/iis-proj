@@ -1,3 +1,3 @@
-<div class="transition-all duration-200 hover:bg-slate-200 dark:hover:bg-slate-700 text-center p-2 rounded-md text-colorscheme cursor-pointer">
+<div class="p-2 text-center transition-all duration-200 rounded-lg cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 text-colorscheme">
     <h3 class="text-xl"><?= $groupId ?></h3>
 </div>

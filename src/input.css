@@ -25,10 +25,10 @@
     @apply bg-slate-50 dark:bg-slate-800
   }
   .header-element {
-    @apply text-3xl font-bold px-8 py-1 rounded-md dark:hover:bg-slate-600 hover:bg-slate-200 cursor-pointer duration-300
+    @apply text-3xl font-bold px-8 py-1 rounded-lg dark:hover:bg-slate-600 hover:bg-slate-200 cursor-pointer duration-300
   }
   .header-element-active {
-    @apply text-3xl font-bold px-8 py-1 rounded-md bg-slate-200 dark:bg-slate-600 cursor-pointer
+    @apply text-3xl font-bold px-8 py-1 rounded-lg bg-slate-200 dark:bg-slate-600 cursor-pointer
   }
   .thread-colorscheme {
     @apply bg-slate-200 dark:bg-slate-700

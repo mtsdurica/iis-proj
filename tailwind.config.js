@@ -8,6 +8,9 @@ module.exports = {
   ],
   presets: [],
   darkMode: 'class', // or 'class'
+  safelist: [
+    'header-element-active'
+  ],
   theme: {
     accentColor: ({ theme }) => ({
       ...theme('colors'),

@@ -2,7 +2,7 @@
 $context = $_SERVER["CONTEXT_PREFIX"];
 $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
 ?>
-<header class="flex flex-row justify-between header-colorscheme text-colorscheme drop-shadow p-2">
+<header class="flex flex-row justify-between p-2 header-colorscheme text-colorscheme drop-shadow">
     <a id="/" class="header-element" href="<?= $context ?>/">
         <i class="fa-solid fa-house"></i>
     </a>

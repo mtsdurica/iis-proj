@@ -1,5 +1,5 @@
 <div>
-	<div class="my-2 mx-40 p-2 px-4 thread-colorscheme text-colorscheme drop-shadow rounded-md">
+	<div class="p-2 px-4 mx-40 mt-2 rounded-lg thread-colorscheme text-colorscheme drop-shadow">
 		<h3 class="text-xl">
 			<?= $threadTitle ?>
 		</h3>
