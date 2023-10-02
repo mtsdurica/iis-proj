@@ -60,18 +60,48 @@ CREATE TABLE group_moderators
     FOREIGN KEY (member_id) REFERENCES group_members(group_member_id)
 );
 
+-- USERS
+INSERT INTO users (user_id, user_password, user_gender)
+VALUES ('fitking', 'password123', 'Male');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('asdf', 'password123', 'Male');
+VALUES ('nick56', 'password123', 'Male');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('asdf2nd', 'password456', 'Female');
+VALUES ('andrew35', 'password123', 'Male');
+
+INSERT INTO users (user_id, user_password, user_gender)
+VALUES ('anonymous123', 'password123', 'Male');
+
+INSERT INTO users (user_id, user_password, user_gender)
+VALUES ('kate_collins', 'password456', 'Female');
+
+INSERT INTO users (user_id, user_password, user_gender)
+VALUES ('jane79', 'password456', 'Female');
+
+INSERT INTO users (user_id, user_password, user_gender)
+VALUES ('fitqueen', 'password456', 'Female');
+
+-- GROUPS
+INSERT INTO groups (group_id, group_bio)
+VALUES ('fit_students', 'Group for students.');
 
 INSERT INTO groups (group_id, group_bio)
-VALUES ('testgroup', 'This is a test group for threads!');
+VALUES ('brno_apartments', 'Find your flat in this group.');
+
+INSERT INTO groups (group_id, group_bio)
+VALUES ('brno_market', 'Buy, sell, rent anything you want.');
+
+-- THREADS
+INSERT INTO threads (thread_title, thread_text, thread_date, poster_id, group_id)
+VALUES ('Test title', 
+'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et erat finibus, fringilla nisi sit amet, 
+euismod ante. Suspendisse vitae purus ultricies, dignissim tortor at, lacinia sapien. Nam cursus elementum 
+maximus. Suspendisse sem lectus, mattis ac mi sed, venenatis rhoncus nisl. Phasellus a dignissim turpis. ', 
+CURRENT_DATE(), 'fitqueen', 'fit_students');
 
 INSERT INTO threads (thread_title, thread_text, thread_date, poster_id, group_id)
-VALUES ('Test title', 'Test thread body', CURRENT_DATE(), 'asdf', 'testgroup');
-
-INSERT INTO threads (thread_title, thread_text, thread_date, poster_id, group_id)
-VALUES ('Second thread', 'Hi im second thread', CURRENT_DATE(), 'asdf2nd', 'testgroup');
+VALUES ('Second thread', 
+'In hac habitasse platea dictumst. Aenean tincidunt tristique consequat. Duis mauris mi, accumsan a eleifend 
+id, mollis a lacus. Pellentesque malesuada imperdiet sollicitudin.' , 
+CURRENT_DATE(), 'fitking', 'brno_market');
