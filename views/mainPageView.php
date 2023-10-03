@@ -17,7 +17,6 @@ $context = $_SERVER["CONTEXT_PREFIX"];
 
 session_start();
 
-
 try {
     $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
 } catch (PDOException $e) {
@@ -48,14 +47,15 @@ try {
                             </h2>
                         </div>
                         <?php
-                        $groupsQuery = $db->prepare('SELECT group_id FROM groups');
+                        // TODO: Needs update
+                        // $groupsQuery = $db->prepare('SELECT group_id FROM groups');
 
-                        $groupsQuery->execute();
+                        // $groupsQuery->execute();
 
-                        while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                            $groupId = $group["group_id"];
-                            require "./components/mainPageGroup.php";
-                        }
+                        // while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
+                        //     $groupId = $group["group_id"];
+                        //     require "./components/mainPageGroup.php";
+                        // }
                     } else {
                         ?>
                         <a href="<?= $context ?>/login" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
@@ -86,19 +86,20 @@ try {
                     <div>
                         <?php
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
-                            $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, users.user_nick AS 'thread_poster' FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id");
+                            // TODO: Needs update
+                            // $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, users.user_nick AS 'thread_poster' FROM threads
+                            // LEFT JOIN users ON threads.poster_id = users.user_id");
 
-                            $threadsQuery->execute();
+                            // $threadsQuery->execute();
 
-                            while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $threadTitle = $thread["thread_title"];
-                                $threadText = $thread["thread_text"];
-                                $threadPoster = $thread["thread_poster"];
-                                $threadId = $thread["thread_id"];
-                                $groupId = $thread["group_id"];
-                                require "./components/thread.php";
-                            }
+                            // while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                            //     $threadTitle = $thread["thread_title"];
+                            //     $threadText = $thread["thread_text"];
+                            //     $threadPoster = $thread["thread_poster"];
+                            //     $threadId = $thread["thread_id"];
+                            //     $groupId = $thread["group_id"];
+                            //     require "./components/thread.php";
+                            // }
                         } else {
                         ?>
                             <!-- publuic feed query-->
