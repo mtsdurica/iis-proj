@@ -31,8 +31,10 @@
     }
 
     browseButton.addEventListener('click', (event) => {
+        $('#\\/browse').toggleClass('header-element-active');
         $('#hiddenButtonBrowseGroups').toggle("swing");
         $('#hiddenButtonBrowseUsers').toggle("swing");
+        $('#hiddenDivider').toggle("swing");
     })
 
     // TODO: Rewrite to jQuery
