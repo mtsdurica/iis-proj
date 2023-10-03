@@ -100,9 +100,21 @@ try {
                                 require "./components/thread.php";
                             }
                         } else {
-                        ?>
-                            <!-- publuic feed query-->
-                        <?php
+                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, users.user_id AS 'thread_poster' FROM threads
+                            LEFT JOIN users ON threads.poster_id = users.user_id
+                            LEFT JOIN groups ON threads.group_id = groups.group_id
+                            WHERE groups.group_public_flag = 1");
+
+                            $publicThreadsQuery->execute();
+
+                            while ($publicThread = $publicThreadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                                $threadTitle = $publicThread["thread_title"];
+                                $threadText = $publicThread["thread_text"];
+                                $threadPoster = $publicThread["thread_poster"];
+                                $threadId = $publicThread["thread_id"];
+                                $groupId = $publicThread["group_id"];
+                                require "./components/thread.php";
+                            }
                         }
                         ?>
                     </div>
