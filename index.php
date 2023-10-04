@@ -16,4 +16,10 @@ switch ($request) {
     case ($context . '/browse'):
         require_once __DIR__ . "/views/groupsBrowserView.php";
         break;
+    case ($context . '/login'):
+        require_once __DIR__ . "/views/loginPageView.php";
+        break;
+    case ($context . '/logout'):
+        require_once __DIR__ . "/scripts/logout.php";
+        break;
 }
