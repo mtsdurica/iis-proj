@@ -45,6 +45,9 @@
   .text-colorscheme {
     @apply text-slate-700 dark:text-slate-200
   }
+  .confirm-button-colorscheme {
+    @apply bg-green-400 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600
+  }
   body * {
     @apply transition-colors duration-100;
   }
