@@ -47,23 +47,20 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                     <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme focus:ring-red-500" type="text" placeholder="Username" name="username" required>
                     <label class="flex flex-row items-baseline justify-between px-2" for="password">
                         <span class="text-lg">Password</span>
-                        <a class="flex text-md hover:text-blue-500" href="#">Forgot your password?</a>
+                        <a class="flex text-md hover:text-blue-500" href="<?= $context ?>/recover">Forgot your password?</a>
                     </label>
                     <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="Password" name="password" required>
-
-
                     <button class="items-center justify-center p-2 mt-2 text-lg text-center text-white transition-all rounded-lg confirm-button-colorscheme" type="submit" name="submitted">
                         <span class="justify-center">Log In</span>
                     </button>
                 </div>
             </form>
             <div class="flex flex-col gap-2 p-2 rounded-lg text-colorscheme header-colorscheme drop-shadow-md">
-
                 <div class="justify-center text-center rounded-lg">
                     <span class="">
                         New here?
                     </span>
-                    <a class=" hover:text-blue-500" href="">Register an account now!</a>
+                    <a class=" hover:text-blue-500" href="<?= $context ?>/register">Register an account now!</a>
                 </div>
             </div>
         </div>
