@@ -44,7 +44,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                     <label class="px-2 text-lg" for="username">
                         Username or email address
                     </label>
-                    <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme focus:ring-red-500" type="text" placeholder="Username" name="username" required>
+                    <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="username" required>
                     <label class="flex flex-row items-baseline justify-between px-2" for="password">
                         <span class="text-lg">Password</span>
                         <a class="flex text-md hover:text-blue-500" href="<?= $context ?>/recover">Forgot your password?</a>

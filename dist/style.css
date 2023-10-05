@@ -998,11 +998,6 @@ body * {
   color: rgb(59 130 246 / var(--tw-text-opacity));
 }
 
-.focus\:ring-red-500:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
-}
-
 :is(.dark .dark\:bg-green-500) {
   --tw-bg-opacity: 1;
   background-color: rgb(34 197 94 / var(--tw-bg-opacity));
