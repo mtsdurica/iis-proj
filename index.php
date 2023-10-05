@@ -22,4 +22,7 @@ switch ($request) {
     case ($context . '/logout'):
         require_once __DIR__ . "/scripts/logout.php";
         break;
+    default:
+        require_once __DIR__ . "/views/error404View.php";
+        break;
 }
