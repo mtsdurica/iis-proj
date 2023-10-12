@@ -22,7 +22,7 @@ session_start();
         require_once "./components/header.php";
     ?>
     <!-- main container -->
-    <div class="flex flex-col items-center self-center justify-center h-full overflow-hidden text-colorscheme">
+    <div class="flex flex-col items-center self-center justify-center h-full overflow-hidden transition-all duration-300 text-colorscheme">
        
         <div class="m-0">
             <img src="<?= $context ?>/images/404-error.png" alt="Page not found" style="width: 20rem;">
