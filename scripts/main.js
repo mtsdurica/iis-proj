@@ -31,20 +31,29 @@
     }
 
     browseButton.addEventListener('click', (event) => {
-        $('#\\/browse').toggleClass('header-element-active');
+        if (getPage() !== "/browse") {
+            $('#\\/browse').toggleClass('header-element-active');
+        }
         $('#hiddenButtonBrowseGroups').toggle("swing");
         $('#hiddenButtonBrowseUsers').toggle("swing");
         $('#hiddenDivider').toggle("swing");
     })
 
     // TODO: Rewrite to jQuery
-    var page = location.pathname.replace(/\/(?<=\/)(.*)\d(?=\/)/, "");
-    page = page.replace(/(?!^)\/.*/, "");
-    if (page.match(/.php$/)) {
-        page = page.replace(/.php$/, "");
+
+    function getPage() {
+        var page = location.pathname.replace(/\/(?<=\/)(.*)\d(?=\/)/, "");
+        page = page.replace(/(?!^)\/.*/, "");
+        if (page.match(/.php$/)) {
+            page = page.replace(/.php$/, "");
+        }
+        if (page === "/index") {
+            page = "/";
+        }
+
+        return page
     }
-    if (page === "/index") {
-        page = "/";
-    }
-    document.getElementById(page).className += "-active";
+
+
+    document.getElementById(getPage()).className += "-active";
 })();

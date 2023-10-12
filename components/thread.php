@@ -9,13 +9,13 @@
 		</p>
 	</div>
 	<?php
-	$commentsQuery = $db->prepare('SELECT comments.comment_text, users.user_nick FROM comments LEFT JOIN users ON comments.poster_id = users.user_id WHERE comments.thread_id = ?');
+	// $commentsQuery = $db->prepare('SELECT comments.comment_text, users.user_nick FROM comments LEFT JOIN users ON comments.poster_id = users.user_id WHERE comments.thread_id = ?');
 
-	$commentsQuery->execute([$threadId]);
-	while ($comment = $commentsQuery->fetch(PDO::FETCH_ASSOC)) {
-		$commentText  = $comment["comment_text"];
-		$commentPoster = $comment["user_nick"];
-		require "comment.php";
-	}
+	// $commentsQuery->execute([$threadId]);
+	// while ($comment = $commentsQuery->fetch(PDO::FETCH_ASSOC)) {
+	// 	$commentText  = $comment["comment_text"];
+	// 	$commentPoster = $comment["user_nick"];
+	// 	require "comment.php";
+	// }
 	?>
 </div>

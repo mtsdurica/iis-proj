@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+$context = $_SERVER["CONTEXT_PREFIX"];
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 
@@ -5,17 +11,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="./dist/style.css" rel="stylesheet">
+    <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="./scripts/darkModeSetter.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/darkModeSetter.js"></script>
 </head>
-
-<?php
-
-session_start();
-
-$context = $_SERVER["CONTEXT_PREFIX"];
-?>
 
 <body class="h-full">
     <div class="flex flex-row justify-center h-full main-background-colorscheme text-colorscheme">
@@ -44,7 +43,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                     <label class="px-2 text-lg" for="username">
                         Username or email address
                     </label>
-                    <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme focus:ring-red-500" type="text" placeholder="Username" name="username" required>
+                    <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="username" required>
                     <label class="flex flex-row items-baseline justify-between px-2" for="password">
                         <span class="text-lg">Password</span>
                         <a class="flex text-md hover:text-blue-500" href="<?= $context ?>/recover">Forgot your password?</a>
@@ -65,7 +64,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="./scripts/main.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
 </body>
 
 </html>
