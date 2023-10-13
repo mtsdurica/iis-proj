@@ -1,6 +1,7 @@
 (function () {
     const darkModeToggle = document.querySelector('.toggle-dark');
     const profileDropDownToggle = document.querySelector('.toggle-profile-dropdown');
+    const showMoreToggle = document.querySelectorAll('.thread-text');
     const browseButton = document.querySelector('.browser-button');
 
     darkModeToggle.addEventListener('click', (event) => {
@@ -12,13 +13,28 @@
             localStorage.theme = 'dark';
         }
         document.documentElement.classList.toggle('dark');
-    })
+    });
 
     profileDropDownToggle.addEventListener('click', (event) => {
-        //event.preventDefault();
+        event.preventDefault();
         var dropDownMenu = document.querySelector('.profile-dropdown');
         dropDownMenu.classList.toggle('animated-invisible');
-    })
+    });
+
+    showMoreToggle.forEach(function (item) {
+        item.addEventListener('mouseover', (event) => {
+            event.preventDefault();
+            var showMoreElement = document.querySelector('#show-more-' + item.id);
+            showMoreElement.classList.toggle('animated-invisible');
+        });
+
+        item.addEventListener('mouseout', (event) => {
+            event.preventDefault();
+            var showMoreElement = document.querySelector('#show-more-' + item.id);
+            showMoreElement.classList.toggle('animated-invisible');
+        });
+    });
+
 
     window.onclick = (event) => {
         if (!event.target.matches('.toggle-profile-dropdown') && !event.target.matches('.toggle-dark')) {
@@ -28,7 +44,7 @@
                 dropdownMenu.classList.add('animated-invisible');
             }
         }
-    }
+    };
 
     browseButton.addEventListener('click', (event) => {
         if (getPage() !== "/browse") {
@@ -37,7 +53,7 @@
         $('#hiddenButtonBrowseGroups').toggle("swing");
         $('#hiddenButtonBrowseUsers').toggle("swing");
         $('#hiddenDivider').toggle("swing");
-    })
+    });
 
     // TODO: Rewrite to jQuery
 
@@ -52,7 +68,7 @@
         }
 
         return page
-    }
+    };
 
 
     document.getElementById(getPage()).className += "-active";
