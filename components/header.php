@@ -16,7 +16,7 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             <div id="hiddenDivider" class="hidden ml-2 border-l divider-colorscheme"></div>
-            <a id="hiddenButtonBrowseGroups" class="hidden mx-2  header-element" href="<?= $context ?>/browse/groups">
+            <a id="hiddenButtonBrowseGroups" class="hidden mx-2 header-element" href="<?= $context ?>/browse/groups">
                 <i class="fa-solid fa-users"></i>
             </a>
             <a id="hiddenButtonBrowseUsers" class="hidden header-element" href="<?= $context ?>/browse/users">
@@ -31,16 +31,20 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
                 <?php
                 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                 ?>
-                    <a class="block header-dropdown-element" href="<?= $context ?>/profile">
+                    <a class="block header-dropdown-element" href="<?= $context ?>/profile/<?= $_SESSION['username'] ?>">
                         <i class=" fa-solid fa-user"></i>
-                        <span class="pl-1">Your profile</span>
+                        <span class="pl-1">My profile</span>
+                    </a>
+                    <a class="block header-dropdown-element" href="<?= $context ?>/profile/<?= $_SESSION['username'] ?>/groups">
+                        <i class=" fa-solid fa-users"></i>
+                        <span class="pl-1">My groups</span>
                     </a>
                 <?php
                 } else {
                 ?>
                     <a class="block header-dropdown-element" href="<?= $context ?>/login">
                         <span class="fa-solid fa-power-off" style="color: #4ade80;"></span>
-                        <span class="pl-1">Log In / Sign Up</span>
+                        <span class="pl-1">Log in / Sign up</span>
                     </a>
                 <?php
                 }
@@ -55,7 +59,7 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
                 ?>
                     <a class="block header-dropdown-element" href="<?= $context ?>/profile/<?= $_SESSION['username'] ?>/settings">
                         <span class="fa-solid fa-gear"></span>
-                        <span class="pl-1">Settings</span>
+                        <span class="pl-1">My settings</span>
                     </a>
                 <?php
                 }
@@ -66,7 +70,7 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
                     <hr class="mx-2 divider-colorscheme" />
                     <a class="block header-dropdown-element" href="<?= $context ?>/logout">
                         <span class="fa-solid fa-power-off" style="color: #eb0000;"></span>
-                        <span class="pl-1">Log Out</span>
+                        <span class="pl-1">Log out</span>
                     </a>
                 <?php
                 }
