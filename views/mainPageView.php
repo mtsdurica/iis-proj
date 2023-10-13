@@ -32,35 +32,31 @@ try {
         ?>
         <div class="flex h-full overflow-hidden">
             <!-- TODO: CSS needs to be fixed, this is just wrong -->
-            <aside class="flex-1 p-1 m-1 min-w-fit ">
+            <aside class="flex p-1 m-1 min-w-fit ">
                 <div class="flex-col items-center p-2 ">
+                    <!-- Checking for being logged in done in the submit script -->
+                    <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 rounded-full confirm-button-colorscheme">
+                        + New Thread
+                    </a>
                     <?php
                     if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
-                    ?>
-                        <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
-                            + New Thread
-                        </a>
-                        <div class="flex-col mt-4 border-b divider-colorscheme"></div>
-                        <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
-                            <h2>
-                                My Groups
-                            </h2>
-                        </div>
-                    <?php
+
                         // TODO: Needs update
                         // $groupsQuery = $db->prepare('SELECT group_id FROM groups');
 
                         // $groupsQuery->execute();
 
                         // while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                        //     $groupId = $group["group_id"];
-                        //     require "./components/mainPageGroup.php";
+                        // $groupId = $group["group_id"];
+                        // require "./components/mainPageGroup.php";
                         // }
-                    } else {
                     ?>
-                        <a href="<?= $context ?>/login" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
-                            + New Thread
-                        </a>
+                        <hr class="flex-col mt-4 divider-colorscheme" />
+                        <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
+                            <h2>
+                                My Groups
+                            </h2>
+                        </div>
                     <?php
                     }
                     ?>
@@ -82,7 +78,8 @@ try {
                 <?php
                 }
                 ?>
-                <div class="overflow-auto no-scrollbar">
+                <div class="h-full overflow-auto no-scrollbar">
+                    <!-- Add flex gap -->
                     <div>
                         <?php
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
@@ -98,10 +95,10 @@ try {
                             //     $threadPoster = $thread["thread_poster"];
                             //     $threadId = $thread["thread_id"];
                             //     $groupId = $thread["group_id"];
-                            //     require "./components/thread.php";
+                            //     include "./components/thread.php";
                             // }
                         } else {
-                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, users.user_id AS 'thread_poster' FROM threads
+                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_id AS 'thread_poster' FROM threads
                             LEFT JOIN users ON threads.poster_id = users.user_id
                             LEFT JOIN groups ON threads.group_id = groups.group_id
                             WHERE groups.group_public_flag = 1");
@@ -113,8 +110,11 @@ try {
                                 $threadText = $publicThread["thread_text"];
                                 $threadPoster = $publicThread["thread_poster"];
                                 $threadId = $publicThread["thread_id"];
+                                $threadPositiveRating = $publicThread["thread_positive_rating"];
+                                $threadNegativeRating = $publicThread["thread_negative_rating"];
                                 $groupId = $publicThread["group_id"];
-                                require "./components/thread.php";
+
+                                include "./components/thread.php";
                             }
                         }
                         ?>
