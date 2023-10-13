@@ -766,6 +766,10 @@ body * {
   margin: 0.5rem;
 }
 
+.m-12 {
+  margin: 3rem;
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -831,6 +835,10 @@ body * {
   height: 100%;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
 .w-96 {
   width: 24rem;
 }
@@ -867,6 +875,10 @@ body * {
 
 .place-content-center {
   place-content: center;
+}
+
+.items-start {
+  align-items: flex-start;
 }
 
 .items-center {
