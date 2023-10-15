@@ -52,6 +52,38 @@ session_start();
                     </div>
     
                     <div>
+                        <label for="first_name">
+                            First name
+                        </label>
+                        <input type="text" placeholder="First name" name="first_name" required>
+                    </div>
+
+                    <div>
+                        <label for="last_name">
+                            Last name
+                        </label>
+                        <input type="text" placeholder="Last name" name="last_name" required>
+                    </div>
+
+                    <div>
+                        <label for="gender">
+                            Gender
+                        </label>
+                        <select name="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other" selected>Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="date_of_birth">
+                            Date of birth
+                        </label>
+                        <input type="date" name="date_of_birth" required>
+                    </div>
+
+                    <div>
                         <label for="password">
                             Password
                         </label>
@@ -86,8 +118,8 @@ session_start();
         <!-- image on the right -->
         <div>
             <!-- image content -->
-            <div class="m-12">
-                image
+            <div class="m-12 overflow-hidden w-96">
+                <img src="<?= $context ?>/images/register.jpg" alt="Register image">
             </div>
             
         </div>
