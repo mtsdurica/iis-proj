@@ -35,9 +35,14 @@ try {
             <aside class="flex p-1 m-1 min-w-fit ">
                 <div class="flex-col items-center p-2 ">
                     <!-- Checking for being logged in done in the submit script -->
-                    <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 rounded-full confirm-button-colorscheme">
-                        + New Thread
-                    </a>
+                    <div class="flex flex-row justify-center ">
+                        <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 rounded-full confirm-button-colorscheme">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span class="">
+                                New Thread
+                            </span>
+                        </a>
+                    </div>
                     <?php
                     if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
 
@@ -80,7 +85,7 @@ try {
                 ?>
                 <div class="h-full overflow-auto no-scrollbar">
                     <!-- Add flex gap -->
-                    <div>
+                    <div class="flex flex-col gap-4">
                         <?php
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                             // TODO: Needs update
