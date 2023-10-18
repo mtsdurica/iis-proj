@@ -555,15 +555,14 @@ video {
 }
 
 .header-element {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
+  width: 7rem;
   cursor: pointer;
-  align-items: center;
   border-radius: 0.5rem;
   padding-left: 2rem;
   padding-right: 2rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+  text-align: center;
   font-size: 1.875rem;
   line-height: 2.25rem;
   font-weight: 700;
@@ -581,6 +580,7 @@ video {
 }
 
 .header-element-active {
+  width: 7rem;
   cursor: pointer;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
@@ -589,6 +589,7 @@ video {
   padding-right: 2rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+  text-align: center;
   font-size: 1.875rem;
   line-height: 2.25rem;
   font-weight: 700;
@@ -610,15 +611,11 @@ video {
 }
 
 .header-dropdown-element {
-  left: 0px;
-  margin: 0.25rem;
-  align-items: center;
+  width: 100%;
   white-space: nowrap;
   border-radius: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 0.5rem;
-  padding-right: 2.5rem;
+  padding: 0.5rem;
+  text-align: left;
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 500;
@@ -657,7 +654,7 @@ video {
 
 :is(.dark .divider-colorscheme) {
   --tw-border-opacity: 1;
-  border-color: rgb(51 65 85 / var(--tw-border-opacity));
+  border-color: rgb(71 85 105 / var(--tw-border-opacity));
 }
 
 .text-colorscheme {
@@ -807,6 +804,10 @@ body * {
   border-radius: 0.5rem;
 }
 
+.border {
+  border-width: 1px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -844,6 +845,11 @@ body * {
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-xl {
