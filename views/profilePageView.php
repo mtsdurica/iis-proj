@@ -1,5 +1,7 @@
 <?php
 $context = $_SERVER["CONTEXT_PREFIX"];
+$request = $_SERVER["REQUEST_URI"];
+$exploded = explode("/", $request);
 session_start();
 
 try {
@@ -8,28 +10,31 @@ try {
     echo "Connection error: " . $e->getMessage();
     die();
 }
+
+$userDataQuery = $db->prepare("SELECT users.user_id, users.user_first_name, users.user_surname FROM users WHERE users.user_id = ?");
+$userDataQuery->execute([$exploded[3]]);
+
+while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
+    $userId = $userData["user_id"];
+    $userFirstname = $userData["user_first_name"];
+    $userSurname = $userData["user_surname"];
+}
 ?>
 
 <!DOCTYPE html>
 <html class="h-full">
 
 <head>
-    <title>Threads demo</title>
+    <title>Profile</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./dist/style.css" rel="stylesheet">
+    <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/scripts/darkModeSetter.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/darkModeSetter.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
-    <style>
-        .name-align {
-            margin-left: -80px; /* Adjust as needed */
-            margin-top: -60px; /* Adjust as needed */
-            text-align: center; /* Add this to center the text horizontally */
-        }
-    </style>
 </head>
+
 
 <body class="h-full">
     <div class="flex flex-col h-full header-colorscheme" style="height: 570px;">
@@ -44,7 +49,7 @@ try {
 
         <div class="flex items-center">
             <profile-photo-button class="cursor-pointer z-1 photo-button" style="width: 150px; height: 150px; margin: 0 auto; margin-top: -100px;" onclick="showHelloText(event)">
-                <img id="/profile-photo" src="./views/photos/cat.jpg" class="w-full h-full rounded-full" style="object-fit: cover;" >
+                <img id="/profile-photo" src="./views/photos/cat.jpg" class="w-full h-full rounded-full" style="object-fit: cover;">
             </profile-photo-button>
         </div>
 
@@ -71,8 +76,7 @@ try {
         </div>
 
         <h2 id="/name" class="font-bold text-1xl text-colorscheme name" style="margin: 0 auto; margin-top: 10px; font-size: 2rem;">
-            John
-            Doe
+            <?= $userId ?>
         </h2>
 
         <ul class="flex flex-row justify-between p-2 text-3xl text-colorscheme drop-shadow" style="width: 700px; margin: 0 auto; margin-top: 40px; border-top: thin solid;">
@@ -118,7 +122,7 @@ try {
 </body>
 
 <script>
-   
+
 </script>
 
 
@@ -129,11 +133,12 @@ try {
         event.stopPropagation();
     }
 
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function(event) {
         var menubar = document.getElementById('change-cover-photo');
         if (!menubar.classList.contains('hidden')) {
             menubar.classList.add('hidden');
         }
     });
 </script>
+
 </html>
