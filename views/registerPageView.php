@@ -34,43 +34,51 @@ session_start();
             </h1>
         </div>
 
-        <div style="text-align: center;">
-            <span class="inline-block w-4 h-4 mb-2 mr-2 bg-gray-300 border-none rounded-full opacity-50" id="step1"></span>
-            <span class="inline-block w-4 h-4 mb-2 bg-gray-300 border-none rounded-full opacity-50" id="step2"></span>
-        </div>
-            
-        <!-- form container -->
-        <div class="flex flex-col items-center justify-center rounded-xl drop-shadow-md header-colorscheme">
+                <!-- PHP: show message for bad input -->
+                <?php
+        if (isset($_SESSION["invalid"])) {
+        ?>
+            <div class="flex justify-center h-12 p-2 text-center bg-red-500 rounded-lg bg-opacity-70">
+                <h1 class="text-xl text-white opacity-100">Incorrect input.</h1>
+            </div>
+        <?php
+            unset($_SESSION["invalid"]);
+        } else {
+        ?>
+            <div class="flex invisible h-12 p-2 text-xl"></div>
+        <?php
+        }
+        ?>
             
             <!-- form content -->
             <form action="<?= $context ?>/scripts/insert_account.php" method="POST">
                 
                 <!-- FIRST STEP -->
-                <div class="flex flex-col gap-4 m-12" id="reg_first_step">
+                <div class="flex flex-col gap-4 p-4 rounded-lg w-96 min-w-fit header-colorscheme" id="reg_first_step">
                 
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_id">
-                            Username
+                            Username *
                         </label>
                         <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="user_id" id="user_id" required>
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_password">
-                            Password
+                            Password *
                         </label>
                         <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="Password" name="user_password" id="user_password" required>
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_email">
-                            Email
+                            Email *
                         </label>
                         <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="email" placeholder="Email" name="user_email" id="user_email" required>
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <button type="submit" name="submitted" class="w-full p-2 mt-2 text-lg text-center text-white transition-all rounded-lg basic-button-colorscheme">
+                        <button class="w-full p-2 mt-2 text-lg text-center text-white transition-all rounded-lg basic-button-colorscheme" type="button" id="next_button" onclick="nextPrev(1)">
                             Next
                         </button>
                     </div>
@@ -78,19 +86,20 @@ session_start();
                 </div>
 
                 <!-- SECOND STEP -->
-                <div class="flex flex-col gap-4 m-12" id="reg_second_step">
+                <!-- if not hidden: class="flex flex-col gap-2 p-4 rounded-lg w-96 min-w-fit header-colorscheme" -->
+                <div class="hidden gap-4 p-4 rounded-lg w-96 min-w-fit header-colorscheme" id="reg_second_step">
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_first_name">
                             First name
                         </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="First name" name="user_first_name" id="user_first_name" required>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="First name" name="user_first_name" id="user_first_name">
                     </div>
                     
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_surname">
                             Last name
                         </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Last name" name="user_surname" id="user_surname" required>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Last name" name="user_surname" id="user_surname">
                     </div>
                     
                     <div class="flex flex-col gap-2">
@@ -118,8 +127,6 @@ session_start();
                     </div>
                     
                 </div> <!-- SECOND STEP -->
-
-                
                 
             </form>
             
@@ -128,10 +135,9 @@ session_start();
                 <span>
                     Already have an account?
                 </span>
-                <a href="<?= $context ?>/login" class="text-blue-600 hover:underline" >Log in</a>
+                <a class=" hover:text-blue-500" href="<?= $context ?>/login" >Log in</a>
             </div>
-            
-        </div>
+
     </div>
 
 
