@@ -25,87 +25,112 @@ session_start();
 <body class="h-full main-background-colorscheme text-colorscheme">
     
     <!-- main container -->
-    <div class="flex items-center justify-center h-full">
-        <!-- form container -->
-        <div class="flex flex-row items-center justify-center rounded-lg drop-shadow-md header-colorscheme">
+    <div class="flex flex-col items-center justify-center h-full">
+        
+        <!-- HEADING -->
+        <div class="p-4">
+            <h1 class="text-2xl text-center">
+                Create an account
+            </h1>
+        </div>
+
+        <div style="text-align: center;">
+            <span class="inline-block w-4 h-4 mb-2 mr-2 bg-gray-300 border-none rounded-full opacity-50" id="step1"></span>
+            <span class="inline-block w-4 h-4 mb-2 bg-gray-300 border-none rounded-full opacity-50" id="step2"></span>
+        </div>
             
-                <!-- form content -->
-                <div class="m-12">
+        <!-- form container -->
+        <div class="flex flex-col items-center justify-center rounded-xl drop-shadow-md header-colorscheme">
+            
+            <!-- form content -->
+            <form action="<?= $context ?>/scripts/insert_account.php" method="POST">
                 
-                    <form action="<?= $context ?>/scripts/insert_account.php" method="POST" class="flex flex-col ">
-                        <div class="flex-col gap-4">
-                            <h1 class="mb-2 text-2xl text-center">
-                            Create an account
-                            </h1>
+                <!-- FIRST STEP -->
+                <div class="flex flex-col gap-4 m-12" id="reg_first_step">
+                
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_id">
+                            Username
+                        </label>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="user_id" id="user_id" required>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_password">
+                            Password
+                        </label>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="Password" name="user_password" id="user_password" required>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_email">
+                            Email
+                        </label>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="email" placeholder="Email" name="user_email" id="user_email" required>
+                    </div>
+
+                    <div class="flex items-center justify-center">
+                        <button type="submit" name="submitted" class="w-full p-2 mt-2 text-lg text-center text-white transition-all rounded-lg basic-button-colorscheme">
+                            Next
+                        </button>
+                    </div>
                     
-                        <div>
-                            <label for="user_id">
-                                Username
-                            </label>
-                            <input type="text" placeholder="Username" name="user_id" id="user_id" required>
-                        </div>
-    
-                        <div>
-                            <label for="user_email">
-                                Email
-                            </label>
-                            <input type="email" placeholder="Email" name="user_email" id="user_email" required>
-                        </div>
-    
-                        <div>
-                            <label for="user_first_name">
-                                First name
-                            </label>
-                            <input type="text" placeholder="First name" name="user_first_name" id="user_first_name" required>
-                        </div>
-
-                        <div>
-                            <label for="user_surname">
-                                Last name
-                            </label>
-                            <input type="text" placeholder="Last name" name="user_surname" id="user_surname" required>
-                        </div>
-
-                        <div>
-                            <label for="user_gender">
-                                Gender
-                            </label>
-                            <select name="user_gender" id="user_gender">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other" selected>Other</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="user_birthdate">
-                                Date of birth
-                            </label>
-                            <input type="date" name="user_birthdate" id="user_birthdate" required>
-                        </div>
-
-                        <div>
-                            <label for="user_password">
-                                Password
-                            </label>
-                            <input type="password" placeholder="Password" name="user_password" id="user_password" required>
-                        </div>
-    
-                        <div>
-                            <button type="submit" name="submitted">
-                                Register
-                            </button>
-                        </div>
-    
-                        <div>
-                            <span>
-                                Already have an account?
-                            </span>
-                            <a href="<?= $context ?>/login">Log in</a>
-                        </div>
-                        </div>
-                    </form>
                 </div>
+
+                <!-- SECOND STEP -->
+                <div class="flex flex-col gap-4 m-12" id="reg_second_step">
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_first_name">
+                            First name
+                        </label>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="First name" name="user_first_name" id="user_first_name" required>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_surname">
+                            Last name
+                        </label>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Last name" name="user_surname" id="user_surname" required>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_gender">
+                            Gender
+                        </label>
+                        <select class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme"  name="user_gender" id="user_gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other" selected>Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="px-2 text-lg" for="user_birthdate">
+                            Birthday
+                        </label>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate" required>
+                    </div>
+
+                    <div class="flex items-center justify-center">
+                        <button type="submit" name="submitted" class="w-full p-2 mt-2 text-lg text-center text-white transition-all rounded-lg confirm-button-colorscheme">
+                            Register
+                        </button>
+                    </div>
+                    
+                </div> <!-- SECOND STEP -->
+
+                
+                
+            </form>
+            
+            <!-- FOOTER -->
+            <div class="p-4">
+                <span>
+                    Already have an account?
+                </span>
+                <a href="<?= $context ?>/login" class="text-blue-600 hover:underline" >Log in</a>
+            </div>
+            
         </div>
     </div>
 
