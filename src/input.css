@@ -48,6 +48,9 @@
   .confirm-button-colorscheme {
     @apply bg-green-400 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600
   }
+  .basic-button-colorscheme {
+    @apply bg-blue-400 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600
+  }
   body * {
     @apply transition-colors duration-100;
   }
