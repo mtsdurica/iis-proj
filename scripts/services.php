@@ -48,7 +48,6 @@ class AccountService
         {
             // update $data array with new user_id
             $newid = $this->pdo->lastInsertId();
-            // TODO: check whether this is correct
             $data['user_id'] = $newid;
             return $data;
         } else {
