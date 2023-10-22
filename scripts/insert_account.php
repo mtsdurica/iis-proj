@@ -1,5 +1,7 @@
 <?php
 require "services.php";
+$context = $_SERVER["CONTEXT_PREFIX"];
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -21,22 +23,46 @@ require "services.php";
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<h1> Create new account </h1>
+<body class="items-center justify-center h-full main-background-colorscheme">
+    
+    <?php
+    $serv = new AccountService();
 
-<?php
-$serv = new AccountService();
+    $newPerson = array(
+        'user_id' => $_POST['user_id'],
+        'user_password' => $_POST['user_password'],
+        'user_email' => $_POST['user_email'],
+        'user_full_name' => $_POST['user_full_name'],
+        'user_gender' => $_POST['user_gender'],
+        'user_birthdate' => $_POST['user_birthdate']
+    );
 
-$newPerson = array(
-    'user_id' => $_POST['user_id'],
-    'user_password' => $_POST['user_password'],
-    'user_email' => $_POST['user_email'],
-    'user_full_name' => $_POST['user_full_name'],
-    'user_gender' => $_POST['user_gender'],
-    'user_birthdate' => $_POST['user_birthdate']
-);
+    $serv->addUser($newPerson);
+    ?>
 
-$serv->addUser($newPerson);
-?>
+    <!-- main container -->
+    <div class="flex flex-col items-center self-center justify-center h-full place-content-center text-colorscheme">
+       
+        <div class="mb-20">
+            <img src="<?= $context ?>/images/register_success.svg" alt="Register success" style="width: 20rem;">
+        </div> 
+    
+        <h1 class="text-2xl font-bold mt-20">
+            Registration was successful!
+        </h1>  
 
-<p> The account has been created. </p>
-<p><a href="index.php">Back</a></p>
+        <p class="mt-3">
+            Now you can login to your account.
+        </p>
+ 
+
+        <div class="flex flex-row items-center justify-center px-5 py-2 mt-10 text-2xl bg-green-500 rounded-full bg-opacity-70 hover:bg-green-800">
+            <a href="<?= $context ?>/views/loginPageView.php" class="flex items-center justify-center gap-2 px-2 py-1 flew-row"> 
+                <i class="fa-solid fa-chevron-left"></i>
+                <span class="text-sm"> Log In </span> 
+            </a>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="<?= $context?>/scripts/main.js"></script>
+</body>
