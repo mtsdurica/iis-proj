@@ -30,8 +30,7 @@ $newPerson = array(
     'user_id' => $_POST['user_id'],
     'user_password' => $_POST['user_password'],
     'user_email' => $_POST['user_email'],
-    'user_first_name' => $_POST['user_first_name'],
-    'user_surname' => $_POST['user_surname'],
+    'user_full_name' => $_POST['user_full_name'],
     'user_gender' => $_POST['user_gender'],
     'user_birthdate' => $_POST['user_birthdate']
 );

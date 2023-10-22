@@ -4,7 +4,7 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html class="h-full">
+<html lang="en "class="h-full">
 
 <head>
     <title>New Account</title>
@@ -22,10 +22,10 @@ session_start();
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="h-full main-background-colorscheme text-colorscheme">
+<body class="h-full ">
     
     <!-- main container -->
-    <div class="flex flex-col items-center justify-center h-full">
+    <div class="flex flex-col items-center justify-center h-full main-background-colorscheme text-colorscheme">
         
         <!-- HEADING -->
         <div class="p-4">
@@ -33,28 +33,13 @@ session_start();
                 Create an account
             </h1>
         </div>
-
-                <!-- PHP: show message for bad input -->
-                <?php
-        if (isset($_SESSION["invalid"])) {
-        ?>
-            <div class="flex justify-center h-12 p-2 text-center bg-red-500 rounded-lg bg-opacity-70">
-                <h1 class="text-xl text-white opacity-100">Incorrect input.</h1>
-            </div>
-        <?php
-            unset($_SESSION["invalid"]);
-        } else {
-        ?>
-            <div class="flex invisible h-12 p-2 text-xl"></div>
-        <?php
-        }
-        ?>
             
-            <!-- form content -->
-            <form action="<?= $context ?>/scripts/insert_account.php" method="POST">
-                
-                <!-- FIRST STEP -->
-                <div class="flex flex-col gap-4 p-4 rounded-lg w-96 min-w-fit header-colorscheme" id="reg_first_step">
+        <!-- form content -->
+        <form class="flex flex-col gap-4 p-4 rounded-lg w-96 min-w-fit header-colorscheme" action="<?= $context ?>/scripts/insert_account.php" method="POST">
+            
+           <div class="flex flex-row">
+                <!-- MANDATORY DATA -->
+                <div class="flex flex-col gap-4 p-4 rounded-lg" id="reg_first_step">
                 
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_id">
@@ -76,30 +61,16 @@ session_start();
                         </label>
                         <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="email" placeholder="Email" name="user_email" id="user_email" required>
                     </div>
-
-                    <div class="flex items-center justify-center">
-                        <button class="w-full p-2 mt-2 text-lg text-center text-white transition-all rounded-lg basic-button-colorscheme" type="button" id="next_button" onclick="nextPrev(1)">
-                            Next
-                        </button>
-                    </div>
                     
                 </div>
 
-                <!-- SECOND STEP -->
-                <!-- if not hidden: class="flex flex-col gap-2 p-4 rounded-lg w-96 min-w-fit header-colorscheme" -->
-                <div class="hidden gap-4 p-4 rounded-lg w-96 min-w-fit header-colorscheme" id="reg_second_step">
+                <!-- OTHER DATA -->
+                <div class="flex flex-col gap-4 p-4 rounded-lg step w-96 min-w-fit header-colorscheme" id="reg_second_step">
                     <div class="flex flex-col gap-2">
-                        <label class="px-2 text-lg" for="user_first_name">
-                            First name
+                        <label class="px-2 text-lg" for="user_full_name">
+                            Full name
                         </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="First name" name="user_first_name" id="user_first_name">
-                    </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <label class="px-2 text-lg" for="user_surname">
-                            Last name
-                        </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Last name" name="user_surname" id="user_surname">
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Full name" name="user_full_name" id="user_full_name">
                     </div>
                     
                     <div class="flex flex-col gap-2">
@@ -117,26 +88,29 @@ session_start();
                         <label class="px-2 text-lg" for="user_birthdate">
                             Birthday
                         </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate" required>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate">
                     </div>
 
-                    <div class="flex items-center justify-center">
-                        <button type="submit" name="submitted" class="w-full p-2 mt-2 text-lg text-center text-white transition-all rounded-lg confirm-button-colorscheme">
-                            Register
-                        </button>
-                    </div>
-                    
-                </div> <!-- SECOND STEP -->
-                
-            </form>
-            
-            <!-- FOOTER -->
-            <div class="p-4">
-                <span>
-                    Already have an account?
-                </span>
-                <a class=" hover:text-blue-500" href="<?= $context ?>/login" >Log in</a>
+                </div> <!-- OTHER DATA -->
             </div>
+
+            <!-- BUTTON -->
+            <div class="flex items-center justify-center gap-4">
+                <button type="submit" name="submitted" class="p-2 mt-2 text-lg text-center w-96 text-white transition-all rounded-lg confirm-button-colorscheme">
+                    Register
+                </button>
+            </div>
+
+        </form>
+   
+            
+        <!-- FOOTER -->
+        <div class="p-4">
+            <span>
+                Already have an account?
+            </span>
+            <a class=" hover:text-blue-500" href="<?= $context ?>/login" >Log in</a>
+        </div>
 
     </div>
 

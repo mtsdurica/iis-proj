@@ -14,7 +14,7 @@ class AccountService
 
     function connect_db() 
     {
-        // TOD: change to xduric06
+        // TODO: change to xduric06
         $dsn = 'mysql:host=localhost;dbname=xdurac01';
         $username = 'xdurac01';
         $password = 'bu5gumhu';
@@ -35,17 +35,16 @@ class AccountService
 
     function addUser($data)
     {
-        $stmt = $this->pdo->prepare('INSERT INTO users (user_id, user_password, user_email, user_first_name, user_surname, user_gender, user_birthdate) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        $stmt = $this->pdo->prepare('INSERT INTO users (user_id, user_password, user_email, user_full_name, user_gender, user_birthdate) VALUES (?, ?, ?, ?, ?, ?)');
 
         $user_id = $data['user_id'];
         $user_password = password_hash($data['user_password'], PASSWORD_DEFAULT);
         $user_email = $data['user_email'];
-        $user_first_name = $data['user_first_name'];
-        $user_surname = $data['user_surname'];
+        $user_full_name = $data['user_full_name'];
         $user_gender = $data['user_gender'];
         $user_birthdate = $data['user_birthdate'];
 
-        if ($stmt->execute([$user_id, $user_password, $user_email, $user_first_name, $user_surname, $user_gender, $user_birthdate]))
+        if ($stmt->execute([$user_id, $user_password, $user_email, $user_full_name, $user_gender, $user_birthdate]))
         {
             // update $data array with new user_id
             $newid = $this->pdo->lastInsertId();
