@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+$context = $_SERVER["CONTEXT_PREFIX"];
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 
@@ -5,17 +11,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="./dist/style.css" rel="stylesheet">
+    <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="./scripts/darkModeSetter.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/darkModeSetter.js"></script>
 </head>
-
-<?php
-
-session_start();
-
-$context = $_SERVER["CONTEXT_PREFIX"];
-?>
 
 <body class="h-full">
     <div class="flex flex-row justify-center h-full main-background-colorscheme text-colorscheme">
@@ -65,7 +64,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="./scripts/main.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
 </body>
 
 </html>

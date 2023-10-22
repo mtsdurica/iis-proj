@@ -25,13 +25,13 @@
     @apply bg-slate-50 dark:bg-slate-800
   }
   .header-element {
-    @apply text-3xl font-bold mx-1 px-8 py-1 rounded-lg dark:hover:bg-slate-600 hover:bg-slate-200 cursor-pointer duration-300 items-center
+    @apply text-3xl text-center w-28 font-bold px-8 py-1 rounded-lg dark:hover:bg-slate-600 hover:bg-slate-200 cursor-pointer duration-300
   }
   .header-element-active {
-    @apply text-3xl font-bold px-8 py-1 rounded-lg bg-slate-200 dark:bg-slate-600 cursor-pointer
+    @apply text-3xl text-center w-28 font-bold px-8 py-1 rounded-lg bg-slate-200 dark:bg-slate-600 cursor-pointer
   }
   .header-dropdown-element {
-    @apply m-1 left-0 text-colorscheme text-lg whitespace-nowrap duration-300 items-center font-medium dark:hover:bg-slate-600 hover:bg-slate-200 rounded-lg py-2 px-2 pr-10
+    @apply p-2 w-full text-left text-colorscheme text-lg whitespace-nowrap duration-300 font-medium dark:hover:bg-slate-600 hover:bg-slate-200 rounded-lg
   }
   .animated-invisible {
     @apply invisible opacity-0
@@ -40,10 +40,10 @@
     @apply bg-slate-200 dark:bg-slate-700
   }
   .divider-colorscheme {
-    @apply border-slate-300 dark:border-slate-700
+    @apply border-slate-300 dark:border-slate-600
   }
   .text-colorscheme {
-    @apply text-slate-700 dark:text-slate-200
+    @apply text-slate-700 dark:text-slate-200 
   }
   .confirm-button-colorscheme {
     @apply bg-green-400 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600

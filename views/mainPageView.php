@@ -1,17 +1,3 @@
-<!DOCTYPE html>
-<html class="h-full">
-
-<head>
-    <title>Threads demo</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./dist/style.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="./scripts/darkModeSetter.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
-</head>
-
 <?php
 $context = $_SERVER["CONTEXT_PREFIX"];
 
@@ -25,6 +11,20 @@ try {
 }
 ?>
 
+<!DOCTYPE html>
+<html class="h-full">
+
+<head>
+    <title>Threads demo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/darkModeSetter.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+</head>
+
 <body class="h-full">
     <div class="flex flex-col h-full main-background-colorscheme">
         <?php
@@ -32,35 +32,31 @@ try {
         ?>
         <div class="flex h-full overflow-hidden">
             <!-- TODO: CSS needs to be fixed, this is just wrong -->
-            <aside class="flex-1 p-1 m-1 min-w-fit ">
+            <aside class="flex p-1 m-1 min-w-fit ">
                 <div class="flex-col items-center p-2 ">
+                    <!-- Checking for being logged in done in the submit script -->
+                    <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 rounded-full confirm-button-colorscheme">
+                        + New Thread
+                    </a>
                     <?php
                     if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
-                    ?>
-                        <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
-                            + New Thread
-                        </a>
-                        <div class="flex-col mt-4 border-b divider-colorscheme"></div>
-                        <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
-                            <h2>
-                                Your Groups
-                            </h2>
-                        </div>
-                        <?php
+
                         // TODO: Needs update
                         // $groupsQuery = $db->prepare('SELECT group_id FROM groups');
 
                         // $groupsQuery->execute();
 
                         // while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                        //     $groupId = $group["group_id"];
-                        //     require "./components/mainPageGroup.php";
+                        // $groupId = $group["group_id"];
+                        // require "./components/mainPageGroup.php";
                         // }
-                    } else {
-                        ?>
-                        <a href="<?= $context ?>/login" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
-                            + New Thread
-                        </a>
+                    ?>
+                        <hr class="flex-col mt-4 divider-colorscheme" />
+                        <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
+                            <h2>
+                                My Groups
+                            </h2>
+                        </div>
                     <?php
                     }
                     ?>
@@ -71,7 +67,7 @@ try {
                 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                 ?>
                     <h2 class="mx-40 text-2xl font-bold text-colorscheme">
-                        Your Feed
+                        My Feed
                     </h2>
                 <?php
                 } else {
@@ -82,7 +78,8 @@ try {
                 <?php
                 }
                 ?>
-                <div class="overflow-auto no-scrollbar">
+                <div class="h-full overflow-auto no-scrollbar">
+                    <!-- Add flex gap -->
                     <div>
                         <?php
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
@@ -98,12 +95,27 @@ try {
                             //     $threadPoster = $thread["thread_poster"];
                             //     $threadId = $thread["thread_id"];
                             //     $groupId = $thread["group_id"];
-                            //     require "./components/thread.php";
+                            //     include "./components/thread.php";
                             // }
                         } else {
-                        ?>
-                            <!-- publuic feed query-->
-                        <?php
+                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_id AS 'thread_poster' FROM threads
+                            LEFT JOIN users ON threads.poster_id = users.user_id
+                            LEFT JOIN groups ON threads.group_id = groups.group_id
+                            WHERE groups.group_public_flag = 1");
+
+                            $publicThreadsQuery->execute();
+
+                            while ($publicThread = $publicThreadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                                $threadTitle = $publicThread["thread_title"];
+                                $threadText = $publicThread["thread_text"];
+                                $threadPoster = $publicThread["thread_poster"];
+                                $threadId = $publicThread["thread_id"];
+                                $threadPositiveRating = $publicThread["thread_positive_rating"];
+                                $threadNegativeRating = $publicThread["thread_negative_rating"];
+                                $groupId = $publicThread["group_id"];
+
+                                include "./components/thread.php";
+                            }
                         }
                         ?>
                     </div>
@@ -111,7 +123,7 @@ try {
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="./scripts/main.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
 </body>
 
 </html>

@@ -14,7 +14,12 @@ switch ($exploded[2]) {
         require_once __DIR__ . "/views/threadCreationView.php";
         break;
     case ('browse'):
-        require_once __DIR__ . "/views/groupsBrowserView.php";
+        if (isset($exploded[3]) && ($exploded[3] === "groups" || $exploded[3] === "users"))
+            require_once __DIR__ . "/views/browsePageView.php";
+        else {
+            http_response_code(404);
+            require_once __DIR__ . "/views/error404View.php";
+        }
         break;
     case ('login'):
         require_once __DIR__ . "/views/loginPageView.php";
