@@ -56,19 +56,6 @@
     });
 
     // TODO: Rewrite to jQuery
-
-    var page = location.pathname.replace(/\/(?<=\/)(.*)\d(?=\/)/, "");
-    page = page.replace(/(?!^)\/.*/, "");
-    if (page.match(/.php$/)) {
-        page = page.replace(/.php$/, "");
-    }
-    if (page === "/index") {
-        page = "/";
-    }
-    document.getElementById(page).className += "-active";
-})();
-
-
     function getPage() {
         var page = location.pathname.replace(/\/(?<=\/)(.*)\d(?=\/)/, "");
         page = page.replace(/(?!^)\/.*/, "");
