@@ -10,7 +10,7 @@ try {
     echo "Connection error: " . $e->getMessage();
     die();
 }
-
+/*
 $userDataQuery = $db->prepare("SELECT users.user_id, users.user_first_name, users.user_surname FROM users WHERE users.user_id = ?");
 $userDataQuery->execute([$exploded[3]]);
 
@@ -18,9 +18,10 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     $userId = $userData["user_id"];
     $userFirstname = $userData["user_first_name"];
     $userSurname = $userData["user_surname"];
-}
-?>
+} 
+*/
 
+?>
 <!DOCTYPE html>
 <html class="h-full">
 
@@ -35,110 +36,154 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-
-<body class="h-full">
-    <div class="flex flex-col h-full header-colorscheme" style="height: 570px;">
+<body class="items-center h-full" style="min-width: 650px; height: 470px;">
+    <div class="flex flex-col w-full h-full header-colorscheme" style="">
         <?php
         require_once "./components/header.php";
         ?>
-        <div class="flex items-center">
-            <cover-photo-button class="mt-0 cursor-pointer photo-button" style="width: 800px; height: 300px; margin: 0 auto;" onclick="CoverPhotoMenu(event)">
-                <img id="/cover-photo" src="./views/photos/mountain.jpg" class="w-full h-full" style="object-fit: cover;">
-            </cover-photo-button>
-        </div>
-
-        <div class="flex items-center">
-            <profile-photo-button class="cursor-pointer z-1 photo-button" style="width: 150px; height: 150px; margin: 0 auto; margin-top: -100px;" onclick="showHelloText(event)">
-                <img id="/profile-photo" src="./views/photos/cat.jpg" class="w-full h-full rounded-full" style="object-fit: cover;">
-            </profile-photo-button>
-        </div>
-
-        <div id="helloText" class="hidden">
-            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown profile-photo-menu">
-                <a class="block header-dropdown-element" href="<?= $context ?>/login">
-                    <span class="pl-1">Change photo</span>
-                </a>
-                <a class="block header-dropdown-element" href="<?= $context ?>/login">
-                    <span class="pl-1">Delete photo</span>
-                </a>
+        <div class="flex items-center justify-center">
+            <div id="cover-photo-element" class="mt-0 cursor-pointer brightness-filter" style="width: 650px; height: 250px;">
+                <img id="cover-photo" src="./views/photos/mountain.jpg" class="w-full h-full" style="object-fit: cover;">
             </div>
         </div>
 
-        <div id="change-cover-photo" class="hidden">
-            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                <a class="block header-dropdown-element" href="<?= $context ?>/login">
-                    <span class="pl-1">Change photo</span>
-                </a>
-                <a class="block header-dropdown-element" href="<?= $context ?>/login">
-                    <span class="pl-1">Delete photo</span>
-                </a>
+        <div class="flex items-center justify-center" > 
+            <div id="change-cover-photo" class="hidden z-1" style="margin-top: -320px;">
+                <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
+                <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
+                    <a class="block cursor-pointer header-dropdown-element change-cover-photo" >
+                        <span class="pl-1">Change photo</span>
+                    </a>
+                    <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
+                        <span class="pl-1">Delete photo</span>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <h2 id="/name" class="font-bold text-1xl text-colorscheme name" style="margin: 0 auto; margin-top: 10px; font-size: 2rem;">
-            <?= $userId ?>
+        <div class="flex items-center justify-center">
+        <profile-photo id="profile-photo-element" class="z-50 cursor-pointer" style="width: 150px; height: 150px; margin-top: -100px;">
+                <img id="profile-photo" src="./views/photos/cat.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
+            </profile-photo>
+        </div>
+
+        <div class="flex items-center justify-center" > 
+            <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 100px;">
+                <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
+                <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
+                    <a class="block cursor-pointer header-dropdown-element change-profile-photo" >
+                        <span class="pl-1">Change photo</span>
+                    </a>
+                    <a class="block cursor-pointer header-dropdown-element delete-profile-photo" >
+                        <span class="pl-1">Delete photo</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
+            John Doe
         </h2>
 
-        <ul class="flex flex-row justify-between p-2 text-3xl text-colorscheme drop-shadow" style="width: 700px; margin: 0 auto; margin-top: 40px; border-top: thin solid;">
-            <div class="flex">
-                <a id="/" class="profile-view-element">
-                    Threads
-                </a>
-            </div>
-            <div class="flex">
-                <a id="/groups" class="profile-view-element">
-                    Groups
-                    hello
-                </a>
-            </div>
-            <div class="flex">
-                <a id="/" class="profile-view-element">
-                    Statistics
-                </a>
-            </div>
-            <div class="flex">
-                <a id="/" class="profile-view-element">
-                    About
-                </a>
+             
+        <ul class="flex flex-row items-center justify-center p-2 mt-4 text-3xl text-center text-colorscheme drop-shadow" >
+            <div class="flex" style=" border-top: thin solid;">
+                <div class="flex">
+                    <a id="show-user-threads" class="flex items-center justify-center text-xl header-element ">
+                        Threads
+                    </a>
+                </div>
+                <div class="flex">
+                    <a id="show-user-groups" class="flex items-center justify-center text-xl header-element">
+                        Groups
+                    </a>
+                </div>
+
+                <div class="flex">
+                    <a id="show-user-statistics" class="flex items-center justify-center text-xl header-element">
+                        Statistics
+                    </a>
+                </div>
+
+                <div class="flex">
+                    <a id="show-user-about" class="flex items-center justify-center text-xl header-element">
+                        About
+                    </a>
+                </div>
             </div>
         </ul>
+
     </div>
-    <div class="flex flex-col main-background-colorscheme">
-        xxx
-        <?php
-        if ($groups === true) {
-        ?>
-            <a class="">
-                hello
-            </a>
-        <?php
-        }
-        ?>
-        <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 bg-green-400 rounded-full hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600">
-            + New Thread
-        </a>
+    <div class="items-center main-background-colorscheme">
+        <div id="user-threads" class="hidden">
+            <ul>
+                <li>Thread 1</li>
+                <li>Thread 2</li>
+                <li>Thread 3</li>
+                <li>Thread 4</li>
+                <li>Thread 5</li>
+                <li>Thread 6</li>
+                <li>Thread 7</li>
+            </ul>
+        </div>
+
+        <div id="user-statistics" class="hidden">
+            <ul>
+                <li>stat 1</li>
+                <li>stat 2</li>
+                <li>stat 3</li>
+                <li>stat 4</li>
+                <li>stat 5</li>
+                <li>stat 6</li>
+                <li>stat 7</li>
+            </ul>
+        </div>
+       
+
+        <div id="user-about" class="flex items-center justify-center h-full text-colorscheme">
+            <div class="flex flex-row">
+                <div class="flex flex-col gap-4 p-4 rounded-lg">
+                
+                    <div class="flex flex-col gap-2">
+                        <h2 class=""> <a class="text-xl font-bold">Name: </a>  <span class="text-base font-normal">John Doe</span></h2>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <h2 class=""> <a class="text-xl font-bold">Email: </a>  <span class="text-base font-normal">john@example.com</span></h2>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                            <h2 class=""> <a class="text-xl font-bold">Gender: </a>  <span class="text-base font-normal">male</span></h2>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                            <h2 class=""> <a class="text-xl font-bold">Birthday: </a>  <span class="text-base font-normal">1990-01-01</span></h2>
+                    </div>
+
+                </div> 
+            </div>
+        </div>
+        
+        <div id="user-groups" class="hidden">
+            <ul>
+                <li>Group 1</li>
+                <li>Group 2</li>
+                <li>Group 2</li>
+                <li>Group 2</li>
+                <li>Group 2</li>
+                <li>Group 2</li>
+                <li>Group 2</li>
+                <li>Group 7</li>
+            </ul>
+        </div>
     </div>
+    
     <script type="text/javascript" src="./scripts/main.js"></script>
 </body>
-
-<script>
-
-</script>
-
-
-<script>
-    function CoverPhotoMenu(event) {
-        var menubar = document.getElementById('change-cover-photo');
-        menubar.classList.toggle('hidden');
-        event.stopPropagation();
-    }
-
-    document.addEventListener('click', function(event) {
-        var menubar = document.getElementById('change-cover-photo');
-        if (!menubar.classList.contains('hidden')) {
-            menubar.classList.add('hidden');
-        }
-    });
-</script>
-
 </html>
+
+<style>
+    .brightness-filter:hover {
+        filter: brightness(0.75); 
+    }
+</style>
