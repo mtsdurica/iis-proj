@@ -14,7 +14,7 @@ class AccountService
 
     function connect_db() 
     {
-        $dsn = 'mysql:host=localhost;dbname=xdurac01';
+        $dsn = 'mysql:host=localhost;dbname=xduric06';
         $username = 'xduric06';
         $password = 'j4sipera';
         $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); // processing communication in Czech/Slovak language
