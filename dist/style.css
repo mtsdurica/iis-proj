@@ -801,6 +801,9 @@ body * {
   margin-bottom: 0.5rem;
 }
 
+.mt-0 {
+  margin-top: 0px;
+
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -1074,6 +1077,11 @@ body * {
   line-height: 2rem;
 }
 
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+ }
+  
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
