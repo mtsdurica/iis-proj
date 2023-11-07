@@ -48,7 +48,6 @@
     };
 
 
-
     browseButton.addEventListener('click', (event) => {
         if (getPage() !== "/browse") {
             $('#\\/browse').toggleClass('header-element-active');
@@ -59,9 +58,6 @@
     });
 
     // TODO: Rewrite to jQuery
-
-    
-
     function getPage() {
         var page = location.pathname.replace(/\/(?<=\/)(.*)\d(?=\/)/, "");
         page = page.replace(/(?!^)\/.*/, "");
@@ -235,4 +231,9 @@
         coverPhoto.src = '';
     }
 
+    };
+
+
+    document.getElementById(getPage()).className += "-active";
 })();
+
