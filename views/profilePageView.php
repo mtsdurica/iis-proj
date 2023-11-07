@@ -10,16 +10,18 @@ try {
     echo "Connection error: " . $e->getMessage();
     die();
 }
-/*
-$userDataQuery = $db->prepare("SELECT users.user_id, users.user_first_name, users.user_surname FROM users WHERE users.user_id = ?");
+
+$userDataQuery = $db->prepare("SELECT users.user_id, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_id = ?");
 $userDataQuery->execute([$exploded[3]]);
 
 while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     $userId = $userData["user_id"];
-    $userFirstname = $userData["user_first_name"];
-    $userSurname = $userData["user_surname"];
-} 
-*/
+    $userFullname = $userData["user_full_name"];
+    $userEmail = $userData["user_email"];
+    $userGender = $userData["user_gender"];
+    $userBirthdate = $userData["user_birthdate"];
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -36,8 +38,8 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="items-center h-full" style="min-width: 650px; height: 470px;">
-    <div class="flex flex-col w-full h-full header-colorscheme" style="">
+<body class="items-center h-full main-background-colorscheme" style="min-width: 650px; height: 470px;">
+    <div class="flex flex-col w-full h-full">
         <?php
         require_once "./components/header.php";
         ?>
@@ -47,11 +49,11 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
             </div>
         </div>
 
-        <div class="flex items-center justify-center" > 
+        <div class="flex items-center justify-center">
             <div id="change-cover-photo" class="hidden z-1" style="margin-top: -320px;">
                 <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
                 <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                    <a class="block cursor-pointer header-dropdown-element change-cover-photo" >
+                    <a class="block cursor-pointer header-dropdown-element change-cover-photo">
                         <span class="pl-1">Change photo</span>
                     </a>
                     <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
@@ -62,19 +64,19 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
         </div>
 
         <div class="flex items-center justify-center">
-        <profile-photo id="profile-photo-element" class="z-50 cursor-pointer" style="width: 150px; height: 150px; margin-top: -100px;">
+            <profile-photo id="profile-photo-element" class="z-50 cursor-pointer" style="width: 150px; height: 150px; margin-top: -100px;">
                 <img id="profile-photo" src="./views/photos/cat.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
             </profile-photo>
         </div>
 
-        <div class="flex items-center justify-center" > 
+        <div class="flex items-center justify-center">
             <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 100px;">
                 <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
                 <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                    <a class="block cursor-pointer header-dropdown-element change-profile-photo" >
+                    <a class="block cursor-pointer header-dropdown-element change-profile-photo">
                         <span class="pl-1">Change photo</span>
                     </a>
-                    <a class="block cursor-pointer header-dropdown-element delete-profile-photo" >
+                    <a class="block cursor-pointer header-dropdown-element delete-profile-photo">
                         <span class="pl-1">Delete photo</span>
                     </a>
                 </div>
@@ -82,11 +84,11 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
         </div>
 
         <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
-            John Doe
+            <?= $userId ?>
         </h2>
 
-             
-        <ul class="flex flex-row items-center justify-center p-2 mt-4 text-3xl text-center text-colorscheme drop-shadow" >
+
+        <ul class="flex flex-row items-center justify-center p-2 mt-4 text-3xl text-center text-colorscheme drop-shadow">
             <div class="flex" style=" border-top: thin solid;">
                 <div class="flex">
                     <a id="show-user-threads" class="flex items-center justify-center text-xl header-element ">
@@ -138,32 +140,32 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 <li>stat 7</li>
             </ul>
         </div>
-       
+
 
         <div id="user-about" class="flex items-center justify-center h-full text-colorscheme">
             <div class="flex flex-row">
                 <div class="flex flex-col gap-4 p-4 rounded-lg">
-                
+
                     <div class="flex flex-col gap-2">
-                        <h2 class=""> <a class="text-xl font-bold">Name: </a>  <span class="text-base font-normal">John Doe</span></h2>
+                        <h2 class=""> <a class="text-xl font-bold">Name: </a> <span class="text-base font-normal"><?= $userFullname ?></span></h2>
                     </div>
 
                     <div class="flex flex-col gap-2">
-                        <h2 class=""> <a class="text-xl font-bold">Email: </a>  <span class="text-base font-normal">john@example.com</span></h2>
+                        <h2 class=""> <a class="text-xl font-bold">Email: </a> <span class="text-base font-normal"><?= $userEmail ?></span></h2>
                     </div>
 
                     <div class="flex flex-col gap-2">
-                            <h2 class=""> <a class="text-xl font-bold">Gender: </a>  <span class="text-base font-normal">male</span></h2>
+                        <h2 class=""> <a class="text-xl font-bold">Gender: </a> <span class="text-base font-normal"><?= $userGender ?></span></h2>
                     </div>
 
                     <div class="flex flex-col gap-2">
-                            <h2 class=""> <a class="text-xl font-bold">Birthday: </a>  <span class="text-base font-normal">1990-01-01</span></h2>
+                        <h2 class=""> <a class="text-xl font-bold">Birthday: </a> <span class="text-base font-normal"><?= $userBirthdate ?></span></h2>
                     </div>
 
-                </div> 
+                </div>
             </div>
         </div>
-        
+
         <div id="user-groups" class="hidden">
             <ul>
                 <li>Group 1</li>
@@ -177,13 +179,15 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
             </ul>
         </div>
     </div>
-    
-    <script type="text/javascript" src="./scripts/main.js"></script>
+
+    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/userProfilePage.js"></script>
 </body>
+
 </html>
 
 <style>
     .brightness-filter:hover {
-        filter: brightness(0.75); 
+        filter: brightness(0.75);
     }
 </style>

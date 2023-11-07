@@ -10,6 +10,9 @@ switch ($exploded[2]) {
     case ('profile'):
         require_once  __DIR__ . "/views/profilePageView.php";
         break;
+    case ('group'):
+        require_once  __DIR__ . "/views/groupPageView.php";
+        break;
     case ('submit'):
         require_once __DIR__ . "/views/threadCreationView.php";
         break;
