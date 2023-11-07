@@ -231,9 +231,6 @@
         coverPhoto.src = '';
     }
 
-    };
-
-
     document.getElementById(getPage()).className += "-active";
 })();
 

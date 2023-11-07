@@ -801,9 +801,6 @@ body * {
   margin-bottom: 0.5rem;
 }
 
-.mt-0 {
-  margin-top: 0px;
-
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -818,6 +815,10 @@ body * {
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.mt-0 {
+  margin-top: 0px;
 }
 
 .mt-10 {
@@ -889,6 +890,11 @@ body * {
   width: 24rem;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-full {
   width: 100%;
 }
@@ -954,10 +960,6 @@ body * {
 
 .gap-6 {
   gap: 1.5rem;
-}
-
-.gap-4 {
-  gap: 1rem;
 }
 
 .self-center {
@@ -1080,8 +1082,8 @@ body * {
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
- }
-  
+}
+
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -1104,6 +1106,10 @@ body * {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .text-slate-500 {
@@ -1136,6 +1142,10 @@ body * {
 
 .drop-shadow-xl {
   --tw-drop-shadow: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
