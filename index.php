@@ -13,6 +13,9 @@ switch ($exploded[2]) {
     case ('group'):
         require_once  __DIR__ . "/views/groupPageView.php";
         break;
+    case ('dashboard'):
+        require_once __DIR__ . "/views/dashboardPageView.php";
+        break;
     case ('submit'):
         require_once __DIR__ . "/views/threadCreationView.php";
         break;

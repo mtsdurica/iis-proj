@@ -2,7 +2,6 @@
 $context = $_SERVER["CONTEXT_PREFIX"];
 $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
 
-//TODO: Header items not the same width, needs to be fixed
 ?>
 <header class="relative z-50">
     <ul class="flex flex-row justify-between p-2 header-colorscheme text-colorscheme drop-shadow">
@@ -29,7 +28,14 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
             </button>
             <ul class="absolute right-0 flex flex-col w-48 gap-2 p-3 m-2 mt-4 transition-all rounded-lg animated-invisible header-colorscheme min-w-fit drop-shadow-xl profile-dropdown">
                 <?php
-                if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
+                if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $_SESSION['isAdmin'] === true) {
+                ?>
+                    <a class="block header-dropdown-element" href="<?= $context ?>/dashboard">
+                        <i class="fa-solid fa-gears"></i>
+                        <span class="pl-1">Admin Dashboard</span>
+                    </a>
+                <?php
+                } else if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                 ?>
                     <a class="block header-dropdown-element" href="<?= $context ?>/profile/<?= $_SESSION['username'] ?>">
                         <i class=" fa-solid fa-user"></i>

@@ -19,6 +19,8 @@ if (isset($_POST["submitted"])) {
     if (password_verify($_POST["password"], $user["user_password"])) {
         $_SESSION["username"] = $user["user_id"];
         $_SESSION["loggedIn"] = true;
+        if ($user["user_id"] === "admin")
+            $_SESSION["isAdmin"] = true;
         header("Location:$context/");
     } else {
         $_SESSION["invalid"] = true;
