@@ -67,25 +67,25 @@ CREATE TABLE group_moderators
 
 -- USERS
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('fitking', 'password123', 'Male');
+VALUES ('fitking', '$2y$10$5B4Zn48s1bIQDcA5MJyM5O6qMzM3LQUcSH3kHtG3ChKuXGgJMhgrq', 'Other');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('nick56', 'password123', 'Male');
+VALUES ('nick56', '$2y$10$pUakoh/N33FSBfiih23YmOujbEOhTuXl53fZTDcT3P5rwJf2P7v/O', 'Other');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('andrew35', 'password123', 'Male');
+VALUES ('andrew35', '$2y$10$DO9K.p.7wd62rvTOT/xZ0eRrZLW8k4nfW7psYngeQJXI15fbaa1ta', 'Other');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('anonymous123', 'password123', 'Male');
+VALUES ('anonymous123', '$2y$10$h8oTzguFEJq5z9eKH6KLzu94v8YhC3cYrLzNQbZaMXEV/UbOnBxnu', 'Other');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('kate_collins', 'password456', 'Female');
+VALUES ('kate_collins', '$2y$10$6ZXEuEpKTlYkNfpICq6kUerIfgn4YPsLAc7GRQ8lZvZY1Kdv0cPOm', 'Female');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('jane79', 'password456', 'Female');
+VALUES ('jane79', '$2y$10$g7NFZrjR.tw79iAn0T5pee5iBtsXZbQ.n8QH2OOwXk0LNkSymn8nC', 'Female');
 
 INSERT INTO users (user_id, user_password, user_gender)
-VALUES ('fitqueen', 'password456', 'Female');
+VALUES ('fitqueen', '$2y$10$.nOeTWohM4egBQdaq46sAOLaszXRsUkkW5T6/N74.CZSGT99ICpF.', 'Female');
 
 -- GROUPS
 INSERT INTO groups (group_id, group_bio)

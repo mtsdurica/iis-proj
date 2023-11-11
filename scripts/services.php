@@ -9,10 +9,9 @@ class AccountService
     {
         $this->pdo = $this->connect_db();
         $this->lastError = NULL;
-        
     }
 
-    function connect_db() 
+    function connect_db()
     {
         $dsn = 'mysql:host=localhost;dbname=xduric06';
         $username = 'xduric06';
@@ -29,7 +28,6 @@ class AccountService
         } else {
             return $this->lastError[2]; // 2 is the error message
         }
-
     }
 
     function addUser($data)
@@ -43,8 +41,7 @@ class AccountService
         $user_gender = $data['user_gender'];
         $user_birthdate = $data['user_birthdate'];
 
-        if ($stmt->execute([$user_id, $user_password, $user_email, $user_full_name, $user_gender, $user_birthdate]))
-        {
+        if ($stmt->execute([$user_id, $user_password, $user_email, $user_full_name, $user_gender, $user_birthdate])) {
             // update $data array with new user_id
             $newid = $this->pdo->lastInsertId();
             $data['user_id'] = $newid;
@@ -54,5 +51,4 @@ class AccountService
             return false;
         }
     }
-
 }
