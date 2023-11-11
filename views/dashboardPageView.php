@@ -41,11 +41,7 @@ session_start();
     <div class="px-24 py-4 ml-52">
       <div id="Users" class="w3-container city w3-animate-left" style="display:none">
         <h2 class="font-bold">List of Users</h2>
-        <table class="table-auto hover:table-fixed">
-            <tr>
-                <th>User Fullname</th>
-                <th>User Login</th>
-            </tr>
+        <div class="flex flex-col">
 
             <?php
             $serv = new AccountService();
@@ -54,22 +50,18 @@ session_start();
             // TODO: user_id change to user_login after db update
             while ($row = $rows->fetch())
             {
-                echo "<tr>";
-                echo "<td>" . $row['user_full_name'] . "</td>";
-                echo "<td>" . $row['user_id'] . "</td>";
-                echo "</tr>\n";
+                $name = $row['user_full_name'];
+                $login = $row['user_id'];
+
+                include "./components/adminDashboardListItem.php";
             }
             ?>
-        </table>
+        </div>
       </div> <!-- Users  -->
 
       <div id="Groups" class="w3-container city w3-animate-left" style="display:none">
         <h2 class="font-bold">List of Groups</h2>
-        <table>
-            <tr>
-                <th>Group Name</th>
-                <th>Group Login</th>
-            </tr>
+        <div class="flex flex-col">
 
             <?php
             $serv = new AccountService();
@@ -78,13 +70,13 @@ session_start();
             // TODO: user_id change to user_login after db update
             while ($row = $rows->fetch())
             {
-                echo "<tr>";
-                echo "<td>" . $row['group_name'] . "</td>";
-                echo "<td>" . $row['group_id'] . "</td>";
-                echo "</tr>\n";
+                $name = $row['group_name'];
+                $login = $row['group_id'];
+
+                include "./components/adminDashboardListItem.php";
             }
             ?>
-        </table>
+        </div>
       </div> <!-- Groups  -->
     </div> <!-- Tab Content  -->
   </div> <!-- CONTAINER  -->
