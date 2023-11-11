@@ -36,22 +36,22 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="items-center h-full main-background-colorscheme" style="min-width: 650px; ">
-    <div class="flex flex-col w-full h-full" style="height: 470px;">
+<body class="items-center h-full main-background-colorscheme" style="min-width: 40rem; ">
+    <div class="flex flex-col w-full h-full">
         <?php
         require_once "./components/header.php";
         ?>
 
         <div class="flex items-center justify-center">
-            <div id="cover-photo-element-group" class="mt-0 cursor-pointer brightness-filter" style="width: 650px; height: 250px;">
-                <img id="cover-photo-group" src="./views/photos/mountain.jpg" class="w-full h-full" style="object-fit: cover;">
+            <div id="cover-photo-element-group" class="mt-0 cursor-pointer brightness-filter" style="width: 40rem; height: 16rem;">
+                <img id="cover-photo-group" src="./images/cover_photo.jpg" class="w-full h-full" style="object-fit: cover;">
             </div>
         </div>
 
         <div class="flex items-center justify-center">
-            <div id="change-cover-photo-group" class="hidden z-1" style="margin-top: -320px;">
+            <div id="change-cover-photo-group" class="hidden z-1" style="margin-top: -20rem;">
                 <input type="file" id="cover-photo-input-group" class="hidden" accept="image/*">
-                <div class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
+                <div class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu-group">
                     <a class="block cursor-pointer header-dropdown-element change-cover-photo-group">
                         <span class="pl-1">Change photo</span>
                     </a>
@@ -63,15 +63,15 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
         </div>
 
         <div class="flex items-center justify-center">
-            <profile-photo id="profile-photo-element-group" class="z-50 cursor-pointer" style="width: 150px; height: 150px; margin-top: -100px;">
-                <img id="profile-photo-group" src="./views/photos/cat.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
+            <profile-photo id="profile-photo-element-group" class="z-50 cursor-pointer" style="width: 10rem; height: 10rem; margin-top: -6rem;">
+                <img id="profile-photo-group" src="./images/group_photo.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
             </profile-photo>
         </div>
 
         <div class="flex items-center justify-center">
-            <div id="change-profile-photo-group" class="absolute z-50 hidden" style="margin-top: 100px;">
+            <div id="change-profile-photo-group" class="absolute z-50 hidden" style="margin-top: 6rem;">
                 <input type="file" id="profile-photo-input-group" class="hidden" accept="image/*">
-                <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown">
+                <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown profile-photo-menu-group">
                     <a class="block cursor-pointer header-dropdown-element change-profile-photo-group">
                         <span class="pl-1">Change photo</span>
                     </a>

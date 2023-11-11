@@ -11,6 +11,7 @@ try {
     die();
 }
 
+
 $userDataQuery = $db->prepare("SELECT users.user_id, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_id = ?");
 $userDataQuery->execute([$exploded[3]]);
 
@@ -38,19 +39,19 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="items-center h-full main-background-colorscheme" style="min-width: 650px; height: 470px;">
-    <div class="flex flex-col w-full h-full">
+<body class="items-center h-full main-background-colorscheme" style="min-width: 40rem;">
+    <div class="flex flex-col">
         <?php
         require_once "./components/header.php";
         ?>
         <div class="flex items-center justify-center">
-            <div id="cover-photo-element" class="mt-0 cursor-pointer brightness-filter" style="width: 650px; height: 250px;">
-                <img id="cover-photo" src="./views/photos/mountain.jpg" class="w-full h-full" style="object-fit: cover;">
+            <div id="cover-photo-element" class="mt-0 cursor-pointer brightness-filter" style="width: 40rem; height: 16rem;">
+                <img id="cover-photo" src="./images/cover_photo.jpg" class="w-full h-full" style="object-fit: cover;">
             </div>
         </div>
 
         <div class="flex items-center justify-center">
-            <div id="change-cover-photo" class="hidden z-1" style="margin-top: -320px;">
+            <div id="change-cover-photo" class="hidden z-1" style="margin-top: -20rem;">
                 <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
                 <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
                     <a class="block cursor-pointer header-dropdown-element change-cover-photo">
@@ -64,13 +65,13 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
         </div>
 
         <div class="flex items-center justify-center">
-            <profile-photo id="profile-photo-element" class="z-50 cursor-pointer" style="width: 150px; height: 150px; margin-top: -100px;">
-                <img id="profile-photo" src="./views/photos/cat.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
+            <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 cursor-pointer" style="margin-top: -6rem;">
+                <img id="profile-photo" src="./images/profile_photo.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
             </profile-photo>
         </div>
 
         <div class="flex items-center justify-center">
-            <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 100px;">
+            <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 6rem;">
                 <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
                 <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
                     <a class="block cursor-pointer header-dropdown-element change-profile-photo">
@@ -82,6 +83,7 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 </div>
             </div>
         </div>
+
 
         <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
             <?= $userId ?>
@@ -121,11 +123,6 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
             <ul>
                 <li>Thread 1</li>
                 <li>Thread 2</li>
-                <li>Thread 3</li>
-                <li>Thread 4</li>
-                <li>Thread 5</li>
-                <li>Thread 6</li>
-                <li>Thread 7</li>
             </ul>
         </div>
 

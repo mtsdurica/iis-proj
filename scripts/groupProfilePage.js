@@ -53,21 +53,27 @@ showGroupThreads();
 document.addEventListener('DOMContentLoaded', function () {
     var profilePhotoElementGroup = document.getElementById('profile-photo-group');
     var coverPhotoElementGroup = document.getElementById('cover-photo-element-group');
+    var changeProfilePhotoGroup = document.getElementById('change-profile-photo-group');
+    var changeCoverPhotoGroup = document.getElementById('change-cover-photo-group');
 
+    document.addEventListener('click', function (event) {
+        
+        if (profilePhotoElementGroup.contains(event.target)) {
+            changeProfilePhotoGroup.classList.toggle('hidden');
+            changeCoverPhotoGroup.classList.add('hidden');
+        }
 
-    if (profilePhotoElementGroup) {
-        profilePhotoElementGroup.addEventListener('click', function (event) {
-            toggleMenuVisibility('change-profile-photo-group', 'change-cover-photo-group');
-            event.stopPropagation();
-        });
-    }
+        else if (coverPhotoElementGroup.contains(event.target)) {
+            changeCoverPhotoGroup.classList.toggle('hidden');
+            changeProfilePhotoGroup.classList.add('hidden');
+        }
 
-    if (coverPhotoElementGroup) {
-        coverPhotoElementGroup.addEventListener('click', function (event) {
-            toggleMenuVisibility('change-cover-photo-group', 'change-profile-photo-group');
-            event.stopPropagation();
-        });
-    }
+        else {
+            changeProfilePhotoGroup.classList.add('hidden');
+            changeCoverPhotoGroup.classList.add('hidden');
+        }
+    });
+
 
     document.addEventListener('click', function () {
         closeMenuGroup('change-profile-photo-group');
@@ -130,7 +136,7 @@ function changeProfilePhotoGroup() {
 
 function deleteProfilePhotoGroup() {
     var profilePhotoGroup = document.getElementById('profile-photo-group');
-    profilePhotoGroup.src = '';
+    profilePhotoGroup.src = "./images/group_photo.jpg";
 }
 
 function changeCoverPhotoGroup() {
@@ -152,5 +158,5 @@ function changeCoverPhotoGroup() {
 
 function deleteCoverPhotoGroup() {
     var coverPhotoGroup = document.getElementById('cover-photo-group');
-    coverPhotoGroup.src = '';
+    coverPhotoGroup.src = "./images/cover_photo.jpg";
 }
