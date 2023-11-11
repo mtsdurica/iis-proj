@@ -51,4 +51,21 @@ class AccountService
             return false;
         }
     }
+
+    function addThread(string $threadTitle, string $threadContent, string $threadPoster, string $threadGroup): bool
+    {
+        $query = $this->pdo->prepare('INSERT INTO threads (thread_title, thread_text, poster_id, group_id) VALUES (?, ?, ?, ?)');
+        if ($query->execute([$threadTitle, $threadContent, $threadPoster, $threadGroup]))
+            return true;
+        else
+            return false;
+    }
+
+    function getUserGroups(string $userId): PDOStatement
+    {
+        $query = $this->pdo->prepare('SELECT group_id FROM group_members WHERE user_id = ?');
+        $query->execute([$userId]);
+
+        return $query;
+    }
 }
