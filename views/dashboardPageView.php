@@ -23,25 +23,25 @@ session_start();
 </head>
 
 <body class="h-full">
-    <!-- CONTAINER -->
-    <div class="flex flex-col h-full main-background-colorscheme text-colorscheme">
-        <?php
-        require_once "./components/header.php"
-        ?>
+  <!-- CONTAINER -->
+  <div class="flex flex-col h-full main-background-colorscheme text-colorscheme">
+    <?php
+    require_once "./components/header.php"
+    ?>
 
     <!-- SIDEBAR -->
-    <div class="w3-sidebar w3-bar-block header-colorscheme w3-card pt-14">
-      <h5 class="w3-bar-item"><i class="fa-solid fa-bars pr-4"></i>MENU</h5>
+    <!-- Modified version of: https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_tabulators_animate -->
+    <div class="w3-sidebar w3-bar-block header-colorscheme w3-card pt-14 w-80" style="width:18rem">
+      <h3 class="font-bold p-4">Admin Dashboard</h1>
       <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Users')">Users</button>
       <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Groups')">Groups</button>
     </div>
 
-<div class="ml-52 px-10 py-4">
-  <h1>Admin Dashboard</h1>
-
-  <div id="Users" class="w3-container city w3-animate-left" style="display:none">
-  <h2>List of Users</h1>
-        <table>
+    <!-- Tab Content  -->
+    <div class="px-24 py-4 ml-52">
+      <div id="Users" class="w3-container city w3-animate-left" style="display:none">
+        <h2 class="font-bold">List of Users</h2>
+        <table class="table-auto hover:table-fixed">
             <tr>
                 <th>User Fullname</th>
                 <th>User Login</th>
@@ -61,10 +61,10 @@ session_start();
             }
             ?>
         </table>
-  </div>
+      </div> <!-- Users  -->
 
-  <div id="Groups" class="w3-container city w3-animate-left" style="display:none">
-    <h2>List of Groups</h1>
+      <div id="Groups" class="w3-container city w3-animate-left" style="display:none">
+        <h2 class="font-bold">List of Groups</h2>
         <table>
             <tr>
                 <th>Group Name</th>
@@ -85,16 +85,10 @@ session_start();
             }
             ?>
         </table>
-  </div>
-
-</div>
-
-        
-
-    </div>
-    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
-
-    
+      </div> <!-- Groups  -->
+    </div> <!-- Tab Content  -->
+  </div> <!-- CONTAINER  -->
+  <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
 </body>
 
 </html>
