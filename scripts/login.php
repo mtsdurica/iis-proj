@@ -21,6 +21,7 @@ if (isset($_POST["submitted"])) {
         $_SESSION["loggedIn"] = true;
         if ($user["user_id"] === "admin")
             $_SESSION["isAdmin"] = true;
+        else $_SESSION["isAdmin"] = false;
         header("Location:$context/");
     } else {
         $_SESSION["invalid"] = true;
