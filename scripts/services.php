@@ -51,4 +51,15 @@ class AccountService
             return false;
         }
     }
+
+    // Methods meant for admin
+    function listAllUsers() {
+        $stmt = $this->pdo->query('SELECT user_id, user_full_name FROM users');
+        return $stmt;
+    }
+
+    function listAllGroups() {
+        $stmt = $this->pdo->query('SELECT group_id, group_name FROM groups');
+        return $stmt;
+    }
 }

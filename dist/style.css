@@ -813,6 +813,10 @@ body * {
   margin-left: 0.5rem;
 }
 
+.ml-32 {
+  margin-left: 8rem;
+}
+
 .mr-2 {
   margin-right: 0.5rem;
 }
@@ -841,12 +845,20 @@ body * {
   margin-top: 1rem;
 }
 
+.ml-52 {
+  margin-left: 13rem;
+}
+
 .block {
   display: block;
 }
 
 .flex {
   display: flex;
+}
+
+.table {
+  display: table;
 }
 
 .hidden {
@@ -874,6 +886,10 @@ body * {
   min-height: fit-content;
 }
 
+.w-28 {
+  width: 7rem;
+}
+
 .w-3\/5 {
   width: 60%;
 }
@@ -897,6 +913,14 @@ body * {
 
 .w-full {
   width: 100%;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
+.w-6 {
+  width: 1.5rem;
 }
 
 .min-w-fit {
@@ -1028,6 +1052,10 @@ body * {
   padding: 1rem;
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -1058,6 +1086,21 @@ body * {
   padding-bottom: 0.5rem;
 }
 
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 .pl-1 {
   padding-left: 0.25rem;
 }
@@ -1068,6 +1111,26 @@ body * {
 
 .pl-4 {
   padding-left: 1rem;
+}
+
+.pl-52 {
+  padding-left: 13rem;
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
+}
+
+.pt-10 {
+  padding-top: 2.5rem;
+}
+
+.pt-14 {
+  padding-top: 3.5rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
 }
 
 .text-center {
