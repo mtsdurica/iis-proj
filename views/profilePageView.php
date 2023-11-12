@@ -12,11 +12,12 @@ try {
 }
 
 
-$userDataQuery = $db->prepare("SELECT users.user_id, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_id = ?");
+$userDataQuery = $db->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
 $userDataQuery->execute([$exploded[3]]);
 
 while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     $userId = $userData["user_id"];
+    $userNickname = $userData["user_nickname"];
     $userFullname = $userData["user_full_name"];
     $userEmail = $userData["user_email"];
     $userGender = $userData["user_gender"];
@@ -55,7 +56,7 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                         </div>
                     </div>
                     <div class="flex items-center justify-center">
-                        <div id="change-cover-photo" class="hidden z-1 " style="margin-top: -20rem;">
+                        <div id="change-cover-photo" class="hidden z-1 mt-[-20rem]">
                             <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
                             <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
                                 <a class="block cursor-pointer header-dropdown-element change-cover-photo">
@@ -69,13 +70,13 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75" style="margin-top: -6rem;">
+                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
                             <img id="profile-photo" src="<?= $context ?>/images/profile_photo.jpg" class="object-cover w-full h-full rounded-full">
                         </profile-photo>
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 6rem;">
+                        <div id="change-profile-photo" class="absolute z-50 hidden mt-24">
                             <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
                             <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
                                 <a class="block cursor-pointer header-dropdown-element change-profile-photo">
@@ -89,7 +90,7 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                     </div>
 
                     <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
-                        <?= $userId ?>
+                        <?= $userNickname ?>
                     </h2>
                 </div>
                 <hr class="m-2 divider-colorscheme" />
@@ -122,12 +123,12 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 <div class="flex flex-col items-center w-full mb-2">
                     <div id="user-threads" class="hidden">
                         <?php
-                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, threads.poster_id AS 'thread_poster' FROM threads
+                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
                             LEFT JOIN users ON threads.poster_id = users.user_id
                             LEFT JOIN groups ON threads.group_id = groups.group_id
-                            WHERE threads.poster_id = ?");
+                            WHERE users.user_nickname = ?");
 
-                        $threadsQuery->execute([$userId]);
+                        $threadsQuery->execute([$userNickname]);
 
                         while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
                             $threadTitle = $thread["thread_title"];
@@ -136,7 +137,7 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                             $threadId = $thread["thread_id"];
                             $threadPositiveRating = $thread["thread_positive_rating"];
                             $threadNegativeRating = $thread["thread_negative_rating"];
-                            $groupId = $thread["group_id"];
+                            $groupName = $thread["group_name"];
                             include "./components/thread.php";
                         }
                         ?>
@@ -144,12 +145,14 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                     <div id="user-groups" class="hidden mt-2">
                         <div class="flex flex-wrap justify-center gap-6">
                             <?php
-                            $groupsQuery = $db->prepare("SELECT group_id FROM group_members WHERE user_id = ?");
+                            $groupsQuery = $db->prepare("SELECT groups.group_name FROM group_members 
+                            LEFT JOIN groups ON group_members.group_id = groups.group_id
+                            WHERE user_id = ?");
 
                             $groupsQuery->execute([$userId]);
 
                             while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $groupId = $group["group_id"];
+                                $groupId = $group["group_name"];
                                 require "./components/browserPageGroup.php";
                             }
                             ?>
