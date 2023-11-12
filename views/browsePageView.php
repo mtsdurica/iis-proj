@@ -53,12 +53,12 @@ try {
                     <div class="flex flex-wrap justify-center gap-6">
                         <?php
                         if ($exploded[3] === "users") {
-                            $usersQuery = $db->prepare('SELECT user_id FROM users');
+                            $usersQuery = $db->prepare('SELECT user_nickname FROM users');
 
                             $usersQuery->execute();
 
                             while ($user = $usersQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $userId = $user["user_id"];
+                                $userNickname = $user["user_nickname"];
                                 include "./components/browserPageUser.php";
                             }
                         } else if ($exploded[3] === "groups") {

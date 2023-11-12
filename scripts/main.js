@@ -234,3 +234,18 @@
     document.getElementById(getPage()).className += "-active";
 })();
 
+// Admin Dashboard tabs animation
+// Modified version of: https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_tabulators_animate
+function openLink(evt, animName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("city");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < x.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" bg-slate-200", "");
+    }
+    document.getElementById(animName).style.display = "block";
+    evt.currentTarget.className += " bg-slate-200";
+  }

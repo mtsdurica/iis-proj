@@ -7,7 +7,7 @@ session_start();
 $serv = new AccountService();
 
 $newPerson = array(
-    'user_id' => $_POST['user_id'],
+    'user_nickname' => $_POST['user_nickname'],
     'user_password' => $_POST['user_password'],
     'user_email' => $_POST['user_email'],
     'user_full_name' => $_POST['user_full_name'],

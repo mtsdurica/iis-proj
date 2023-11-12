@@ -42,10 +42,10 @@ session_start();
                 <div class="flex flex-col gap-4 p-4 rounded-lg" id="reg_first_step">
                 
                     <div class="flex flex-col gap-2">
-                        <label class="px-2 text-lg" for="user_id">
+                        <label class="px-2 text-lg" for="user_nickname">
                             Username *
                         </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="user_id" id="user_id" required>
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="user_nickname" id="user_nickname" required>
                     </div>
 
                     <div class="flex flex-col gap-2">

@@ -11,7 +11,6 @@ try {
     die();
 }
 
-
 $userDataQuery = $db->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
 $userDataQuery->execute([$exploded[3]]);
 
@@ -68,7 +67,6 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                             </div>
                         </div>
                     </div>
-
                     <div class="flex items-center justify-center">
                         <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
                             <img id="profile-photo" src="<?= $context ?>/images/profile_photo.jpg" class="object-cover w-full h-full rounded-full">
