@@ -25,7 +25,7 @@
 				</h3>
 			</a>
 		</div>
-		<div id="<?= $threadId ?>" class="relative flex flex-col items-center justify-center w-full h-full thread-text">
+		<div id="<?= $threadId ?>" class="relative flex flex-col justify-center w-full h-full thread-text">
 			<p class="h-12 text-base select-none max-h-52 gradient-mask-b-50">
 				<?= $threadText ?>
 			</p>

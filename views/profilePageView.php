@@ -39,141 +39,157 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="items-center h-full main-background-colorscheme" style="min-width: 40rem;">
-    <div class="flex flex-col">
+<body class="items-center h-full main-background-colorscheme">
+    <!-- Page Container -->
+    <div class="flex flex-col ">
         <?php
         require_once "./components/header.php";
         ?>
-        <div class="flex items-center justify-center">
-            <div id="cover-photo-element" class="mt-0 cursor-pointer brightness-filter" style="width: 40rem; height: 16rem;">
-                <img id="cover-photo" src="./images/cover_photo.jpg" class="w-full h-full" style="object-fit: cover;">
-            </div>
-        </div>
-
-        <div class="flex items-center justify-center">
-            <div id="change-cover-photo" class="hidden z-1" style="margin-top: -20rem;">
-                <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
-                <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                    <a class="block cursor-pointer header-dropdown-element change-cover-photo">
-                        <span class="pl-1">Change photo</span>
-                    </a>
-                    <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
-                        <span class="pl-1">Delete photo</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex items-center justify-center">
-            <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 cursor-pointer" style="margin-top: -6rem;">
-                <img id="profile-photo" src="./images/profile_photo.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
-            </profile-photo>
-        </div>
-
-        <div class="flex items-center justify-center">
-            <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 6rem;">
-                <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
-                <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                    <a class="block cursor-pointer header-dropdown-element change-profile-photo">
-                        <span class="pl-1">Change photo</span>
-                    </a>
-                    <a class="block cursor-pointer header-dropdown-element delete-profile-photo">
-                        <span class="pl-1">Delete photo</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-
-        <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
-            <?= $userId ?>
-        </h2>
-
-
-        <ul class="flex flex-row items-center justify-center p-2 mt-4 text-3xl text-center text-colorscheme drop-shadow">
-            <div class="flex" style=" border-top: thin solid;">
-                <div class="flex">
-                    <a id="show-user-threads" class="flex items-center justify-center text-xl header-element ">
-                        Threads
-                    </a>
-                </div>
-                <div class="flex">
-                    <a id="show-user-groups" class="flex items-center justify-center text-xl header-element">
-                        Groups
-                    </a>
-                </div>
-
-                <div class="flex">
-                    <a id="show-user-statistics" class="flex items-center justify-center text-xl header-element">
-                        Statistics
-                    </a>
-                </div>
-
-                <div class="flex">
-                    <a id="show-user-about" class="flex items-center justify-center text-xl header-element">
-                        About
-                    </a>
-                </div>
-            </div>
-        </ul>
-
-    </div>
-    <div class="items-center main-background-colorscheme">
-        <div id="user-threads" class="hidden">
-            <ul>
-                <li>Thread 1</li>
-                <li>Thread 2</li>
-            </ul>
-        </div>
-
-        <div id="user-statistics" class="hidden">
-            <ul>
-                <li>stat 1</li>
-                <li>stat 2</li>
-                <li>stat 3</li>
-                <li>stat 4</li>
-                <li>stat 5</li>
-                <li>stat 6</li>
-                <li>stat 7</li>
-            </ul>
-        </div>
-
-
-        <div id="user-about" class="flex items-center justify-center h-full text-colorscheme">
-            <div class="flex flex-row">
-                <div class="flex flex-col gap-4 p-4 rounded-lg">
-
-                    <div class="flex flex-col gap-2">
-                        <h2 class=""> <a class="text-xl font-bold">Name: </a> <span class="text-base font-normal"><?= $userFullname ?></span></h2>
+        <!-- Page Content Container -->
+        <div class="flex flex-col items-center justify-center">
+            <div class="items-center justify-center w-3/4 text-colorscheme">
+                <div class="flex flex-col">
+                    <div class="flex items-center justify-center">
+                        <div id="cover-photo-element" class="w-1/2 h-64 mt-0 transition-all cursor-pointer hover:brightness-75">
+                            <img id="cover-photo" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <div id="change-cover-photo" class="hidden z-1 " style="margin-top: -20rem;">
+                            <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
+                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
+                                <a class="block cursor-pointer header-dropdown-element change-cover-photo">
+                                    <span class="pl-1">Change photo</span>
+                                </a>
+                                <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
+                                    <span class="pl-1">Delete photo</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col gap-2">
-                        <h2 class=""> <a class="text-xl font-bold">Email: </a> <span class="text-base font-normal"><?= $userEmail ?></span></h2>
+                    <div class="flex items-center justify-center">
+                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75" style="margin-top: -6rem;">
+                            <img id="profile-photo" src="<?= $context ?>/images/profile_photo.jpg" class="object-cover w-full h-full rounded-full">
+                        </profile-photo>
                     </div>
 
-                    <div class="flex flex-col gap-2">
-                        <h2 class=""> <a class="text-xl font-bold">Gender: </a> <span class="text-base font-normal"><?= $userGender ?></span></h2>
+                    <div class="flex items-center justify-center">
+                        <div id="change-profile-photo" class="absolute z-50 hidden" style="margin-top: 6rem;">
+                            <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
+                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
+                                <a class="block cursor-pointer header-dropdown-element change-profile-photo">
+                                    <span class="pl-1">Change photo</span>
+                                </a>
+                                <a class="block cursor-pointer header-dropdown-element delete-profile-photo">
+                                    <span class="pl-1">Delete photo</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col gap-2">
-                        <h2 class=""> <a class="text-xl font-bold">Birthday: </a> <span class="text-base font-normal"><?= $userBirthdate ?></span></h2>
-                    </div>
+                    <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
+                        <?= $userId ?>
+                    </h2>
+                </div>
+                <hr class="m-2 divider-colorscheme" />
+                <ul class="flex flex-row items-center justify-center gap-2 text-3xl text-center text-colorscheme drop-shadow">
 
+                    <li class="flex">
+                        <a id="show-user-threads" class="flex items-center justify-center text-xl header-element ">
+                            Threads
+                        </a>
+                    </li>
+                    <li class="flex">
+                        <a id="show-user-groups" class="flex items-center justify-center text-xl header-element">
+                            Groups
+                        </a>
+                    </li>
+
+                    <li class="flex">
+                        <a id="show-user-statistics" class="flex items-center justify-center text-xl header-element">
+                            Statistics
+                        </a>
+                    </li>
+
+                    <li class="flex">
+                        <a id="show-user-about" class="flex items-center justify-center text-xl header-element">
+                            About
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="flex flex-col items-center w-full mb-2">
+                    <div id="user-threads" class="hidden">
+                        <?php
+                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, threads.poster_id AS 'thread_poster' FROM threads
+                            LEFT JOIN users ON threads.poster_id = users.user_id
+                            LEFT JOIN groups ON threads.group_id = groups.group_id
+                            WHERE threads.poster_id = ?");
+
+                        $threadsQuery->execute([$userId]);
+
+                        while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                            $threadTitle = $thread["thread_title"];
+                            $threadText = $thread["thread_text"];
+                            $threadPoster = $thread["thread_poster"];
+                            $threadId = $thread["thread_id"];
+                            $threadPositiveRating = $thread["thread_positive_rating"];
+                            $threadNegativeRating = $thread["thread_negative_rating"];
+                            $groupId = $thread["group_id"];
+                            include "./components/thread.php";
+                        }
+                        ?>
+                    </div>
+                    <div id="user-groups" class="hidden mt-2">
+                        <div class="flex flex-wrap justify-center gap-6">
+                            <?php
+                            $groupsQuery = $db->prepare("SELECT group_id FROM group_members WHERE user_id = ?");
+
+                            $groupsQuery->execute([$userId]);
+
+                            while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
+                                $groupId = $group["group_id"];
+                                require "./components/browserPageGroup.php";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div id="user-statistics" class="hidden">
+                        <ul>
+                            <li>stat 1</li>
+                            <li>stat 2</li>
+                            <li>stat 3</li>
+                            <li>stat 4</li>
+                            <li>stat 5</li>
+                            <li>stat 6</li>
+                            <li>stat 7</li>
+                        </ul>
+                    </div>
+                    <div id="user-about" class="flex items-center justify-center mt-2">
+                        <div class="flex flex-row">
+                            <div class="flex flex-col gap-4">
+                                <div class="flex flex-row gap-2 text-xl ">
+                                    <span class="font-bold">Name:</span>
+                                    <span class="font-normal "><?= $userFullname ?></span>
+                                </div>
+                                <div class="flex flex-row gap-2 text-xl ">
+                                    <span class="font-bold">Email:</span>
+                                    <span class="font-normal "><?= $userEmail ?></span>
+                                </div>
+                                <div class="flex flex-row gap-2 text-xl ">
+                                    <span class="font-bold">Gender:</span>
+                                    <span class="font-normal"><?= $userGender ?></span>
+                                </div>
+                                <div class="flex flex-row gap-2 text-xl ">
+                                    <span class="font-bold">Birthday:</span>
+                                    <span class="font-normal "><?= $userBirthdate ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div id="user-groups" class="hidden">
-            <ul>
-                <li>Group 1</li>
-                <li>Group 2</li>
-                <li>Group 2</li>
-                <li>Group 2</li>
-                <li>Group 2</li>
-                <li>Group 2</li>
-                <li>Group 2</li>
-                <li>Group 7</li>
-            </ul>
         </div>
     </div>
 
@@ -182,9 +198,3 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
 </body>
 
 </html>
-
-<style>
-    .brightness-filter:hover {
-        filter: brightness(0.75);
-    }
-</style>

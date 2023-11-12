@@ -44,7 +44,7 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
 
         <div class="flex items-center justify-center">
             <div id="cover-photo-element-group" class="mt-0 cursor-pointer brightness-filter" style="width: 40rem; height: 16rem;">
-                <img id="cover-photo-group" src="./images/cover_photo.jpg" class="w-full h-full" style="object-fit: cover;">
+                <img id="cover-photo-group" src="<?= $context ?>/images/cover_photo.jpg" class="w-full h-full" style="object-fit: cover;">
             </div>
         </div>
 
@@ -64,7 +64,7 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
 
         <div class="flex items-center justify-center">
             <profile-photo id="profile-photo-element-group" class="z-50 cursor-pointer" style="width: 10rem; height: 10rem; margin-top: -6rem;">
-                <img id="profile-photo-group" src="./images/group_photo.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
+                <img id="profile-photo-group" src="<?= $context ?>/images/group_photo.jpg" class="w-full h-full rounded-full brightness-filter" style="object-fit: cover;">
             </profile-photo>
         </div>
 

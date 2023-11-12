@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var changeCoverPhotoGroup = document.getElementById('change-cover-photo-group');
 
     document.addEventListener('click', function (event) {
-        
+
         if (profilePhotoElementGroup.contains(event.target)) {
             changeProfilePhotoGroup.classList.toggle('hidden');
             changeCoverPhotoGroup.classList.add('hidden');
