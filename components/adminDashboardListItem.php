@@ -1,14 +1,14 @@
-<div class="grid grid-cols-7 gap-2">
+<div class="flex flex-row flex-wrap gap-4 w-full">
     <div>
         <p> picture </p>
     </div>
-    <div>
+    <div class="grow w-80">
         <p> <?= $name ?> </p>
     </div>
-    <div>
+    <div class="grow w-80">
         <p> @<?= $login ?> </p>
     </div>
-    <div>
+    <div >
         <p> Ban </p>
     </div>
     <div>
