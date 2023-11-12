@@ -133,7 +133,7 @@ function changeProfilePhoto() {
 
 function deleteProfilePhoto() {
     var profilePhoto = document.getElementById('profile-photo');
-    profilePhoto.src = '';
+    profilePhoto.src = "./images/profile_photo.jpg";
 }
 
 function changeCoverPhoto() {
@@ -155,6 +155,6 @@ function changeCoverPhoto() {
 
 function deleteCoverPhoto() {
     var coverPhoto = document.getElementById('cover-photo');
-    coverPhoto.src = '';
+    coverPhoto.src = "./images/cover_photo.jpg";
 }
 
