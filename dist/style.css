@@ -853,10 +853,6 @@ body * {
   display: flex;
 }
 
-.table {
-  display: table;
-}
-
 .grid {
   display: grid;
 }
@@ -922,10 +918,6 @@ body * {
 
 .min-w-full {
   min-width: 100%;
-}
-
-.table-auto {
-  table-layout: auto;
 }
 
 .cursor-pointer {
@@ -1224,10 +1216,6 @@ body * {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
-}
-
-.hover\:table-fixed:hover {
-  table-layout: fixed;
 }
 
 .hover\:bg-green-800:hover {

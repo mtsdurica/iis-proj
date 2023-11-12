@@ -11,15 +11,15 @@ if (isset($_POST["submitted"])) {
         die();
     }
 
-    $loginQuery = $db->prepare("SELECT user_id, user_password from users WHERE users.user_id = ?");
+    $loginQuery = $db->prepare("SELECT user_nickname, user_password from users WHERE users.user_nickname = ?");
     $loginQuery->execute([$_POST["username"]]);
 
     $user = $loginQuery->fetch(PDO::FETCH_ASSOC);
 
     if (password_verify($_POST["password"], $user["user_password"])) {
-        $_SESSION["username"] = $user["user_id"];
+        $_SESSION["username"] = $user["user_nickname"];
         $_SESSION["loggedIn"] = true;
-        if ($user["user_id"] === "admin")
+        if ($user["user_nickname"] === "admin")
             $_SESSION["isAdmin"] = true;
         else $_SESSION["isAdmin"] = false;
         header("Location:$context/");

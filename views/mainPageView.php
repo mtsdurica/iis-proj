@@ -103,8 +103,8 @@ try {
                             //     include "./components/thread.php";
                             // }
                         } else {
-                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_id AS 'thread_poster' FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id
+                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster' FROM threads
+                            LEFT JOIN users ON threads.poster_id = users.user_nickname
                             LEFT JOIN groups ON threads.group_id = groups.group_id
                             WHERE groups.group_public_flag = 1");
 

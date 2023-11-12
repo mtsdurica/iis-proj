@@ -32,16 +32,16 @@ class AccountService
 
     function addUser($data)
     {
-        $stmt = $this->pdo->prepare('INSERT INTO users (user_id, user_password, user_email, user_full_name, user_gender, user_birthdate) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt = $this->pdo->prepare('INSERT INTO users (user_nickname, user_password, user_email, user_full_name, user_gender, user_birthdate) VALUES (?, ?, ?, ?, ?, ?)');
 
-        $user_id = $data['user_id'];
+        $user_nickname = $data['user_nickname'];
         $user_password = password_hash($data['user_password'], PASSWORD_DEFAULT);
         $user_email = $data['user_email'];
         $user_full_name = $data['user_full_name'];
         $user_gender = $data['user_gender'];
         $user_birthdate = $data['user_birthdate'];
 
-        if ($stmt->execute([$user_id, $user_password, $user_email, $user_full_name, $user_gender, $user_birthdate])) {
+        if ($stmt->execute([$user_nickname, $user_password, $user_email, $user_full_name, $user_gender, $user_birthdate])) {
             // update $data array with new user_id
             $newid = $this->pdo->lastInsertId();
             $data['user_id'] = $newid;
@@ -54,7 +54,7 @@ class AccountService
 
     // Methods meant for admin
     function listAllUsers() {
-        $stmt = $this->pdo->query('SELECT user_id, user_full_name FROM users');
+        $stmt = $this->pdo->query('SELECT user_nickname, user_full_name FROM users');
         return $stmt;
     }
 

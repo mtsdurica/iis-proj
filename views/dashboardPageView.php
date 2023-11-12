@@ -41,17 +41,16 @@ session_start();
     <div class="px-24 py-4 ml-52">
       <div id="Users" class="w3-container city w3-animate-left" style="display:none">
         <h2 class="font-bold">List of Users</h2>
-        <div class="flex flex-col">
+        <div class="flex flex-col gap-2">
 
             <?php
             $serv = new AccountService();
             $rows = $serv->listAllUsers();
 
-            // TODO: user_id change to user_login after db update
             while ($row = $rows->fetch())
             {
                 $name = $row['user_full_name'];
-                $login = $row['user_id'];
+                $login = $row['user_nickname'];
 
                 include "./components/adminDashboardListItem.php";
             }
@@ -67,7 +66,7 @@ session_start();
             $serv = new AccountService();
             $rows = $serv->listAllGroups();
 
-            // TODO: user_id change to user_login after db update
+            // TODO: group_id change to group_nickname after db update
             while ($row = $rows->fetch())
             {
                 $name = $row['group_name'];

@@ -11,11 +11,11 @@ try {
     die();
 }
 
-$userDataQuery = $db->prepare("SELECT users.user_id, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_id = ?");
+$userDataQuery = $db->prepare("SELECT users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_id = ?");
 $userDataQuery->execute([$exploded[3]]);
 
 while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
-    $userId = $userData["user_id"];
+    $userNickname = $userData["user_nickname"];
     $userFullname = $userData["user_full_name"];
     $userEmail = $userData["user_email"];
     $userGender = $userData["user_gender"];
@@ -84,7 +84,7 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
         </div>
 
         <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
-            <?= $userId ?>
+            <?= $userNickname ?>
         </h2>
 
 
