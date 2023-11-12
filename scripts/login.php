@@ -11,13 +11,12 @@ if (isset($_POST["submitted"])) {
         die();
     }
 
-    $loginQuery = $db->prepare("SELECT user_id from users WHERE users.user_id = ? AND users.user_password = ?");
-    $loginQuery->execute([$_POST["username"], $_POST["password"]]);
+    $loginQuery = $db->prepare("SELECT user_id, user_password from users WHERE users.user_id = ?");
+    $loginQuery->execute([$_POST["username"]]);
 
     $user = $loginQuery->fetch(PDO::FETCH_ASSOC);
 
-
-    if ($user) {
+    if (password_verify($_POST["password"], $user["user_password"])) {
         $_SESSION["username"] = $user["user_id"];
         $_SESSION["loggedIn"] = true;
         header("Location:$context/");

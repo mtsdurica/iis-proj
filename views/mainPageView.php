@@ -89,19 +89,24 @@ try {
                         <?php
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                             // TODO: Needs update
-                            // $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, users.user_nick AS 'thread_poster' FROM threads
-                            // LEFT JOIN users ON threads.poster_id = users.user_id");
+                            $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_id AS 'thread_poster' FROM threads
+                            LEFT JOIN users ON threads.poster_id = users.user_id
+                            LEFT JOIN groups ON threads.group_id = groups.group_id
+                            LEFT JOIN group_members ON groups.group_id = group_members.group_id
+                            WHERE group_members.user_id = ?");
 
-                            // $threadsQuery->execute();
+                            $threadsQuery->execute([$_SESSION["username"]]);
 
-                            // while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
-                            //     $threadTitle = $thread["thread_title"];
-                            //     $threadText = $thread["thread_text"];
-                            //     $threadPoster = $thread["thread_poster"];
-                            //     $threadId = $thread["thread_id"];
-                            //     $groupId = $thread["group_id"];
-                            //     include "./components/thread.php";
-                            // }
+                            while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                                $threadTitle = $thread["thread_title"];
+                                $threadText = $thread["thread_text"];
+                                $threadPoster = $thread["thread_poster"];
+                                $threadId = $thread["thread_id"];
+                                $threadPositiveRating = $thread["thread_positive_rating"];
+                                $threadNegativeRating = $thread["thread_negative_rating"];
+                                $groupId = $thread["group_id"];
+                                include "./components/thread.php";
+                            }
                         } else {
                             $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_id AS 'thread_poster' FROM threads
                             LEFT JOIN users ON threads.poster_id = users.user_id
