@@ -50,7 +50,10 @@ session_start();
             while ($row = $rows->fetch())
             {
                 $name = $row['user_full_name'];
-                $login = $row['user_nickname'];
+                $nickname = $row['user_nickname'];
+                $id = $row['user_id'];
+                $bannedFlag = $serv->isBannedUser($id);
+                $publicFlag = $serv->isPublicUser($id);
 
                 include "./components/adminDashboardListItem.php";
             }
@@ -69,8 +72,11 @@ session_start();
             // TODO: group_id change to group_nickname after db update
             while ($row = $rows->fetch())
             {
-                $name = $row['group_name'];
-                $login = $row['group_id'];
+                // TODO: replace placeholder string
+                $name = "Placeholder";
+                $nickname = $row['group_name'];
+                $id = $row['group_id'];
+                $publicFlag = $serv->isPublicGroup($id);
 
                 include "./components/adminDashboardListItem.php";
             }

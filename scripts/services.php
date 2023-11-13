@@ -52,12 +52,6 @@ class AccountService
         }
     }
 
-    // Methods meant for admin
-    function listAllUsers() {
-        $stmt = $this->pdo->query('SELECT user_nickname, user_full_name FROM users');
-        return $stmt;
-    }
-
     function listAllGroups() {
         $stmt = $this->pdo->query('SELECT group_id, group_name FROM groups');
         return $stmt;
@@ -79,4 +73,57 @@ class AccountService
 
         return $query;
     }
+
+    // Methods meant for admin
+    function listAllUsers() {
+        $stmt = $this->pdo->query('SELECT user_nickname, user_full_name, user_id FROM users');
+        return $stmt;
+    }
+
+    // Checks if user is banned or not.
+    // @return boolean
+    function isBannedUser(int $id) 
+    {
+        $stmt = $this->pdo->prepare('SELECT user_banned FROM users WHERE user_id = ?');
+        $stmt->execute([strval($id)]);
+       
+        // Fetch the result from the query
+        $result = $stmt->fetchColumn();
+        return (bool) $result;
+    }
+
+    function isPublicUser(int $id) 
+    {
+        $stmt = $this->pdo->prepare('SELECT user_public_flag FROM users WHERE user_id = ?');
+        $stmt->execute([strval($id)]);
+       
+        // Fetch the result from the query
+        $result = $stmt->fetchColumn();
+        return (bool) $result;
+    }
+
+    function isPublicGroup(int $id) 
+    {
+        $stmt = $this->pdo->prepare('SELECT group_public_flag FROM groups WHERE group_id = ?');
+        $stmt->execute([strval($id)]);
+       
+        // Fetch the result from the query
+        $result = $stmt->fetchColumn();
+        return (bool) $result;
+    }
+
+    function changeBannedStatus($data)
+    {
+        $stmt = $this->pdo->prepare('UPDATE users SET user_banned = :banStatus WHERE user_id = :id');
+        if ($stmt->execute($data))
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
+
 }
