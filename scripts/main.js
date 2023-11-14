@@ -244,8 +244,8 @@ function openLink(evt, animName) {
     }
     tablinks = document.getElementsByClassName("tablink");
     for (i = 0; i < x.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" bg-slate-200", "");
+      tablinks[i].className = tablinks[i].className.replace(" w3-light-grey", "");
     }
     document.getElementById(animName).style.display = "block";
-    evt.currentTarget.className += " bg-slate-200";
-  }
+    evt.currentTarget.className += " w3-light-grey";
+}

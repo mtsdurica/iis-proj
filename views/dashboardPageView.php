@@ -38,8 +38,8 @@ session_start();
     </div>
 
     <!-- Tab Content  -->
-    <div class="px-24 py-4 ml-52">
-      <div id="Users" class="w3-container city w3-animate-left" style="display:none">
+    <div class="pl-20 py-4 ml-60 overflow-y-auto overflow-hidden">
+      <div id="Users" class="w3-container city w3-animate-left" style="display:block">
         <h2 class="font-bold">List of Users</h2>
         <div class="flex flex-col gap-2">
 
@@ -55,7 +55,10 @@ session_start();
                 $bannedFlag = $serv->isBannedUser($id);
                 $publicFlag = $serv->isPublicUser($id);
 
-                include "./components/adminDashboardListItem.php";
+                if ($id != 'admin')
+                {
+                  include "./components/adminDashboardUsersItem.php";
+                }
             }
             ?>
         </div>
@@ -63,7 +66,7 @@ session_start();
 
       <div id="Groups" class="w3-container city w3-animate-left" style="display:none">
         <h2 class="font-bold">List of Groups</h2>
-        <div class="flex flex-col">
+        <div class="flex flex-col gap-2">
 
             <?php
             $serv = new AccountService();
@@ -76,9 +79,10 @@ session_start();
                 $name = "Placeholder";
                 $nickname = $row['group_name'];
                 $id = $row['group_id'];
+                // $bannedFlag = $serv->isBannedGroup($id);
                 $publicFlag = $serv->isPublicGroup($id);
 
-                include "./components/adminDashboardListItem.php";
+                include "./components/adminDashboardGroupsItem.php";
             }
             ?>
         </div>

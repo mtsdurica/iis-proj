@@ -126,4 +126,40 @@ class AccountService
         }
     }
 
+    function deleteUser($id)
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM users WHERE user_id = ?');
+        if ($stmt->execute([$id]))
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
+
+    function getUser($id)
+    {
+        $stmt = $this->pdo->prepare('SELECT user_id, user_full_name, FROM users WHERE user_id = ?');
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
+
+    function changePublicStatus($data)
+    {
+        $stmt = $this->pdo->prepare('UPDATE users SET user_public_flag = :publicStatus WHERE user_id = :id');
+        if ($stmt->execute($data))
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
 }
+
+

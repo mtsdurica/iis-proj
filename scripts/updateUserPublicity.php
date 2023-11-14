@@ -6,22 +6,19 @@ session_start();
 
 $serv = new AccountService();
 
-if ($_POST['bannedFlag'] == 1){
-    $newBannedStatus = 0;
+if ($_POST['publicFlag'] == 1){
+    $newPublicStatus = 0;
 } else {
-    $newBannedStatus = 1;
+    $newPublicStatus = 1;
 }
 
 $newData = array(
     'id' => $_POST['userId'],
-    'banStatus' => $newBannedStatus
+    'publicStatus' => $newPublicStatus
 );
 
-if ($serv->changeBannedStatus($newData))
+if ($serv->changePublicStatus($newData))
 {
-    // show alert window
-    echo '<script type="text/javascript"> window.onload = function () { alert("Ban status has been changed"); } </script>'; 
-    
     // redirect to the page with registration success
     header("Location:$context/adminDashboard");
 } else {
