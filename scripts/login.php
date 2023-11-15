@@ -12,6 +12,7 @@ if (isset($_POST["submitted"])) {
     if (password_verify($_POST["password"], $user["user_password"])) {
         $_SESSION["userId"] = $user["user_id"];
         $_SESSION["username"] = $user["user_nickname"];
+        $_SESSION["fullname"] = $user["user_full_name"];
         $_SESSION["loggedIn"] = true;
         if ($user["user_nickname"] === "admin")
             $_SESSION["isAdmin"] = true;
