@@ -1,28 +1,17 @@
 <?php
+require_once "./scripts/services.php";
+session_start();
+$service = new AccountService();
 $context = $_SERVER["CONTEXT_PREFIX"];
 $request = $_SERVER["REQUEST_URI"];
 $exploded = explode("/", $request);
-session_start();
 
-try {
-    $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-} catch (PDOException $e) {
-    echo "Connection error: " . $e->getMessage();
-    die();
-}
-
-$groupDataQuery = $db->prepare("SELECT groups.group_id, groups.group_name, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation FROM groups WHERE groups.group_name = ?");
-$groupDataQuery->execute([$exploded[3]]);
-
-while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
-    $groupId = $groupData["group_id"];
-    $groupName = $groupData["group_name"];
-    $groupBio = $groupData["group_bio"];
-    $groupPublicFlag = $groupData["group_public_flag"];
-    $groupDateOfCreation = $groupData["group_date_of_creation"];
-}
-
-
+$groupData = $service->getGroupData($exploded[3]);
+$groupId = $groupData["group_id"];
+$groupName = $groupData["group_name"];
+$groupBio = $groupData["group_bio"];
+$groupPublicFlag = $groupData["group_public_flag"];
+$groupDateOfCreation = $groupData["group_date_of_creation"];
 ?>
 <!DOCTYPE html>
 <html class="h-full">
@@ -94,7 +83,7 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
 
                 </div>
                 <hr class="m-2 divider-colorscheme" />
-                <ul class="flex flex-row items-center justify-center text-3xl text-center text-colorscheme drop-shadow">
+                <ul class="flex flex-row items-center justify-center gap-2 text-3xl text-center text-colorscheme drop-shadow">
                     <li class="flex">
                         <a id="show-group-threads" class="flex items-center justify-center text-xl header-element ">
                             Threads
@@ -120,13 +109,8 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 <div class="flex flex-col items-center w-full mb-2">
                     <div id="group-threads" class="hidden">
                         <?php
-                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster' FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id
-                            WHERE threads.group_id = ?");
-
-                        $threadsQuery->execute([$groupId]);
-
-                        while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                        $threads = $service->getGroupThreads($groupId);
+                        foreach ($threads as $thread) {
                             $threadTitle = $thread["thread_title"];
                             $threadText = $thread["thread_text"];
                             $threadPoster = $thread["thread_poster"];
@@ -137,7 +121,17 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
                         }
                         ?>
                     </div>
-
+                    <div id="group-members" class="hidden mt-2">
+                        <div class="flex flex-wrap justify-center gap-6">
+                            <?php
+                            $groupMembers = $service->getGroupMembers($groupId);
+                            foreach ($groupMembers as $groupMember) {
+                                $userNickname = $groupMember["user_nickname"];
+                                require "./components/browserPageUser.php";
+                            }
+                            ?>
+                        </div>
+                    </div>
                     <div id="group-statistics" class="hidden">
                         <ul>
                             <li>stat 1</li>
@@ -149,26 +143,15 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
                             <li>stat 7</li>
                         </ul>
                     </div>
-
-
                     <div id="group-about" class="flex items-center justify-center h-full text-colorscheme">
                         <div class="flex flex-row">
                             <div class="flex flex-col gap-4 p-4 rounded-lg">
                                 <div class="flex flex-row gap-2 text-xl ">
                                     <span class="font-bold">Created by:</span>
                                     <?php
-                                    $groupAdminQuery = $db->prepare('SELECT users.user_nickname FROM group_members
-                                    LEFT JOIN users ON users.user_id = group_members.user_id
-                                    WHERE group_members.group_admin = 1 AND group_members.group_id = ?');
-
-                                    $groupAdminQuery->execute([$groupId]);
-
-                                    while ($groupAdmin = $groupAdminQuery->fetch(PDO::FETCH_ASSOC)) {
+                                    $groupAdmin = $service->getGroupAdmin($groupId);
                                     ?>
-                                        <a class="font-normal hover:underline" href="<?= $context ?>/profile/<?= $groupAdmin['user_nickname'] ?>">@<?= $groupAdmin['user_nickname'] ?> </a>
-                                    <?php
-                                    }
-                                    ?>
+                                    <a class="font-normal hover:underline" href="<?= $context ?>/profile/<?= $groupAdmin['user_nickname'] ?>">@<?= $groupAdmin['user_nickname'] ?> </a>
                                 </div>
 
                                 <div class="flex flex-row gap-2 text-xl">
@@ -176,23 +159,6 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
                                     <span class="font-normal"><?= explode(" ", $groupDateOfCreation)[0] ?></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div id="group-members" class="hidden mt-2">
-                        <div class="flex flex-wrap justify-center gap-6">
-                            <?php
-                            $groupMembersQuery = $db->prepare('SELECT users.user_nickname FROM group_members
-                        LEFT JOIN users ON users.user_id = group_members.user_id
-                        WHERE group_members.group_id = ?');
-
-                            $groupMembersQuery->execute([$groupId]);
-
-                            while ($groupMembers = $groupMembersQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $userId = $groupMembers["user_nickname"];
-                                require "./components/browserPageUser.php";
-                            }
-                            ?>
                         </div>
                     </div>
                 </div>

@@ -1,22 +1,16 @@
 <?php
+require_once "../scripts/services.php";
 session_start();
+
 
 $context = $_SERVER["CONTEXT_PREFIX"];
 
 if (isset($_POST["submitted"])) {
-    try {
-        $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-    } catch (PDOException $e) {
-        echo "Connection error: " . $e->getMessage();
-        die();
-    }
-
-    $loginQuery = $db->prepare("SELECT user_nickname, user_password from users WHERE users.user_nickname = ?");
-    $loginQuery->execute([$_POST["username"]]);
-
-    $user = $loginQuery->fetch(PDO::FETCH_ASSOC);
+    $service = new AccountService();
+    $user = $service->getLoginData($_POST["username"]);
 
     if (password_verify($_POST["password"], $user["user_password"])) {
+        $_SESSION["userId"] = $user["user_id"];
         $_SESSION["username"] = $user["user_nickname"];
         $_SESSION["loggedIn"] = true;
         if ($user["user_nickname"] === "admin")

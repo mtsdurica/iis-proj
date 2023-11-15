@@ -1,14 +1,8 @@
 <?php
-$context = $_SERVER["CONTEXT_PREFIX"];
-
+require_once "./scripts/services.php";
 session_start();
-
-try {
-    $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-} catch (PDOException $e) {
-    echo "Connection error: " . $e->getMessage();
-    die();
-}
+$service = new AccountService();
+$context = $_SERVER["CONTEXT_PREFIX"];
 ?>
 
 <!DOCTYPE html>
@@ -43,26 +37,17 @@ try {
                             </span>
                         </a>
                     </div>
+                    <hr class="flex-col mt-4 divider-colorscheme" />
+                    <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
+                        <h2>
+                            My Groups
+                        </h2>
+                    </div>
                     <?php
                     if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
-
-                        // TODO: Needs update
-                        // $groupsQuery = $db->prepare('SELECT group_id FROM groups');
-
-                        // $groupsQuery->execute();
-
-                        // while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                        // $groupId = $group["group_id"];
-                        // require "./components/mainPageGroup.php";
-                        // }
-                    ?>
-                        <hr class="flex-col mt-4 divider-colorscheme" />
-                        <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
-                            <h2>
-                                My Groups
-                            </h2>
-                        </div>
-                    <?php
+                        $rows = $service->getGroupsByUsername($_SESSION["username"]);
+                        foreach ($rows as $groupName)
+                            require "./components/mainPageGroup.php";
                     }
                     ?>
                 </div>
@@ -84,46 +69,30 @@ try {
                 }
                 ?>
                 <div class="h-full overflow-auto no-scrollbar">
-                    <!-- Add flex gap -->
                     <div class="flex flex-col gap-4">
                         <?php
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
-                            // TODO: Needs update
-                            $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_id AS 'thread_poster' FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id
-                            LEFT JOIN groups ON threads.group_id = groups.group_id
-                            LEFT JOIN group_members ON groups.group_id = group_members.group_id
-                            WHERE group_members.user_id = ?");
-
-                            $threadsQuery->execute([$_SESSION["username"]]);
-
-                            while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                            $threads = $service->getUserGroupsThreads($_SESSION["username"]);
+                            foreach ($threads as $thread) {
                                 $threadTitle = $thread["thread_title"];
                                 $threadText = $thread["thread_text"];
                                 $threadPoster = $thread["thread_poster"];
                                 $threadId = $thread["thread_id"];
                                 $threadPositiveRating = $thread["thread_positive_rating"];
                                 $threadNegativeRating = $thread["thread_negative_rating"];
-                                $groupId = $thread["group_id"];
+                                $groupName = $thread["group_name"];
                                 include "./components/thread.php";
                             }
                         } else {
-                            $publicThreadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster' FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_nickname
-                            LEFT JOIN groups ON threads.group_id = groups.group_id
-                            WHERE groups.group_public_flag = 1");
-
-                            $publicThreadsQuery->execute();
-
-                            while ($publicThread = $publicThreadsQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $threadTitle = $publicThread["thread_title"];
-                                $threadText = $publicThread["thread_text"];
-                                $threadPoster = $publicThread["thread_poster"];
-                                $threadId = $publicThread["thread_id"];
-                                $threadPositiveRating = $publicThread["thread_positive_rating"];
-                                $threadNegativeRating = $publicThread["thread_negative_rating"];
-                                $groupId = $publicThread["group_id"];
-
+                            $threads = $service->getPublicThreads();
+                            foreach ($threads as $thread) {
+                                $threadTitle = $thread["thread_title"];
+                                $threadText = $thread["thread_text"];
+                                $threadPoster = $thread["thread_poster"];
+                                $threadId = $thread["thread_id"];
+                                $threadPositiveRating = $thread["thread_positive_rating"];
+                                $threadNegativeRating = $thread["thread_negative_rating"];
+                                $groupName = $thread["group_name"];
                                 include "./components/thread.php";
                             }
                         }

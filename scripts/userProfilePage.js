@@ -1,5 +1,8 @@
-
-showUserThreads();
+if (/\/profile\/.*\/groups$/.test(location.pathname)) {
+    showUserGroups();
+} else {
+    showUserThreads();
+}
 
 function hideAllElements() {
     var ThreadsElement = document.getElementById('user-threads');
@@ -48,10 +51,6 @@ UserStatisticsButton.addEventListener('click', showUserStatistics);
 
 const UserGroupsButton = document.getElementById('show-user-groups');
 UserGroupsButton.addEventListener('click', showUserGroups);
-
-showUserThreads();
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
     var profilePhotoElement = document.getElementById('profile-photo-element');
