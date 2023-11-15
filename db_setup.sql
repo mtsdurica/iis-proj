@@ -67,6 +67,7 @@ CREATE TABLE group_members
     group_member_id int NOT NULL AUTO_INCREMENT,
     group_id int NOT NULL,
     user_id int NOT NULL,
+    group_member_accepted_flag boolean NOT NULL DEFAULT 1,
     group_admin boolean NOT NULL DEFAULT 0,
     PRIMARY KEY (group_member_id),
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
