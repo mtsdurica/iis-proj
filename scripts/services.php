@@ -130,7 +130,11 @@ class AccountService
             "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
-            WHERE users.user_nickname = ?"
+            WHERE threads.group_id 
+            IN (
+                SELECT group_id FROM group_members
+                    LEFT JOIN users ON group_members.user_id = users.user_id 
+                    WHERE users.user_nickname = ?)"
         );
         $query->execute([$username]);
 
@@ -259,7 +263,7 @@ class AccountService
 
     function getLoginData($username)
     {
-        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password from users WHERE users.user_nickname = ?");
+        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password, user_full_name from users WHERE users.user_nickname = ?");
         $query->execute([$username]);
 
         return $query->fetch(PDO::FETCH_ASSOC);

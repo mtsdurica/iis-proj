@@ -22,7 +22,7 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
                 <i class="fa-solid fa-user"></i>
             </a>
         </div>
-        <div>
+        <div class="relative">
             <button id="/profile" class="toggle-profile-dropdown header-element">
                 <i class="fa-solid fa-circle-user toggle-profile-dropdown"></i>
             </button>
@@ -37,6 +37,12 @@ $page = str_replace($context, "", $_SERVER["REQUEST_URI"]);
                 <?php
                 } else if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                 ?>
+                    <div class="block">
+                        <span class="w-full p-2 text-lg font-medium text-left rounded-lg text-colorscheme whitespace-nowrap">
+                            <?= $_SESSION["fullname"] ?>
+                        </span>
+                    </div>
+                    <hr class="mx-2 divider-colorscheme" />
                     <a class="block header-dropdown-element" href="<?= $context ?>/profile/<?= $_SESSION['username'] ?>">
                         <i class=" fa-solid fa-user"></i>
                         <span class="pl-1">My profile</span>
