@@ -57,6 +57,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                             $groups = $service->getAllGroupsNames();
                             foreach ($groups as $group) {
                                 $groupName = $group["group_name"];
+                                $groupHandle = $group["group_handle"];
                                 include "./components/browserPageGroup.php";
                             }
                         }

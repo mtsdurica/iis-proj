@@ -12,7 +12,9 @@ CREATE TABLE users
     user_gender ENUM('Male', 'Female', 'Other') DEFAULT 'Other',
     user_birthdate date,
     user_date_of_reg TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    user_public_flag boolean DEFAULT 1,
+    user_public_for_unregistered_flag boolean DEFAULT 1,
+    user_public_for_registered_flag boolean DEFAULT 1,
+    user_public_for_members_of_group_flag boolean DEFAULT 1,
     user_banned boolean DEFAULT 0,
     PRIMARY KEY (user_id)    
 );
@@ -21,6 +23,7 @@ CREATE TABLE groups
 (
 
     group_id int NOT NULL AUTO_INCREMENT,
+    group_handle varchar(20) NOT NULL,
     group_name varchar(50) NOT NULL,
     group_profile_pic varchar(4000) DEFAULT NULL,
     group_banner varchar(4000) DEFAULT NULL,
@@ -43,9 +46,9 @@ CREATE TABLE threads
     poster_id int NOT NULL,
     group_id int NOT NULL,
     PRIMARY KEY (thread_id),
-    FOREIGN KEY (poster_id) REFERENCES users(user_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
-    FOREIGN KEY (reply_id) REFERENCES threads(thread_id)
+    FOREIGN KEY (poster_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (reply_id) REFERENCES threads(thread_id) ON DELETE CASCADE
 );
 
 CREATE TABLE thread_ratings
@@ -55,8 +58,8 @@ CREATE TABLE thread_ratings
     user_id int NOT NULL,
     thread_rating int DEFAULT 0,
     PRIMARY KEY (thread_rating_id),
-    FOREIGN KEY (thread_id) REFERENCES threads(thread_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (thread_id) REFERENCES threads(thread_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE group_members
@@ -64,10 +67,11 @@ CREATE TABLE group_members
     group_member_id int NOT NULL AUTO_INCREMENT,
     group_id int NOT NULL,
     user_id int NOT NULL,
+    group_member_accepted_flag boolean NOT NULL DEFAULT 1,
     group_admin boolean NOT NULL DEFAULT 0,
     PRIMARY KEY (group_member_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE group_moderators
@@ -76,8 +80,8 @@ CREATE TABLE group_moderators
     group_id int NOT NULL,
     member_id int NOT NULL,
     PRIMARY KEY (group_moderator_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
-    FOREIGN KEY (member_id) REFERENCES group_members(group_member_id)
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (member_id) REFERENCES group_members(group_member_id) ON DELETE CASCADE
 );
 
 -- USERS
@@ -106,14 +110,14 @@ INSERT INTO users (user_nickname, user_password, user_gender)
 VALUES ('admin', '$2y$10$3lltgAQHtuxvrKYK7SS2t.UcAx2nuBvKLblYZ3wtp9wABakoFEShC', 'Other');
 
 -- GROUPS
-INSERT INTO groups (group_name, group_bio)
-VALUES ('fit_students', 'Group for students.');
+INSERT INTO groups (group_handle, group_name, group_bio)
+VALUES ('fit_students', 'FIT Students', 'Group for students.');
 
-INSERT INTO groups (group_name, group_bio)
-VALUES ('brno_apartments', 'Find your flat in this group.');
+INSERT INTO groups (group_handle, group_name, group_bio)
+VALUES ('brno_apartments', 'Brno Apartments', 'Find your flat in this group.');
 
-INSERT INTO groups (group_name, group_bio)
-VALUES ('brno_market', 'Buy, sell, rent anything you want.');
+INSERT INTO groups (group_handle, group_name, group_bio)
+VALUES ('brno_market', 'Brno Market', 'Buy, sell, rent anything you want.');
 
 -- THREADS
 INSERT INTO threads (thread_title, thread_text, poster_id, group_id)
@@ -135,6 +139,9 @@ VALUES (1, 1, 1);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
 VALUES (1, 7, 0);
+
+INSERT INTO group_members (group_id, user_id, group_admin)
+VALUES (2, 2, 1);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
 VALUES (3, 1, 0);
