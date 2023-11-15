@@ -45,9 +45,12 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                     </div>
                     <?php
                     if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
-                        $rows = $service->getGroupsByUsername($_SESSION["username"]);
-                        foreach ($rows as $groupName)
+                        $groups = $service->getGroupsByUsername($_SESSION["username"]);
+                        foreach ($groups as $group) {
+                            $groupName = $group["group_name"];
+                            $groupHandle = $group["group_handle"];
                             require "./components/mainPageGroup.php";
+                        }
                     }
                     ?>
                 </div>
@@ -80,7 +83,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                                 $threadId = $thread["thread_id"];
                                 $threadPositiveRating = $thread["thread_positive_rating"];
                                 $threadNegativeRating = $thread["thread_negative_rating"];
-                                $groupName = $thread["group_name"];
+                                $groupHandle = $thread["group_handle"];
                                 include "./components/thread.php";
                             }
                         } else {
@@ -92,7 +95,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                                 $threadId = $thread["thread_id"];
                                 $threadPositiveRating = $thread["thread_positive_rating"];
                                 $threadNegativeRating = $thread["thread_negative_rating"];
-                                $groupName = $thread["group_name"];
+                                $groupHandle = $thread["group_handle"];
                                 include "./components/thread.php";
                             }
                         }

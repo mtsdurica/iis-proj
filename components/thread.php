@@ -13,8 +13,8 @@
 				in
 			</span>
 			<object class="px-1 text-sm text-slate-500 dark:text-slate-400 hover:underline">
-				<a href="<?= $context ?>/group/<?= $groupName ?>">
-					<?= $groupName ?>
+				<a href="<?= $context ?>/group/<?= $groupHandle ?>">
+					<?= $groupHandle ?>
 				</a>
 			</object>
 		</div>

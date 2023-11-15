@@ -74,11 +74,11 @@ class AccountService
             return false;
     }
 
-    function getGroupId(string $groupName): int
+    function getGroupId(string $groupHandle): int
     {
         $query = $this->pdo->prepare('SELECT groups.group_id FROM groups
-        WHERE groups.group_name = ?');
-        $query->execute([$groupName]);
+        WHERE groups.group_handle = ?');
+        $query->execute([$groupHandle]);
 
         $data = $query->fetch(PDO::FETCH_ASSOC);
         return $data["group_id"];
@@ -87,7 +87,7 @@ class AccountService
     function getGroupsByUsername($username): array
     {
         $query = $this->pdo->prepare(
-            'SELECT groups.group_name FROM group_members
+            'SELECT groups.group_name, groups.group_handle FROM group_members
                 LEFT JOIN groups ON groups.group_id = group_members.group_id
                 LEFT JOIN users ON users.user_id = group_members.user_id
                 WHERE users.user_nickname = ?'
@@ -95,17 +95,17 @@ class AccountService
 
         $query->execute([$username]);
 
-        $groupNames = [];
+        $groups = [];
 
         while ($group = $query->fetch(PDO::FETCH_ASSOC))
-            array_push($groupNames, $group["group_name"]);
+            array_push($groups, $group);
 
-        return $groupNames;
+        return $groups;
     }
 
     function getAllGroupsNames(): array
     {
-        $query = $this->pdo->prepare('SELECT group_name FROM groups');
+        $query = $this->pdo->prepare('SELECT group_name, group_handle FROM groups');
         $query->execute();
 
         $groups = [];
@@ -116,10 +116,10 @@ class AccountService
         return $groups;
     }
 
-    function getGroupData($groupName)
+    function getGroupData($groupHandle)
     {
-        $query = $this->pdo->prepare("SELECT groups.group_id, groups.group_name, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation FROM groups WHERE groups.group_name = ?");
-        $query->execute([$groupName]);
+        $query = $this->pdo->prepare("SELECT groups.group_id, groups.group_handle, groups.group_name, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation FROM groups WHERE groups.group_handle = ?");
+        $query->execute([$groupHandle]);
 
         return $query->fetch(PDO::FETCH_ASSOC);
     }
@@ -127,7 +127,7 @@ class AccountService
     function getUserGroupsThreads($username): array
     {
         $query = $this->pdo->prepare(
-            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
+            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
             WHERE threads.group_id 
@@ -149,7 +149,7 @@ class AccountService
     function getPublicThreads(): array
     {
         $query = $this->pdo->prepare(
-            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
+            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
             WHERE groups.group_public_flag = 1"
@@ -186,7 +186,7 @@ class AccountService
 
     function getUserThreads($username)
     {
-        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
+        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
             WHERE users.user_nickname = ?");

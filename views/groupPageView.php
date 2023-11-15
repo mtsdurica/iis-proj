@@ -8,6 +8,7 @@ $exploded = explode("/", $request);
 
 $groupData = $service->getGroupData($exploded[3]);
 $groupId = $groupData["group_id"];
+$groupHandle = $groupData["group_handle"];
 $groupName = $groupData["group_name"];
 $groupBio = $groupData["group_bio"];
 $groupPublicFlag = $groupData["group_public_flag"];
