@@ -43,9 +43,9 @@ CREATE TABLE threads
     poster_id int NOT NULL,
     group_id int NOT NULL,
     PRIMARY KEY (thread_id),
-    FOREIGN KEY (poster_id) REFERENCES users(user_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
-    FOREIGN KEY (reply_id) REFERENCES threads(thread_id)
+    FOREIGN KEY (poster_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (reply_id) REFERENCES threads(thread_id) ON DELETE CASCADE
 );
 
 CREATE TABLE thread_ratings
@@ -55,8 +55,8 @@ CREATE TABLE thread_ratings
     user_id int NOT NULL,
     thread_rating int DEFAULT 0,
     PRIMARY KEY (thread_rating_id),
-    FOREIGN KEY (thread_id) REFERENCES threads(thread_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (thread_id) REFERENCES threads(thread_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE group_members
@@ -66,8 +66,8 @@ CREATE TABLE group_members
     user_id int NOT NULL,
     group_admin boolean NOT NULL DEFAULT 0,
     PRIMARY KEY (group_member_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE group_moderators
@@ -76,8 +76,8 @@ CREATE TABLE group_moderators
     group_id int NOT NULL,
     member_id int NOT NULL,
     PRIMARY KEY (group_moderator_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
-    FOREIGN KEY (member_id) REFERENCES group_members(group_member_id)
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (member_id) REFERENCES group_members(group_member_id) ON DELETE CASCADE
 );
 
 -- USERS
