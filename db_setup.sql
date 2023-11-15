@@ -12,7 +12,9 @@ CREATE TABLE users
     user_gender ENUM('Male', 'Female', 'Other') DEFAULT 'Other',
     user_birthdate date,
     user_date_of_reg TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    user_public_flag boolean DEFAULT 1,
+    user_public_for_unregistered_flag boolean DEFAULT 1,
+    user_public_for_registered_flag boolean DEFAULT 1,
+    user_public_for_members_of_group_flag boolean DEFAULT 1,
     user_banned boolean DEFAULT 0,
     PRIMARY KEY (user_id)    
 );
