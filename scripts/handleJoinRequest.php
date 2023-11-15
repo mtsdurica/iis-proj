@@ -7,7 +7,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
 $updateTo = 0;
 if ($_POST["accept"])
     $updateTo = 1;
-else if ($_POST["accept"])
+else if ($_POST["decline"])
     $updateTo = 0;
 
 $service->handleJoinRequest($_POST["requestGroupId"], $_POST["requestUserId"], true);
