@@ -1,11 +1,7 @@
 <?php
-
 session_start();
-
-$_SESSION = array();
-
 $context = $_SERVER["CONTEXT_PREFIX"];
-
+$_SESSION = array();
 session_destroy();
 
 header("Location:$context/");

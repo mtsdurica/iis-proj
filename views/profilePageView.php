@@ -1,29 +1,18 @@
 <?php
+require_once "./scripts/services.php";
+session_start();
+$service = new AccountService();
 $context = $_SERVER["CONTEXT_PREFIX"];
 $request = $_SERVER["REQUEST_URI"];
 $exploded = explode("/", $request);
-session_start();
 
-try {
-    $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-} catch (PDOException $e) {
-    echo "Connection error: " . $e->getMessage();
-    die();
-}
-
-$userDataQuery = $db->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
-$userDataQuery->execute([$exploded[3]]);
-
-while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
-    $userId = $userData["user_id"];
-    $userNickname = $userData["user_nickname"];
-    $userFullname = $userData["user_full_name"];
-    $userEmail = $userData["user_email"];
-    $userGender = $userData["user_gender"];
-    $userBirthdate = $userData["user_birthdate"];
-}
-
-
+$userData = $service->getUserData($exploded[3]);
+$userId = $userData["user_id"];
+$userNickname = $userData["user_nickname"];
+$userFullname = $userData["user_full_name"];
+$userEmail = $userData["user_email"];
+$userGender = $userData["user_gender"];
+$userBirthdate = $userData["user_birthdate"];
 ?>
 <!DOCTYPE html>
 <html class="h-full">
@@ -121,14 +110,8 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 <div class="flex flex-col items-center w-full mb-2">
                     <div id="user-threads" class="hidden">
                         <?php
-                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id
-                            LEFT JOIN groups ON threads.group_id = groups.group_id
-                            WHERE users.user_nickname = ?");
-
-                        $threadsQuery->execute([$userNickname]);
-
-                        while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                        $threads = $service->getUserThreads($userNickname);
+                        foreach ($threads as $thread) {
                             $threadTitle = $thread["thread_title"];
                             $threadText = $thread["thread_text"];
                             $threadPoster = $thread["thread_poster"];
@@ -143,14 +126,9 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                     <div id="user-groups" class="hidden mt-2">
                         <div class="flex flex-wrap justify-center gap-6">
                             <?php
-                            $groupsQuery = $db->prepare("SELECT groups.group_name FROM group_members 
-                            LEFT JOIN groups ON group_members.group_id = groups.group_id
-                            WHERE user_id = ?");
-
-                            $groupsQuery->execute([$userId]);
-
-                            while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $groupId = $group["group_name"];
+                            $groups = $service->getUserGroupsById($userId);
+                            foreach ($groups as $group) {
+                                $groupName = $group["group_name"];
                                 require "./components/browserPageGroup.php";
                             }
                             ?>
@@ -193,9 +171,8 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
             </div>
         </div>
     </div>
-
-    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
     <script type="text/javascript" src="<?= $context ?>/scripts/userProfilePage.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
 </body>
 
 </html>

@@ -53,17 +53,19 @@ class AccountService
     }
 
     // Methods meant for admin
-    function listAllUsers() {
+    function listAllUsers()
+    {
         $stmt = $this->pdo->query('SELECT user_nickname, user_full_name FROM users');
         return $stmt;
     }
 
-    function listAllGroups() {
+    function listAllGroups()
+    {
         $stmt = $this->pdo->query('SELECT group_id, group_name FROM groups');
         return $stmt;
     }
-      
-    function addThread(string $threadTitle, string $threadContent, string $threadPoster, string $threadGroup): bool
+
+    function addThread(string $threadTitle, string $threadContent, int $threadPoster, int $threadGroup): bool
     {
         $query = $this->pdo->prepare('INSERT INTO threads (thread_title, thread_text, poster_id, group_id) VALUES (?, ?, ?, ?)');
         if ($query->execute([$threadTitle, $threadContent, $threadPoster, $threadGroup]))
@@ -72,11 +74,194 @@ class AccountService
             return false;
     }
 
-    function getUserGroups(string $userId): PDOStatement
+    function getGroupId(string $groupName): int
     {
-        $query = $this->pdo->prepare('SELECT group_id FROM group_members WHERE user_id = ?');
+        $query = $this->pdo->prepare('SELECT groups.group_id FROM groups
+        WHERE groups.group_name = ?');
+        $query->execute([$groupName]);
+
+        $data = $query->fetch(PDO::FETCH_ASSOC);
+        return $data["group_id"];
+    }
+
+    function getGroupsByUsername($username): array
+    {
+        $query = $this->pdo->prepare(
+            'SELECT groups.group_name FROM group_members
+                LEFT JOIN groups ON groups.group_id = group_members.group_id
+                LEFT JOIN users ON users.user_id = group_members.user_id
+                WHERE users.user_nickname = ?'
+        );
+
+        $query->execute([$username]);
+
+        $groupNames = [];
+
+        while ($group = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($groupNames, $group["group_name"]);
+
+        return $groupNames;
+    }
+
+    function getAllGroupsNames(): array
+    {
+        $query = $this->pdo->prepare('SELECT group_name FROM groups');
+        $query->execute();
+
+        $groups = [];
+
+        while ($group = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($groups, $group);
+
+        return $groups;
+    }
+
+    function getGroupData($groupName)
+    {
+        $query = $this->pdo->prepare("SELECT groups.group_id, groups.group_name, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation FROM groups WHERE groups.group_name = ?");
+        $query->execute([$groupName]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getUserGroupsThreads($username): array
+    {
+        $query = $this->pdo->prepare(
+            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE users.user_nickname = ?"
+        );
+        $query->execute([$username]);
+
+        $threads = [];
+
+        while ($thread = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($threads, $thread);
+
+        return $threads;
+    }
+
+    function getPublicThreads(): array
+    {
+        $query = $this->pdo->prepare(
+            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE groups.group_public_flag = 1"
+        );
+        $query->execute();
+
+        $threads = [];
+
+        while ($thread = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($threads, $thread);
+
+        return $threads;
+    }
+
+    function getAllUserNames(): array
+    {
+        $query = $this->pdo->prepare('SELECT user_nickname FROM users');
+        $query->execute();
+
+        $users = [];
+
+        while ($user = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($users, $user);
+
+        return $users;
+    }
+
+    function getUserData($username): array
+    {
+        $query = $this->pdo->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
+        $query->execute([$username]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getUserThreads($username)
+    {
+        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE users.user_nickname = ?");
+
+        $query->execute([$username]);
+
+        $threads = [];
+
+        while ($thread = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($threads, $thread);
+
+        return $threads;
+    }
+
+    function getGroupThreads($groupId)
+    {
+        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster' FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            WHERE threads.group_id = ?");
+
+        $query->execute([$groupId]);
+
+        $threads = [];
+
+        while ($thread = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($threads, $thread);
+
+        return $threads;
+    }
+
+    function getGroupMembers($groupId)
+    {
+        $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_members
+            LEFT JOIN users ON users.user_id = group_members.user_id
+            WHERE group_members.group_id = ?');
+
+        $query->execute([$groupId]);
+
+        $members = [];
+
+        while ($member = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($members, $member);
+
+        return $members;
+    }
+
+    function getGroupAdmin($groupId)
+    {
+        $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_members
+            LEFT JOIN users ON users.user_id = group_members.user_id
+            WHERE group_members.group_admin = 1
+            AND group_members.group_id = ?');
+
+        $query->execute([$groupId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getUserGroupsById($userId)
+    {
+        $query = $this->pdo->prepare("SELECT groups.group_name FROM group_members 
+            LEFT JOIN groups ON group_members.group_id = groups.group_id
+            WHERE user_id = ?");
+
         $query->execute([$userId]);
 
-        return $query;
+        $groups = [];
+
+        while ($group = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($groups, $group);
+
+        return $groups;
+    }
+
+    function getLoginData($username)
+    {
+        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password from users WHERE users.user_nickname = ?");
+        $query->execute([$username]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 }
