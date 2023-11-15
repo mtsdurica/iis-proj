@@ -13,6 +13,16 @@ $groupName = $groupData["group_name"];
 $groupBio = $groupData["group_bio"];
 $groupPublicFlag = $groupData["group_public_flag"];
 $groupDateOfCreation = $groupData["group_date_of_creation"];
+
+$groupMembers = $service->getGroupMembers($groupId);
+$userIsMember = false;
+$memberNicknames = [];
+
+foreach ($groupMembers as $groupMember)
+    array_push($memberNicknames, $groupMember["user_nickname"]);
+
+if (isset($_SESSION["loggedIn"]))
+    $userIsMember = in_array($_SESSION["username"], $memberNicknames);
 ?>
 <!DOCTYPE html>
 <html class="h-full">
@@ -28,7 +38,7 @@ $groupDateOfCreation = $groupData["group_date_of_creation"];
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="items-center h-full main-background-colorscheme">
+<body class="h-full main-background-colorscheme">
     <div class="flex flex-col">
         <?php
         require_once "./components/header.php";
@@ -41,47 +51,57 @@ $groupDateOfCreation = $groupData["group_date_of_creation"];
                             <img id="cover-photo-group" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
                         </div>
                     </div>
-
-                    <div class="flex items-center justify-center">
-                        <div id="change-cover-photo-group" class="hidden z-1 mt-[-20rem]">
-                            <input type="file" id="cover-photo-input-group" class="hidden" accept="image/*">
-                            <div class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu-group">
-                                <a class="block cursor-pointer header-dropdown-element change-cover-photo-group">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-cover-photo-group">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="flex items-center justify-center">
                         <profile-photo id="profile-photo-element-group" class="z-50 w-40 h-40 cursor-pointer mt-[-6rem]">
                             <img id="profile-photo-group" src="<?= $context ?>/images/group_photo.jpg" class="object-cover w-full h-full rounded-full hover:brightness-75">
                         </profile-photo>
                     </div>
-
-                    <div class="flex items-center justify-center">
-                        <div id="change-profile-photo-group" class="absolute z-50 hidden mt-24">
-                            <input type="file" id="profile-photo-input-group" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown profile-photo-menu-group">
-                                <a class="block cursor-pointer header-dropdown-element change-profile-photo-group">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-profile-photo-group">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
+                    <div class="flex flex-row mx-12 justify-evenly">
+                        <div class="invisible w-1/2"></div>
+                        <div class="flex flex-col w-1/2">
+                            <h2 class="flex items-center justify-center text-3xl font-bold text-colorscheme name">
+                                <?= $groupName ?>
+                            </h2>
+                            <h3 class="flex items-center justify-center text-2xl"><?= $groupBio ?></h3>
+                        </div>
+                        <div class="flex items-center justify-end w-1/2">
+                            <?php
+                            if ($userIsMember == false) {
+                            ?>
+                                <form method="POST" action="<?= $context ?>/scripts/joinGroup.php">
+                                    <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                    <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                    <?php
+                                    if (isset($_SESSION["loggedIn"])) {
+                                    ?>
+                                        <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
+                                    <?php
+                                    }
+                                    ?>
+                                    <input type="hidden" name="groupPublicFlag" value="<?= $groupPublicFlag ?>">
+                                    <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 rounded-full max-h-fit confirm-button-colorscheme">
+                                        <i class="fa-solid fa-circle-plus"></i>
+                                        <span>Join Group</span>
+                                    </button>
+                                </form>
+                            <?php
+                            } else if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $userIsMember == true) {
+                            ?>
+                                <form method="POST" action="<?= $context ?>/scripts/leaveGroup.php">
+                                    <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                    <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                    <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
+                                    <input type="hidden" name="groupPublicFlag" value="<?= $groupPublicFlag ?>">
+                                    <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">
+                                        <i class="fa-solid fa-circle-minus"></i>
+                                        <span>Leave Group</span>
+                                    </button>
+                                </form>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
-
-                    <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
-                        <?= $groupName ?>
-                    </h2>
-
-                    <h3 class="flex items-center justify-center text-2xl"><?= $groupBio ?></h3>
-
                 </div>
                 <hr class="m-2 divider-colorscheme" />
                 <ul class="flex flex-row items-center justify-center gap-2 text-3xl text-center text-colorscheme drop-shadow">
@@ -125,7 +145,6 @@ $groupDateOfCreation = $groupData["group_date_of_creation"];
                     <div id="group-members" class="hidden mt-2">
                         <div class="flex flex-wrap justify-center gap-6">
                             <?php
-                            $groupMembers = $service->getGroupMembers($groupId);
                             foreach ($groupMembers as $groupMember) {
                                 $userNickname = $groupMember["user_nickname"];
                                 require "./components/browserPageUser.php";

@@ -247,7 +247,7 @@ class AccountService
 
     function getUserGroupsById($userId)
     {
-        $query = $this->pdo->prepare("SELECT groups.group_name FROM group_members 
+        $query = $this->pdo->prepare("SELECT groups.group_name, groups.group_handle FROM group_members 
             LEFT JOIN groups ON group_members.group_id = groups.group_id
             WHERE user_id = ?");
 
@@ -259,6 +259,24 @@ class AccountService
             array_push($groups, $group);
 
         return $groups;
+    }
+
+    function joinGroupPublic($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("INSERT INTO group_members (group_id, user_id) values (?, ?)");
+        $query->execute([$groupId, $userId]);
+    }
+
+    function joinGroupPrivate($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("INSERT INTO group_members (group_id, user_id, group_member_accepted_flag) values (?, ?, 0)");
+        $query->execute([$groupId, $userId]);
+    }
+
+    function leaveGroup($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("DELETE FROM group_members WHERE group_members.group_id = ? AND group_members.user_id = ? ");
+        $query->execute([$groupId, $userId]);
     }
 
     function getLoginData($username)
