@@ -254,11 +254,17 @@ class AccountService
 
     function handleJoinRequest($groupId, $userId, $updateTo)
     {
-        $query = $this->pdo->prepare("UPDATE group_members SET group_member_accepted_flag = ? 
+        if ($updateTo == 1) {
+            $query = $this->pdo->prepare("UPDATE group_members SET group_member_accepted_flag = 1 
             WHERE group_id = ? 
             AND user_id = ?");
-
-        $query->execute([$updateTo, $groupId, $userId]);
+            $query->execute([$groupId, $userId]);
+        } else {
+            $query = $this->pdo->prepare("DELETE FROM group_members 
+                WHERE group_members.group_id = ? 
+                AND group_members.user_id = ?");
+            $query->execute([$groupId, $userId]);
+        }
     }
 
     function getGroupAdmin($groupId)

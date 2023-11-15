@@ -10,6 +10,6 @@ if ($_POST["accept"])
 else if ($_POST["decline"])
     $updateTo = 0;
 
-$service->handleJoinRequest($_POST["requestGroupId"], $_POST["requestUserId"], true);
+$service->handleJoinRequest($_POST["requestGroupId"], $_POST["requestUserId"], $updateTo);
 $redirect = $_POST["groupRedirect"];
 header("Location:$context/group/$redirect");
