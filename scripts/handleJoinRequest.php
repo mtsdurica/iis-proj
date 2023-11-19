@@ -4,11 +4,11 @@ session_start();
 $service = new AccountService();
 $context = $_SERVER["CONTEXT_PREFIX"];
 
-$updateTo = 0;
-if ($_POST["accept"])
-    $updateTo = 1;
-else if ($_POST["decline"])
-    $updateTo = 0;
+$updateTo = false;
+if ($_POST["requestSubmit"] == true)
+    $updateTo = true;
+else if ($_POST["requestSubmit"] == false)
+    $updateTo = false;
 
 $service->handleJoinRequest($_POST["requestGroupId"], $_POST["requestUserId"], $updateTo);
 $redirect = $_POST["groupRedirect"];

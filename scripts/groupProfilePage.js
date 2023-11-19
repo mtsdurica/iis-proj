@@ -1,4 +1,8 @@
-showGroupThreads();
+if (/\/group\/.*\/members$/.test(location.pathname)) {
+    showGroupMembers();
+} else if (/\/group\/.*\/threads$/.test(location.pathname)) {
+    showUserThreads();
+}
 
 function hideAllElementsGroup() {
     var ThreadsElementGroup = document.getElementById('group-threads');

@@ -5,7 +5,7 @@
         <input type="hidden" name="requestGroupId" value="<?= $groupId ?>">
         <input type="hidden" name="requestUserId" value="<?= $requestUserId ?>">
         <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
-        <button type="submit" name="accept" class="p-1 px-3 text-base font-bold text-center text-white transition-all duration-300 rounded-full max-h-fit confirm-button-colorscheme">Accept</button>
-        <button type="submit" name="decline" class="p-1 px-3 text-base font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">Decline</button>
+        <button type="submit" name="requestSubmit" value="1" class="p-1 px-3 text-base font-bold text-center text-white transition-all duration-300 rounded-full max-h-fit confirm-button-colorscheme">Accept</button>
+        <button type="submit" name="requestSubmit" value="0" class="p-1 px-3 text-base font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">Decline</button>
     </form>
 </div>
