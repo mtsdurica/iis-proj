@@ -150,7 +150,8 @@ if (isset($_SESSION["loggedIn"]) === true)
                         </li>
                         <?php
                         $groupAdmin = $service->getGroupAdmin($groupId);
-                        if (isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) {
+                        $groupModerators = $service->getGroupModerators($groupId);
+                        if ((isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) || (!empty($groupModerators) && isset($_SESSION["loggedIn"]) && in_array($_SESSION["username"], $groupModerators))) {
                         ?>
                             <li class="flex">
                                 <a id="show-group-requests" class="flex items-center justify-center text-xl header-element">
@@ -264,6 +265,32 @@ if (isset($_SESSION["loggedIn"]) === true)
                             </div>
                         </div>
                         <?php
+                        $groupModerators = $service->getGroupModerators($groupId);
+                        if (!empty($groupModerators) && isset($_SESSION["loggedIn"]) && in_array($_SESSION["username"], $groupModerators)) {
+                        ?>
+                            <div id="group-requests" class="hidden">
+                                <div class="flex flex-row gap-2">
+                                    <div class="flex flex-col">
+                                        <span class="text-lg">Pending join requests:</span>
+                                        <div class="mt-2 flex flex-col w-[32rem]">
+                                            <div class="flex flex-col gap-2">
+                                                <?php
+                                                $pendingRequests = $service->getPendingJoinRequests($groupId);
+                                                if (!empty($pendingRequests)) {
+                                                    foreach ($pendingRequests as $pendingRequest) {
+                                                        $requestUserNickname = $pendingRequest["user_nickname"];
+                                                        $requestUserId = $pendingRequest["user_id"];
+                                                        require "./components/groupJoinRequest.php";
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
                         $groupAdmin = $service->getGroupAdmin($groupId);
                         if (isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) {
                         ?>
@@ -275,7 +302,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                             <div class="flex flex-col gap-2">
                                                 <?php
                                                 $pendingRequests = $service->getPendingJoinRequests($groupId);
-                                                if (!empty($pendingRequest)) {
+                                                if (!empty($pendingRequests)) {
                                                     foreach ($pendingRequests as $pendingRequest) {
                                                         $requestUserNickname = $pendingRequest["user_nickname"];
                                                         $requestUserId = $pendingRequest["user_id"];
