@@ -249,14 +249,14 @@ class AccountService
         $members = [];
 
         while ($member = $query->fetch(PDO::FETCH_ASSOC))
-            array_push($members, $member);
+            array_push($members, $member["user_nickname"]);
 
         return $members;
     }
 
     function getPendingModerators($groupId)
     {
-        $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_moderators
+        $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_id FROM group_moderators
             LEFT JOIN group_members ON group_moderators.member_id = group_members.group_member_id
             LEFT JOIN users ON users.user_id = group_members.user_id
             WHERE group_moderators.group_moderator_accepted_flag = 0
@@ -267,7 +267,7 @@ class AccountService
         $members = [];
 
         while ($member = $query->fetch(PDO::FETCH_ASSOC))
-            array_push($members, $member["user_nickname"]);
+            array_push($members, $member);
 
         return $members;
     }
@@ -301,6 +301,22 @@ class AccountService
                 WHERE group_members.group_id = ? 
                 AND group_members.user_id = ?");
             $query->execute([$groupId, $userId]);
+        }
+    }
+
+    function handleModeratorRequest($groupId, $userId, $updateTo)
+    {
+        $memberId = $this->getGroupMemberId($groupId, $userId);
+        if ($updateTo === true) {
+            $query = $this->pdo->prepare('UPDATE group_moderators SET group_moderator_accepted_flag = 1 
+            WHERE group_moderators.group_id = ? 
+            AND group_moderators.member_id = ?');
+            $query->execute([$groupId, $memberId["group_member_id"]]);
+        } else {
+            $query = $this->pdo->prepare('DELETE FROM group_moderators
+                WHERE group_moderators.group_id = ? 
+                AND group_moderators.member_id = ?');
+            $query->execute([$groupId, $memberId["group_member_id"]]);
         }
     }
 
@@ -383,13 +399,28 @@ class AccountService
 
     function leaveGroup($groupId, $userId)
     {
-        $query = $this->pdo->prepare("DELETE FROM group_members WHERE group_members.group_id = ? AND group_members.user_id = ? ");
+        $query = $this->pdo->prepare("DELETE FROM group_members WHERE group_members.group_id = ?
+            AND group_members.user_id = ?");
         $query->execute([$groupId, $userId]);
+    }
+
+    function removeModerator($groupId, $username)
+    {
+        $data = $this->getLoginData($username);
+        $userId = $data["user_id"];
+        $memberId = $this->getGroupMemberId($groupId, $userId);
+        var_dump($memberId);
+        $query = $this->pdo->prepare('DELETE FROM group_moderators
+                WHERE group_moderators.group_id = ? 
+                AND group_moderators.member_id = ?');
+        $query->execute([$groupId, $memberId["group_member_id"]]);
     }
 
     function getLoginData($username)
     {
-        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password, user_full_name from users WHERE users.user_nickname = ?");
+        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password, user_full_name 
+            FROM users 
+            WHERE users.user_nickname = ?");
         $query->execute([$username]);
 
         return $query->fetch(PDO::FETCH_ASSOC);

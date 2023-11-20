@@ -43,12 +43,12 @@ if (isset($_SESSION["loggedIn"]) === true)
             <div class="items-center justify-center w-3/4 text-colorscheme">
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
-                        <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0 cursor-pointer">
+                        <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0">
                             <img id="cover-photo-group" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
                         </div>
                     </div>
                     <div class="flex items-center justify-center">
-                        <profile-photo id="profile-photo-element-group" class="z-50 w-40 h-40 cursor-pointer mt-[-6rem]">
+                        <profile-photo id="profile-photo-element-group" class="z-50 w-40 h-40 mt-[-6rem]">
                             <img id="profile-photo-group" src="<?= $context ?>/images/group_photo.jpg" class="object-cover w-full h-full rounded-full">
                         </profile-photo>
                     </div>
@@ -89,24 +89,32 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 <?php
                             } else if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $userIsMember == true) {
                                 $moderatorRequests = $service->getPendingModerators($groupId);
-                                $isMod = in_array($_SESSION["username"], $moderatorRequests);
+                                $moderatorRequestsNames = [];
+                                foreach ($moderatorRequests as $moderatorRequest)
+                                    array_push($moderatorRequestsNames, $moderatorRequest["user_nickname"]);
+                                $groupModerators = $service->getGroupModerators($groupId);
+                                $groupAdmin = $service->getGroupAdmin($groupId);
+                                $pendingMod = in_array($_SESSION["username"], $moderatorRequestsNames);
+                                $isMod = in_array($_SESSION["username"], $groupModerators);
                                 if (!$isMod) {
+                                    if (!$pendingMod && ($_SESSION["userId"] !== $groupAdmin["user_id"])) {
                                 ?>
-                                    <form method="POST" action="<?= $context ?>/scripts/requestModerator.php">
-                                        <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
-                                        <input type="hidden" name="groupId" value="<?= $groupId ?>">
-                                        <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
-                                        <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center transition-all duration-300 rounded-full dark:text-white max-h-fit confirm-button-colorscheme">
-                                            <span>Request Moderator</span>
-                                        </button>
-                                    </form>
+                                        <form method="POST" action="<?= $context ?>/scripts/requestModerator.php">
+                                            <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                            <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                            <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
+                                            <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center transition-all duration-300 rounded-full dark:text-white max-h-fit confirm-button-colorscheme">
+                                                <span>Request Moderator</span>
+                                            </button>
+                                        </form>
+                                    <?php
+                                    } else if ($pendingMod) {
+                                    ?>
+                                        <div type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center border rounded-full divider-colorscheme max-h-fit">
+                                            <span>Request pending</span>
+                                        </div>
                                 <?php
-                                } else if ($isMod) {
-                                ?>
-                                    <div type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center border rounded-full divider-colorscheme max-h-fit">
-                                        <span>Request pending</span>
-                                    </div>
-                                <?php
+                                    }
                                 }
                                 ?>
                                 <form method="POST" action="<?= $context ?>/scripts/leaveGroup.php">
@@ -140,6 +148,18 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 Members
                             </a>
                         </li>
+                        <?php
+                        $groupAdmin = $service->getGroupAdmin($groupId);
+                        if (isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) {
+                        ?>
+                            <li class="flex">
+                                <a id="show-group-requests" class="flex items-center justify-center text-xl header-element">
+                                    Requests
+                                </a>
+                            </li>
+                        <?php
+                        }
+                        ?>
                         <li class="flex">
                             <a id="show-group-statistics" class="flex items-center justify-center text-xl header-element">
                                 Statistics
@@ -156,44 +176,21 @@ if (isset($_SESSION["loggedIn"]) === true)
                         <div id="group-threads" class="hidden">
                             <?php
                             $threads = $service->getGroupThreads($groupId);
-                            foreach ($threads as $thread) {
-                                $threadTitle = $thread["thread_title"];
-                                $threadText = $thread["thread_text"];
-                                $threadPoster = $thread["thread_poster"];
-                                $threadId = $thread["thread_id"];
-                                $threadPositiveRating = $thread["thread_positive_rating"];
-                                $threadNegativeRating = $thread["thread_negative_rating"];
-                                include "./components/thread.php";
+                            if (!empty($threads)) {
+                                foreach ($threads as $thread) {
+                                    $threadTitle = $thread["thread_title"];
+                                    $threadText = $thread["thread_text"];
+                                    $threadPoster = $thread["thread_poster"];
+                                    $threadId = $thread["thread_id"];
+                                    $threadPositiveRating = $thread["thread_positive_rating"];
+                                    $threadNegativeRating = $thread["thread_negative_rating"];
+                                    include "./components/thread.php";
+                                }
                             }
                             ?>
                         </div>
                         <div id="group-members" class="hidden mt-2">
                             <div class="flex flex-col w-[32rem]">
-                                <div class="flex flex-col gap-2">
-                                    <?php
-                                    $groupAdmin = $service->getGroupAdmin($groupId);
-                                    if (isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) {
-                                        $pendingRequests = $service->getPendingJoinRequests($groupId);
-                                        if (!empty($pendingRequests)) {
-                                    ?>
-                                            <span class="mb-2 text-lg">Pending requests:</span>
-                                    <?php
-                                            foreach ($pendingRequests as $pendingRequest) {
-                                                $requestUserNickname = $pendingRequest["user_nickname"];
-                                                $requestUserId = $pendingRequest["user_id"];
-                                                require "./components/groupJoinRequest.php";
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <?php
-                                if (!empty($pendingRequests)) {
-                                ?>
-                                    <hr class="m-2 divider-colorscheme" />
-                                <?php
-                                }
-                                ?>
                                 <span class="mb-2 text-lg">Admin:</span>
                                 <div class="flex flex-col justify-center gap-2">
                                     <?php
@@ -211,7 +208,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                     <div class="flex flex-col justify-center gap-2">
                                         <?php
                                         foreach ($groupModerators as $groupModerator) {
-                                            $userNickname = $groupModerator["user_nickname"];
+                                            $userNickname = $groupModerator;
                                             require "./components/groupPageModerator.php";
                                         }
                                         ?>
@@ -266,6 +263,51 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 </div>
                             </div>
                         </div>
+                        <?php
+                        $groupAdmin = $service->getGroupAdmin($groupId);
+                        if (isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) {
+                        ?>
+                            <div id="group-requests" class="hidden">
+                                <div class="flex flex-row gap-2">
+                                    <div class="flex flex-col">
+                                        <span class="text-lg">Pending join requests:</span>
+                                        <div class="mt-2 flex flex-col w-[32rem]">
+                                            <div class="flex flex-col gap-2">
+                                                <?php
+                                                $pendingRequests = $service->getPendingJoinRequests($groupId);
+                                                if (!empty($pendingRequest)) {
+                                                    foreach ($pendingRequests as $pendingRequest) {
+                                                        $requestUserNickname = $pendingRequest["user_nickname"];
+                                                        $requestUserId = $pendingRequest["user_id"];
+                                                        require "./components/groupJoinRequest.php";
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-lg">Pending moderator requests:</span>
+                                        <div class="mt-2 flex flex-col w-[32rem]">
+                                            <div class="flex flex-col gap-2">
+                                                <?php
+                                                $pendingModeratorRequests = $service->getPendingModerators($groupId);
+                                                if (!empty($pendingModeratorRequests)) {
+                                                    foreach ($pendingModeratorRequests as $pendingModeratorRequest) {
+                                                        $requestUserNickname = $pendingModeratorRequest["user_nickname"];
+                                                        $requestUserId = $pendingModeratorRequest["user_id"];
+                                                        require "./components/groupModeratorRequest.php";
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 <?php
                 } else {
