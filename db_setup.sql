@@ -98,7 +98,7 @@ VALUES ('fitking',
         '', 
         'John Doe', 
         'Male', 
-        '02-02-2003');
+        '2003-02-02');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('nick56',
@@ -108,7 +108,7 @@ VALUES ('nick56',
         '', 
         'David Dull', 
         'Male', 
-        '12-05-2001');
+        '2001-05-12');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('big_bass',
@@ -118,7 +118,7 @@ VALUES ('big_bass',
         '', 
         'Charles Bass', 
         'Male', 
-        '11-09-1991');
+        '1991-09-11');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('andrew35',
@@ -128,7 +128,7 @@ VALUES ('andrew35',
         '', 
         'Andrew Rhodes', 
         'Male', 
-        '21-04-1999');
+        '1999-04-21');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('olie',
@@ -138,7 +138,7 @@ VALUES ('olie',
         '', 
         'Oliver Ouken', 
         'Male', 
-        '30-03-1996');
+        '1996-03-30');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('kate_collins',
@@ -148,7 +148,7 @@ VALUES ('kate_collins',
         '', 
         'Kate Collins', 
         'Female', 
-        '23-07-1989');
+        '1989-07-23');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('jane79',
@@ -158,7 +158,7 @@ VALUES ('jane79',
         '', 
         'Jane Griffin', 
         'Female', 
-        '05-07-1977');
+        '1977-07-05');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('fitqueen',
@@ -168,7 +168,7 @@ VALUES ('fitqueen',
         '', 
         'Serena van der Woodsen', 
         'Female', 
-        '02-09-1991');
+        '1991-09-02');
 
 INSERT INTO users (user_nickname, user_password, user_email, user_profile_pic, user_banner, user_full_name, user_gender, user_birthdate)
 VALUES ('ues_princess',
@@ -178,7 +178,7 @@ VALUES ('ues_princess',
         '', 
         'Blair Waldorf', 
         'Female', 
-        '22-07-1991');
+        '1991-07-22');
 
 -- GROUPS
 INSERT INTO groups (group_handle, group_name, group_profile_pic, group_banner, group_bio)
