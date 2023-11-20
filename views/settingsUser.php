@@ -31,24 +31,24 @@ $userBirthdate = $userData["user_birthdate"];
 
 <body class="items-center h-full main-background-colorscheme text-colorscheme ">
     <!-- Page Container -->
-    <div class="flex flex-col h-full ">
+    <div class="flex flex-col h-full overflow-y-scroll">
         <?php
         require_once "./components/header.php";
         ?>
         <!-- Page Content Container -->
-        <div class="flex flex-col items-center justify-center h-full px-32">
+        <div class="flex flex-col items-center justify-center h-full overflow-y-scroll px-32">
             
             <!-- Upper side -->
-            <div class="flex flex-row gap-32 header-colorscheme rounded-lg p-6 mt-10 shadow-lg w-full">
+            <div class="flex flex-row gap-32 header-colorscheme rounded-lg p-6 mt-20 shadow-lg w-full justify-center">
                 <!-- Profile picture section -->
                 <div class="flex flex-col gap-2 w-full">
                     <h1 class="font-bold text-2xl mb-3">Profile picture</h1>
                     <!-- TODO: condition that will upload photo from database -->
-                    <div class="h-44 overflow-hidden">
+                    <div class="flex h-44 overflow-hidden justify-center">
                         <img src="<?= $context ?>/images/profile_photo.jpg" style="object-fit: cover" alt="Profile picture" width="150rem" height="150rem" class="transition-all rounded-lg m-2">
                     </div>
                     
-                    <form class="flex flex-row justify-center text-center" action="<?= $context ?>/scripts/uploadProfilePic.php" method="post" enctype="multipart/form-data">
+                    <form class="flex flex-row" action="<?= $context ?>/scripts/uploadProfilePic.php" method="post" enctype="multipart/form-data">
                         <input type="file" name="fileToUpload" id="fileToUpload">
                         <input class="px-2 py-1 text-sm text-center text-white transition-all rounded-lg basic-button-colorscheme" type="submit" name="submit" value="Upload image">
                     </form>
@@ -57,10 +57,10 @@ $userBirthdate = $userData["user_birthdate"];
                 <!-- Banner picture section -->
                 <div class="flex flex-col gap-2 w-full">
                     <h1 class="font-bold text-2xl mb-3">Banner</h1>
-                    <div class="h-44 overflow-hidden">
+                    <div class="flex h-44 overflow-hidden justify-center">
                         <img src="<?= $context ?>/images/cover_photo.jpg" alt="Profile picture" width="250rem" height="150rem" class="transition-all rounded-lg m-2">
                     </div>
-                    <form class="flex flex-row justify-center text-center" action="<?= $context ?>/scripts/uploadBannerPic.php" method="post" enctype="multipart/form-data">
+                    <form class="flex flex-row" action="<?= $context ?>/scripts/uploadBannerPic.php" method="post" enctype="multipart/form-data">
                         <input type="file" name="fileToUpload" id="fileToUpload">
                         <input class="px-2 py-1 text-sm text-center text-white transition-all rounded-lg basic-button-colorscheme" type="submit" name="submit" value="Upload image">
                     </form>
@@ -69,7 +69,7 @@ $userBirthdate = $userData["user_birthdate"];
             </div> <!-- Left side -->
 
             <!-- Lower side -->
-            <div class="flex flex-row gap-32 header-colorscheme rounded-lg p-6 my-4 shadow-lg w-full">
+            <div class="flex flex-row gap-44 header-colorscheme rounded-lg p-6 my-4 shadow-lg w-full">
 
                 <!-- General settings form section -->
                 <div class="flex flex-col">
@@ -101,7 +101,7 @@ $userBirthdate = $userData["user_birthdate"];
                             <label class="px-2 text-sm w-56" for="user_birthdate">
                                 Birthday
                             </label>
-                            <input class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate">
+                            <input class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate" value="<?= $userBirthdate ?>">
                         </div>
 
                         <div>
@@ -113,15 +113,15 @@ $userBirthdate = $userData["user_birthdate"];
                                 <input type="checkbox" id="everyone" name="everyone" value="Everyone">
                                 <label class="text-sm" for="everyone">Everyone</label>
 
-                                <input class="ml-28" type="checkbox" id="everyone" name="everyone" value="Everyone">
-                                <label class="text-sm" for="everyone">Only registered users</label>
+                                <input class="ml-28" type="checkbox" id="registered" name="registered" value="Registered">
+                                <label class="text-sm" for="registered">Only registered users</label>
                             </div>
                             <div class="flex flex-row gap-2">
-                                <input type="checkbox" id="everyone" name="everyone" value="Everyone">
-                                <label class="text-sm" for="everyone">Only group members</label>
+                                <input type="checkbox" id="groupMembers" name="groupMembers" value="GroupMembers">
+                                <label class="text-sm" for="groupMembers">Only group members</label>
 
-                                <input class="ml-9" type="checkbox" id="everyone" name="everyone" value="Everyone">
-                                <label class="text-sm" for="everyone">Nobody</label>
+                                <input class="ml-9" type="checkbox" id="nobody" name="nobody" value="Nobody">
+                                <label class="text-sm" for="nobody">Nobody</label>
                             </div>
                             
                         </div>

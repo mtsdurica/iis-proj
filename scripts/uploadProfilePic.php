@@ -5,7 +5,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
 
 // This line cant be resolved with $context variable. There must be the whole path given.
 // TODO: change to xduric06
-$target_dir = "/homes/eva/xd/xdurac01/WWW/images"; // specifies the directory where the file is going to be placed
+$target_dir = "/homes/eva/xd/xdurac01/WWW/uploads/"; // specifies the directory where the file is going to be placed
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]); // specifies the path of the file to be uploaded
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION)); // holds the file extension of the file (in lower case)
