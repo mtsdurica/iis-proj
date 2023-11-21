@@ -47,7 +47,6 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                 <!-- Profile picture section -->
                 <div class="flex flex-col gap-2 w-full">
                     <h1 class="font-bold text-2xl mb-3">Profile picture</h1>
-                    <!-- TODO: condition that will upload photo from database -->
                     <?php
                         if ($userProfilePic === NULL || $userProfilePic === ''){
                             $picUrl =  $context . '/images/profile_photo.jpg';
