@@ -73,7 +73,8 @@ $groupHandle = $threadData["group_handle"];
                                     </p>
                                 </div>
                                 <hr class="mt-4 divider-colorscheme" />
-                                <div class="flex flex-row items-center justify-between px-4 mx-40 mt-2 min-h-fit">
+                                <form id="ranking" class="flex flex-row items-center justify-between px-4 mx-40 mt-2 min-h-fit">
+                                    <input type="hidden" name="threadId" value="<?= $threadId ?>">
                                     <div class="h-6 mr-2 border-l divider-colorscheme"></div>
                                     <button class="flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600">
                                         <i class="fa-solid fa-angle-up"></i>
@@ -89,7 +90,7 @@ $groupHandle = $threadData["group_handle"];
                                         </div>
                                     </button>
                                     <div class="h-6 ml-2 border-l divider-colorscheme"></div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <!-- Reply box -->

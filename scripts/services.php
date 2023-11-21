@@ -221,7 +221,8 @@ class AccountService
         $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
-            WHERE threads.thread_id = ?");
+            WHERE threads.thread_id = ?
+            AND threads.reply_id IS NULL");
 
         $query->execute([$threadId]);
         return $query->fetch(PDO::FETCH_ASSOC);
@@ -232,7 +233,8 @@ class AccountService
         $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
-            WHERE users.user_nickname = ?");
+            WHERE users.user_nickname = ?
+            AND threads.reply_id IS NULL");
 
         $query->execute([$username]);
 
@@ -248,7 +250,9 @@ class AccountService
     {
         $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster' FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
-            WHERE threads.group_id = ?");
+            WHERE threads.group_id = ?
+            AND threads.reply_id IS NULL
+            ");
 
         $query->execute([$groupId]);
 
@@ -468,7 +472,8 @@ class AccountService
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    function updateProfilePicColumn (int $userId, string $fileName) {
+    function updateProfilePicColumn(int $userId, string $fileName)
+    {
         $stmt = $this->pdo->prepare("UPDATE users SET user_profile_pic = ? WHERE user_id = ?");
 
         if ($stmt->execute([$fileName, $userId])) {
@@ -476,10 +481,10 @@ class AccountService
         } else {
             return false;
         }
-        
     }
 
-    function updateBannerColumn (int $userId, string $fileName) {
+    function updateBannerColumn(int $userId, string $fileName)
+    {
         $stmt = $this->pdo->prepare("UPDATE users SET user_banner = ? WHERE user_id = ?");
 
         if ($stmt->execute([$fileName, $userId])) {
@@ -487,6 +492,5 @@ class AccountService
         } else {
             return false;
         }
-        
     }
 }

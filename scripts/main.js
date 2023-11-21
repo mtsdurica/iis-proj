@@ -72,6 +72,9 @@
     }
 
     document.getElementById(getPage()).className += "-active";
+
+    $(document).ready(function () {
+    });
 })();
 
 // Admin Dashboard tabs animation
