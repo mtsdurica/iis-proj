@@ -835,11 +835,6 @@ body * {
   margin-bottom: 1rem;
 }
 
-.my-20 {
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-}
-
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -908,6 +903,10 @@ body * {
   margin-top: -6rem;
 }
 
+.mt-44 {
+  margin-top: 11rem;
+}
+
 .block {
   display: block;
 }
@@ -963,6 +962,10 @@ body * {
 
 .w-3\/5 {
   width: 60%;
+}
+
+.w-32 {
+  width: 8rem;
 }
 
 .w-40 {
@@ -1065,16 +1068,12 @@ body * {
   gap: 1rem;
 }
 
-.gap-6 {
-  gap: 1.5rem;
-}
-
 .gap-44 {
   gap: 11rem;
 }
 
-.gap-52 {
-  gap: 13rem;
+.gap-6 {
+  gap: 1.5rem;
 }
 
 .self-center {
@@ -1087,10 +1086,6 @@ body * {
 
 .overflow-hidden {
   overflow: hidden;
-}
-
-.overflow-scroll {
-  overflow: scroll;
 }
 
 .overflow-y-scroll {
@@ -1169,8 +1164,8 @@ body * {
   padding: 1.5rem;
 }
 
-.p-20 {
-  padding: 5rem;
+.p-0 {
+  padding: 0px;
 }
 
 .px-1 {
@@ -1218,16 +1213,6 @@ body * {
   padding-bottom: 1rem;
 }
 
-.py-20 {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
-
-.py-32 {
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-}
-
 .pb-40 {
   padding-bottom: 10rem;
 }
@@ -1248,8 +1233,8 @@ body * {
   padding-top: 3.5rem;
 }
 
-.pt-20 {
-  padding-top: 5rem;
+.pt-44 {
+  padding-top: 11rem;
 }
 
 .text-left {

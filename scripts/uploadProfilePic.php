@@ -1,14 +1,24 @@
 <?php
 session_start();
+require_once "services.php";
 
 $context = $_SERVER["CONTEXT_PREFIX"];
+$userNickname = $_POST['userNickname'];
+$userId = $_POST['userId'];
+$serv = new AccountService();
 
 // This line cant be resolved with $context variable. There must be the whole path given.
 // TODO: change to xduric06
 $target_dir = "/homes/eva/xd/xdurac01/WWW/uploads/"; // specifies the directory where the file is going to be placed
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]); // specifies the path of the file to be uploaded
+
+$file = basename($_FILES["fileToUpload"]["name"]); // specifies the path of the file to be uploaded
+$imageFileType = strtolower(pathinfo($file,PATHINFO_EXTENSION)); // holds the file extension of the file (in lower case)
+
+$file_name = $userId . "_profilePic." . $imageFileType;
+$target_file = $target_dir . $file_name;
+echo $target_file;
+echo $_POST['userNickname'];
 $uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION)); // holds the file extension of the file (in lower case)
 
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
@@ -20,12 +30,6 @@ if(isset($_POST["submit"])) {
       echo "File is not an image.";
       $uploadOk = 0;
     }
-}
-  
-// Check if file already exists
-if (file_exists($target_file)) {
-    echo "Sorry, file already exists.";
-    $uploadOk = 0;
 }
   
 // Allow certain file formats
@@ -41,8 +45,11 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo "The file ". htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
+        $serv->updateProfilePicColumn($userId, $file_name);
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
 }
+
+header("Location:$context/profile/$userNickname/settings");
 ?>

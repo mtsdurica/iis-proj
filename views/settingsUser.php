@@ -13,6 +13,11 @@ $userFullname = $userData["user_full_name"];
 $userEmail = $userData["user_email"];
 $userGender = $userData["user_gender"];
 $userBirthdate = $userData["user_birthdate"];
+$userProfilePic = $userData["user_profile_pic"];
+$userBanner = $userData["user_banner"];
+$userPublicUnregistered = $userData["user_public_for_unregistered_flag"];
+$userPublicRegistered = $userData["user_public_for_registered_flag"];
+$userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
 ?>
 
 <!DOCTYPE html>
@@ -31,38 +36,55 @@ $userBirthdate = $userData["user_birthdate"];
 
 <body class="items-center h-full main-background-colorscheme text-colorscheme ">
     <!-- Page Container -->
-    <div class="flex flex-col h-full overflow-y-scroll">
+    <div class="flex flex-col">
         <?php
         require_once "./components/header.php";
         ?>
         <!-- Page Content Container -->
-        <div class="flex flex-col items-center justify-center h-full overflow-y-scroll px-32">
-            
+        <div class="flex flex-col items-center justify-center h-full px-32">
             <!-- Upper side -->
             <div class="flex flex-row gap-32 header-colorscheme rounded-lg p-6 mt-20 shadow-lg w-full justify-center">
                 <!-- Profile picture section -->
                 <div class="flex flex-col gap-2 w-full">
                     <h1 class="font-bold text-2xl mb-3">Profile picture</h1>
                     <!-- TODO: condition that will upload photo from database -->
+                    <?php
+                        if ($userProfilePic === NULL || $userProfilePic === ''){
+                            $picUrl =  $context . '/images/profile_photo.jpg';
+                        } else {
+                            $picUrl = $context . '/uploads/' . $userProfilePic;
+                        }
+                    ?>
                     <div class="flex h-44 overflow-hidden justify-center">
-                        <img src="<?= $context ?>/images/profile_photo.jpg" style="object-fit: cover" alt="Profile picture" width="150rem" height="150rem" class="transition-all rounded-lg m-2">
+                        <img src="<?= $picUrl ?>" style="object-fit: cover" alt="Profile Picture" width="150rem" height="150rem" class="transition-all rounded-lg m-2">
                     </div>
                     
-                    <form class="flex flex-row" action="<?= $context ?>/scripts/uploadProfilePic.php" method="post" enctype="multipart/form-data">
-                        <input type="file" name="fileToUpload" id="fileToUpload">
-                        <input class="px-2 py-1 text-sm text-center text-white transition-all rounded-lg basic-button-colorscheme" type="submit" name="submit" value="Upload image">
+                    <form class="flex flex-col items-center gap-4" action="<?= $context ?>/scripts/uploadProfilePic.php" method="post" enctype="multipart/form-data">
+                        <input type="file" name="fileToUpload" id="profilePicToUpload">
+                        <input type="hidden" name="userNickname" value="<?= $userNickname ?>">
+                        <input type="hidden" name="userId" value="<?= $userId ?>">
+                        <input class="px-2 py-1 text-sm text-center w-44 text-white transition-all rounded-lg basic-button-colorscheme" type="submit" name="submit" value="Upload image">
                     </form>
                 </div> <!-- Profile picture section -->
 
                 <!-- Banner picture section -->
                 <div class="flex flex-col gap-2 w-full">
                     <h1 class="font-bold text-2xl mb-3">Banner</h1>
+                    <?php
+                        if ($userBanner === NULL || $userBanner === ''){
+                            $bannerUrl =  $context . '/images/cover_photo.jpg';
+                        } else {
+                            $bannerUrl = $context . '/uploads/' . $userBanner;
+                        }
+                    ?>
                     <div class="flex h-44 overflow-hidden justify-center">
-                        <img src="<?= $context ?>/images/cover_photo.jpg" alt="Profile picture" width="250rem" height="150rem" class="transition-all rounded-lg m-2">
+                        <img src="<?= $bannerUrl ?>" alt="Banner" width="250rem" height="150rem" class="transition-all rounded-lg m-2">
                     </div>
-                    <form class="flex flex-row" action="<?= $context ?>/scripts/uploadBannerPic.php" method="post" enctype="multipart/form-data">
-                        <input type="file" name="fileToUpload" id="fileToUpload">
-                        <input class="px-2 py-1 text-sm text-center text-white transition-all rounded-lg basic-button-colorscheme" type="submit" name="submit" value="Upload image">
+                    <form class="flex flex-col items-center gap-4" action="<?= $context ?>/scripts/uploadBannerPic.php" method="post" enctype="multipart/form-data">
+                        <input type="file" name="fileToUpload" id="bannerToUpload">
+                        <input type="hidden" name="userNickname" value="<?= $userNickname ?>">
+                        <input type="hidden" name="userId" value="<?= $userId ?>">
+                        <input class="flex px-2 py-1 text-sm text-center w-44 justify-center text-white transition-all rounded-lg basic-button-colorscheme" type="submit" name="submit" value="Upload image">
                     </form>
                 </div> <!-- Banner picture section -->
 
@@ -84,14 +106,14 @@ $userBirthdate = $userData["user_birthdate"];
                         </div>
 
                         <div class="flex flex-row gap-2 items-center">
-                            <label class="px-2 text-sm w-56" for="user_email">
+                            <p class="px-2 text-sm w-56">
                                 E-mail
-                            </label>
+                            </p>
                             <p class="text-sm"> <?= $userEmail ?> </p>
                         </div>
 
                         <div class="flex flex-row gap-2 items-center">
-                            <label class="px-2 text-sm w-56" for="user_email">
+                            <label class="px-2 text-sm w-56" for="user_full_name">
                                 Full name
                             </label>
                             <input class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" type="text" name="user_full_name" id="user_full_name" value="<?= $userFullname ?>" required>
@@ -105,9 +127,9 @@ $userBirthdate = $userData["user_birthdate"];
                         </div>
 
                         <div>
-                            <label class="mt-4 py-4 text-lg w-56 font-bold">
+                            <p class="mt-4 py-4 text-lg w-56 font-bold">
                                 Who can see my profile?
-                            </label>
+                            </p>
 
                             <div class="flex flex-row gap-2">
                                 <input type="checkbox" id="everyone" name="everyone" value="Everyone">
@@ -152,14 +174,14 @@ $userBirthdate = $userData["user_birthdate"];
                             <label class="px-2 text-sm w-56" for="user_new_password">
                                 New Password
                             </label>
-                            <input class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="New Password" name="user_old_password" id="user_old_password" required>
+                            <input class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="New Password" name="user_new_password" id="user_new_password" required>
                         </div>
 
                         <div class="flex flex-row gap-2 items-center">
                             <label class="px-2 text-sm w-56" for="user_new_password_conf">
                                 New Password Again
                             </label>
-                            <input class="p-2 border text-sm rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="New Password" name="user_old_password" id="user_old_password" required>
+                            <input class="p-2 border text-sm rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="New Password" name="user_new_password_conf" id="user_new_password_conf" required>
                         </div>
 
                         <div class="flex items-center justify-center gap-4">
