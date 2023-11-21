@@ -211,7 +211,7 @@ class AccountService
 
     function getUserData($username): array
     {
-        $query = $this->pdo->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
+        $query = $this->pdo->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate, user_profile_pic, user_banner, user_public_for_unregistered_flag, user_public_for_registered_flag, user_public_for_members_of_group_flag FROM users WHERE users.user_nickname = ?");
         $query->execute([$username]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
@@ -466,5 +466,27 @@ class AccountService
         $query->execute([$username]);
 
         return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function updateProfilePicColumn (int $userId, string $fileName) {
+        $stmt = $this->pdo->prepare("UPDATE users SET user_profile_pic = ? WHERE user_id = ?");
+
+        if ($stmt->execute([$fileName, $userId])) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+
+    function updateBannerColumn (int $userId, string $fileName) {
+        $stmt = $this->pdo->prepare("UPDATE users SET user_banner = ? WHERE user_id = ?");
+
+        if ($stmt->execute([$fileName, $userId])) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 }
