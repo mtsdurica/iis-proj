@@ -7,9 +7,7 @@ $userNickname = $_POST['userNickname'];
 $userId = $_POST['userId'];
 $serv = new AccountService();
 
-// This line cant be resolved with $context variable. There must be the whole path given.
-// TODO: change to xduric06
-$target_dir = "/homes/eva/xd/xdurac01/WWW/uploads/"; // specifies the directory where the file is going to be placed
+$target_dir = "../uploads/"; // specifies the directory where the file is going to be placed
 
 $file = basename($_FILES["fileToUpload"]["name"]); // specifies the path of the file to be uploaded
 $imageFileType = strtolower(pathinfo($file,PATHINFO_EXTENSION)); // holds the file extension of the file (in lower case)
