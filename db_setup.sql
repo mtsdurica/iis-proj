@@ -21,7 +21,6 @@ CREATE TABLE users
 
 CREATE TABLE groups
 (
-
     group_id int NOT NULL AUTO_INCREMENT,
     group_handle varchar(20) NOT NULL,
     group_name varchar(50) NOT NULL,
@@ -37,7 +36,7 @@ CREATE TABLE groups
 CREATE TABLE threads
 (
     thread_id int NOT NULL AUTO_INCREMENT,
-    thread_title varchar(255) NOT NULL,
+    thread_title varchar(255),
     thread_text varchar(500) NOT NULL,
     thread_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     thread_positive_rating int DEFAULT 0,
@@ -319,34 +318,13 @@ VALUES ('Cactus swap',
         7);
 
 -- GROUP MEMBERS
--- admin as moderator in every group
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (1, 1, 1);
-
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (2, 1, 1);
-
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (3, 1, 1);
-
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (4, 1, 1);
-
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (5, 1, 1);
-
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (6, 1, 1);
-
-INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (7, 1, 1);
 
 -- fit_students group
 INSERT INTO group_members (group_id, user_id, group_admin)
 VALUES (1, 2, 1);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (1, 9, 1);
+VALUES (1, 9, 0);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
 VALUES (1, 3, 0);
@@ -406,13 +384,13 @@ INSERT INTO group_members (group_id, user_id, group_admin)
 VALUES (4, 4, 0);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (4, 9, 1);
+VALUES (4, 9, 0);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (4, 10, 1);
+VALUES (4, 10, 0);
 
 INSERT INTO group_members (group_id, user_id, group_admin)
-VALUES (4, 5, 1);
+VALUES (4, 5, 0);
 
 -- music_talk group
 INSERT INTO group_members (group_id, user_id, group_admin)
