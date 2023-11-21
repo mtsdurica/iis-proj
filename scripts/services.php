@@ -74,6 +74,15 @@ class AccountService
             return false;
     }
 
+    function addReply(string $threadContent, int $threadPoster, int $threadGroup, $threadReply): bool
+    {
+        $query = $this->pdo->prepare('INSERT INTO threads (thread_text, poster_id, group_id, reply_id) VALUES (?, ?, ?, ?)');
+        if ($query->execute([$threadContent, $threadPoster, $threadGroup, $threadReply]))
+            return true;
+        else
+            return false;
+    }
+
     function getGroupId(string $groupHandle): int
     {
         $query = $this->pdo->prepare('SELECT groups.group_id FROM groups
@@ -90,7 +99,8 @@ class AccountService
             'SELECT groups.group_name, groups.group_handle FROM group_members
                 LEFT JOIN groups ON groups.group_id = group_members.group_id
                 LEFT JOIN users ON users.user_id = group_members.user_id
-                WHERE group_members.group_member_accepted_flag = 1 AND users.user_nickname = ?'
+                WHERE group_members.group_member_accepted_flag = 1 
+                AND users.user_nickname = ?'
         );
 
         $query->execute([$username]);
@@ -135,7 +145,9 @@ class AccountService
                 SELECT group_id FROM group_members
                     LEFT JOIN users ON group_members.user_id = users.user_id 
                     WHERE group_members.group_member_accepted_flag = 1 
-                    AND users.user_nickname = ?)"
+                    AND users.user_nickname = ?)
+            AND threads.reply_id IS NULL"
+
         );
         $query->execute([$username]);
 
@@ -153,9 +165,28 @@ class AccountService
             "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
-            WHERE groups.group_public_flag = 1"
+            WHERE groups.group_public_flag = 1
+            AND threads.reply_id IS NULL"
         );
         $query->execute();
+
+        $threads = [];
+
+        while ($thread = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($threads, $thread);
+
+        return $threads;
+    }
+
+    function getReplies($threadId)
+    {
+        $query = $this->pdo->prepare(
+            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE threads.reply_id = ?"
+        );
+        $query->execute([$threadId]);
 
         $threads = [];
 
@@ -182,6 +213,17 @@ class AccountService
     {
         $query = $this->pdo->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
         $query->execute([$username]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getThreadData($threadId)
+    {
+        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE threads.thread_id = ?");
+
+        $query->execute([$threadId]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
