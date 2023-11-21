@@ -43,37 +43,11 @@ $userBirthdate = $userData["user_birthdate"];
                             <img id="cover-photo" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
                         </div>
                     </div>
-                    <div class="flex items-center justify-center">
-                        <div id="change-cover-photo" class="hidden z-1 mt-[-20rem]">
-                            <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                                <a class="block cursor-pointer header-dropdown-element change-cover-photo">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="flex items-center justify-center">
                         <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
                             <img id="profile-photo" src="<?= $context ?>/images/profile_photo.jpg" class="object-cover w-full h-full rounded-full">
                         </profile-photo>
-                    </div>
-
-                    <div class="flex items-center justify-center">
-                        <div id="change-profile-photo" class="absolute z-50 hidden mt-24">
-                            <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                                <a class="block cursor-pointer header-dropdown-element change-profile-photo">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-profile-photo">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
                     </div>
 
                     <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
