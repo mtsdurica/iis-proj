@@ -25,6 +25,9 @@ switch ($exploded[2]) {
     case ('submit'):
         require_once __DIR__ . "/views/threadCreationView.php";
         break;
+    case ('thread'):
+        require_once __DIR__ . "/views/threadPageView.php";
+        break;
     case ('browse'):
         if (isset($exploded[3]) && ($exploded[3] === "groups" || $exploded[3] === "users"))
             require_once __DIR__ . "/views/browsePageView.php";

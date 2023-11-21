@@ -79,6 +79,7 @@ CREATE TABLE group_moderators
     group_moderator_id int NOT NULL AUTO_INCREMENT,
     group_id int NOT NULL,
     member_id int NOT NULL,
+    group_moderator_accepted_flag boolean NOT NULL DEFAULT 0,
     PRIMARY KEY (group_moderator_id),
     FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE,
     FOREIGN KEY (member_id) REFERENCES group_members(group_member_id) ON DELETE CASCADE

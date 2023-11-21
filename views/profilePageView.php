@@ -118,8 +118,8 @@ $userBirthdate = $userData["user_birthdate"];
                             $threadId = $thread["thread_id"];
                             $threadPositiveRating = $thread["thread_positive_rating"];
                             $threadNegativeRating = $thread["thread_negative_rating"];
-                            $groupName = $thread["group_name"];
-                            include "./components/thread.php";
+                            $groupHandle = $thread["group_handle"];
+                            require "./components/thread.php";
                         }
                         ?>
                     </div>
@@ -129,6 +129,7 @@ $userBirthdate = $userData["user_birthdate"];
                             $groups = $service->getUserGroupsById($userId);
                             foreach ($groups as $group) {
                                 $groupName = $group["group_name"];
+                                $groupHandle = $group["group_handle"];
                                 require "./components/browserPageGroup.php";
                             }
                             ?>

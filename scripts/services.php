@@ -74,6 +74,15 @@ class AccountService
             return false;
     }
 
+    function addReply(string $threadContent, int $threadPoster, int $threadGroup, $threadReply): bool
+    {
+        $query = $this->pdo->prepare('INSERT INTO threads (thread_text, poster_id, group_id, reply_id) VALUES (?, ?, ?, ?)');
+        if ($query->execute([$threadContent, $threadPoster, $threadGroup, $threadReply]))
+            return true;
+        else
+            return false;
+    }
+
     function getGroupId(string $groupHandle): int
     {
         $query = $this->pdo->prepare('SELECT groups.group_id FROM groups
@@ -90,7 +99,8 @@ class AccountService
             'SELECT groups.group_name, groups.group_handle FROM group_members
                 LEFT JOIN groups ON groups.group_id = group_members.group_id
                 LEFT JOIN users ON users.user_id = group_members.user_id
-                WHERE users.user_nickname = ?'
+                WHERE group_members.group_member_accepted_flag = 1 
+                AND users.user_nickname = ?'
         );
 
         $query->execute([$username]);
@@ -134,7 +144,10 @@ class AccountService
             IN (
                 SELECT group_id FROM group_members
                     LEFT JOIN users ON group_members.user_id = users.user_id 
-                    WHERE users.user_nickname = ?)"
+                    WHERE group_members.group_member_accepted_flag = 1 
+                    AND users.user_nickname = ?)
+            AND threads.reply_id IS NULL"
+
         );
         $query->execute([$username]);
 
@@ -152,9 +165,28 @@ class AccountService
             "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
-            WHERE groups.group_public_flag = 1"
+            WHERE groups.group_public_flag = 1
+            AND threads.reply_id IS NULL"
         );
         $query->execute();
+
+        $threads = [];
+
+        while ($thread = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($threads, $thread);
+
+        return $threads;
+    }
+
+    function getReplies($threadId)
+    {
+        $query = $this->pdo->prepare(
+            "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE threads.reply_id = ?"
+        );
+        $query->execute([$threadId]);
 
         $threads = [];
 
@@ -181,6 +213,17 @@ class AccountService
     {
         $query = $this->pdo->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate, user_profile_pic, user_banner, user_public_for_unregistered_flag, user_public_for_registered_flag, user_public_for_members_of_group_flag FROM users WHERE users.user_nickname = ?");
         $query->execute([$username]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getThreadData($threadId)
+    {
+        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            LEFT JOIN groups ON threads.group_id = groups.group_id
+            WHERE threads.thread_id = ?");
+
+        $query->execute([$threadId]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -219,9 +262,11 @@ class AccountService
 
     function getGroupMembers($groupId)
     {
-        $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_members
+        $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_id FROM group_members
             LEFT JOIN users ON users.user_id = group_members.user_id
-            WHERE group_members.group_id = ?');
+            WHERE group_members.group_member_accepted_flag = 1
+            AND group_members.group_admin = 0
+            AND group_members.group_id = ?');
 
         $query->execute([$groupId]);
 
@@ -233,9 +278,93 @@ class AccountService
         return $members;
     }
 
+    function getGroupModerators($groupId)
+    {
+        $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_moderators
+            LEFT JOIN group_members ON group_moderators.member_id = group_members.group_member_id
+            LEFT JOIN users ON users.user_id = group_members.user_id
+            WHERE group_moderators.group_moderator_accepted_flag = 1
+            AND group_moderators.group_id = ?');
+
+        $query->execute([$groupId]);
+
+        $members = [];
+
+        while ($member = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($members, $member["user_nickname"]);
+
+        return $members;
+    }
+
+    function getPendingModerators($groupId)
+    {
+        $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_id FROM group_moderators
+            LEFT JOIN group_members ON group_moderators.member_id = group_members.group_member_id
+            LEFT JOIN users ON users.user_id = group_members.user_id
+            WHERE group_moderators.group_moderator_accepted_flag = 0
+            AND group_moderators.group_id = ?');
+
+        $query->execute([$groupId]);
+
+        $members = [];
+
+        while ($member = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($members, $member);
+
+        return $members;
+    }
+
+    function getPendingJoinRequests($groupId)
+    {
+        $query = $this->pdo->prepare('SELECT users.user_id, users.user_nickname FROM group_members
+            LEFT JOIN users ON users.user_id = group_members.user_id
+            WHERE group_members.group_member_accepted_flag = 0 
+            AND group_members.group_id = ?');
+
+        $query->execute([$groupId]);
+
+        $members = [];
+
+        while ($member = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($members, $member);
+
+        return $members;
+    }
+
+    function handleJoinRequest($groupId, $userId, $updateTo)
+    {
+        if ($updateTo === true) {
+            $query = $this->pdo->prepare("UPDATE group_members SET group_member_accepted_flag = 1 
+            WHERE group_members.group_id = ? 
+            AND group_members.user_id = ?");
+            $query->execute([$groupId, $userId]);
+        } else {
+            $query = $this->pdo->prepare("DELETE FROM group_members 
+                WHERE group_members.group_id = ? 
+                AND group_members.user_id = ?");
+            $query->execute([$groupId, $userId]);
+        }
+    }
+
+    function handleModeratorRequest($groupId, $userId, $updateTo)
+    {
+        $memberId = $this->getGroupMemberId($groupId, $userId);
+        if ($updateTo === true) {
+            $query = $this->pdo->prepare('UPDATE group_moderators SET group_moderator_accepted_flag = 1 
+            WHERE group_moderators.group_id = ? 
+            AND group_moderators.member_id = ?');
+            $query->execute([$groupId, $memberId["group_member_id"]]);
+        } else {
+            $query = $this->pdo->prepare('DELETE FROM group_moderators
+                WHERE group_moderators.group_id = ? 
+                AND group_moderators.member_id = ?');
+            $query->execute([$groupId, $memberId["group_member_id"]]);
+        }
+    }
+
     function getGroupAdmin($groupId)
     {
-        $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_members
+        $query = $this->pdo->prepare('SELECT users.user_id, users.user_nickname FROM group_members
             LEFT JOIN users ON users.user_id = group_members.user_id
             WHERE group_members.group_admin = 1
             AND group_members.group_id = ?');
@@ -247,7 +376,7 @@ class AccountService
 
     function getUserGroupsById($userId)
     {
-        $query = $this->pdo->prepare("SELECT groups.group_name FROM group_members 
+        $query = $this->pdo->prepare("SELECT groups.group_name, groups.group_handle FROM group_members 
             LEFT JOIN groups ON group_members.group_id = groups.group_id
             WHERE user_id = ?");
 
@@ -261,9 +390,79 @@ class AccountService
         return $groups;
     }
 
+    function joinGroupPublic($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("INSERT INTO group_members (group_id, user_id) values (?, ?)");
+        $query->execute([$groupId, $userId]);
+    }
+
+    function joinGroupPrivate($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("INSERT INTO group_members (group_id, user_id, group_member_accepted_flag) values (?, ?, 0)");
+        $query->execute([$groupId, $userId]);
+    }
+
+    function getGroupMemberId($groupId, $userId)
+    {
+        $query = $this->pdo->prepare('SELECT group_members.group_member_id FROM group_members
+            WHERE group_members.group_member_accepted_flag = 1
+            AND group_members.group_admin = 0
+            AND group_members.group_id = ?
+            AND group_members.user_id = ?');
+
+        $query->execute([$groupId, $userId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function requestModerator($groupId, $userId)
+    {
+        $member = $this->getGroupMemberId($groupId, $userId);
+        $query = $this->pdo->prepare("INSERT INTO group_moderators (group_id, member_id) values (?, ?)");
+        $query->execute([$groupId, $member["group_member_id"]]);
+    }
+
+    function checkMembership($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("SELECT user_id, group_member_accepted_flag FROM group_members 
+            WHERE group_id = ? 
+            AND user_id = ?");
+
+        $query->execute([$groupId, $userId]);
+
+        $response = $query->fetch(PDO::FETCH_ASSOC);
+        if (isset($response["user_id"])) {
+            if ($response["group_member_accepted_flag"] == 1)
+                return true;
+            else return "notAccepted";
+        }
+        return false;
+    }
+
+    function leaveGroup($groupId, $userId)
+    {
+        $query = $this->pdo->prepare("DELETE FROM group_members WHERE group_members.group_id = ?
+            AND group_members.user_id = ?");
+        $query->execute([$groupId, $userId]);
+    }
+
+    function removeModerator($groupId, $username)
+    {
+        $data = $this->getLoginData($username);
+        $userId = $data["user_id"];
+        $memberId = $this->getGroupMemberId($groupId, $userId);
+        var_dump($memberId);
+        $query = $this->pdo->prepare('DELETE FROM group_moderators
+                WHERE group_moderators.group_id = ? 
+                AND group_moderators.member_id = ?');
+        $query->execute([$groupId, $memberId["group_member_id"]]);
+    }
+
     function getLoginData($username)
     {
-        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password, user_full_name from users WHERE users.user_nickname = ?");
+        $query = $this->pdo->prepare("SELECT user_id, user_nickname, user_password, user_full_name 
+            FROM users 
+            WHERE users.user_nickname = ?");
         $query->execute([$username]);
 
         return $query->fetch(PDO::FETCH_ASSOC);
