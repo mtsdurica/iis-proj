@@ -13,6 +13,11 @@ $userFullname = $userData["user_full_name"];
 $userEmail = $userData["user_email"];
 $userGender = $userData["user_gender"];
 $userBirthdate = $userData["user_birthdate"];
+$userProfilePic = $userData["user_profile_pic"];
+$userBanner = $userData["user_banner"];
+$userPublicUnregistered = $userData["user_public_for_unregistered_flag"];
+$userPublicRegistered = $userData["user_public_for_registered_flag"];
+$userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
 ?>
 <!DOCTYPE html>
 <html class="h-full">
@@ -40,40 +45,28 @@ $userBirthdate = $userData["user_birthdate"];
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
                         <div id="cover-photo-element" class="w-1/2 h-64 mt-0 transition-all cursor-pointer hover:brightness-75">
-                            <img id="cover-photo" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
+                        <?php
+                        if ($userBanner === NULL || $userBanner === ''){
+                            $bannerUrl =  $context . '/images/cover_photo.jpg';
+                        } else {
+                            $bannerUrl = $context . '/uploads/' . $userBanner;
+                        }
+                    ?>
+                        <img id="cover-photo" src="<?= $bannerUrl ?>" class="object-cover w-full h-full">
                         </div>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <div id="change-cover-photo" class="hidden z-1 mt-[-20rem]">
-                            <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                                <a class="block cursor-pointer header-dropdown-element change-cover-photo">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
-                            <img id="profile-photo" src="<?= $context ?>/images/profile_photo.jpg" class="object-cover w-full h-full rounded-full">
-                        </profile-photo>
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <div id="change-profile-photo" class="absolute z-50 hidden mt-24">
-                            <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                                <a class="block cursor-pointer header-dropdown-element change-profile-photo">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-profile-photo">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
+                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
+                            <?php
+                                if ($userProfilePic === NULL || $userProfilePic === ''){
+                                    $picUrl =  $context . '/images/profile_photo.jpg';
+                                } else {
+                                    $picUrl = $context . '/uploads/' . $userProfilePic;
+                                }
+                            ?>
+                        <img id="profile-photo" src="<?= $picUrl ?>" class="object-cover w-full h-full rounded-full">
+                        </profile-photo>
                     </div>
 
                     <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
