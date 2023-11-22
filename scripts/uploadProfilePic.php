@@ -7,7 +7,7 @@ $userNickname = $_POST['userNickname'];
 $userId = $_POST['userId'];
 $serv = new AccountService();
 
-$target_dir = '../uploads/'; // specifies the directory where the file is going to be placed
+$target_dir = "../uploads/"; // specifies the directory where the file is going to be placed
 
 $file = basename($_FILES["fileToUpload"]["name"]); // specifies the path of the file to be uploaded
 $imageFileType = strtolower(pathinfo($file,PATHINFO_EXTENSION)); // holds the file extension of the file (in lower case)
