@@ -3,8 +3,8 @@ session_start();
 require_once "services.php";
 
 $context = $_SERVER["CONTEXT_PREFIX"];
-$userNickname = $_POST['userNickname'];
-$userId = $_POST['userId'];
+$groupHandle = $_POST['groupHandle'];
+$groupId = $_POST['groupId'];
 $serv = new AccountService();
 
 $target_dir = "../uploads/"; // specifies the directory where the file is going to be placed
@@ -12,9 +12,10 @@ $target_dir = "../uploads/"; // specifies the directory where the file is going 
 $file = basename($_FILES["fileToUpload"]["name"]); // specifies the path of the file to be uploaded
 $imageFileType = strtolower(pathinfo($file,PATHINFO_EXTENSION)); // holds the file extension of the file (in lower case)
 
-$file_name = $userId . "_banner." . $imageFileType;
+$file_name = $groupId . "_group" . "_profilePic." . $imageFileType;
 $target_file = $target_dir . $file_name;
-
+echo $target_file;
+echo $_POST['groupHandle'];
 $uploadOk = 1;
 
 // Check if image file is a actual image or fake image
@@ -42,11 +43,11 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo "The file ". htmlspecialchars( basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
-        $serv->updateBannerColumn($userId, $file_name);
+        $serv->updateGroupProfilePicColumn($groupId, $file_name);
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
 }
 
-header("Location:$context/profile/$userNickname/settings");
+header("Location:$context/group/$groupHandle/settings");
 ?>

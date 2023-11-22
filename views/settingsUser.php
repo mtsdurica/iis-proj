@@ -48,7 +48,6 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                     <!-- Profile picture section -->
                     <div class="flex flex-col w-full gap-2">
                         <h1 class="mb-3 text-2xl font-bold">Profile picture</h1>
-                        <!-- TODO: condition that will upload photo from database -->
                         <?php
                         if ($userProfilePic === NULL || $userProfilePic === '') {
                             $picUrl =  $context . '/images/profile_photo.jpg';
@@ -89,7 +88,7 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                         </form>
                     </div> <!-- Banner picture section -->
 
-                </div> <!-- Left side -->
+                </div> <!-- Upper side -->
 
                 <!-- Lower side -->
                 <div class="flex flex-row w-full p-6 my-4 rounded-lg shadow-lg gap-44 header-colorscheme">

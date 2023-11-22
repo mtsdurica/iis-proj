@@ -129,7 +129,7 @@ class AccountService
 
     function getGroupData($groupHandle)
     {
-        $query = $this->pdo->prepare("SELECT groups.group_id, groups.group_handle, groups.group_name, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation FROM groups WHERE groups.group_handle = ?");
+        $query = $this->pdo->prepare("SELECT groups.group_id, groups.group_handle, groups.group_name, groups.group_profile_pic, groups.group_banner, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation, groups.group_banned FROM groups WHERE groups.group_handle = ?");
         $query->execute([$groupHandle]);
 
         return $query->fetch(PDO::FETCH_ASSOC);
@@ -502,6 +502,17 @@ class AccountService
         }
     }
 
+    // Function to update Group profile picture column in database, when user uploads their custom photo.
+    function updateGroupProfilePicColumn (int $groupId, string $fileName) {
+        $stmt = $this->pdo->prepare("UPDATE groups SET group_profile_pic = ? WHERE group_id = ?");
+    
+        if ($stmt->execute([$fileName, $groupId])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Function to update User profile banner column in database, when user uploads their custom photo.
     function updateBannerColumn (int $userId, string $fileName) {
 
@@ -514,13 +525,25 @@ class AccountService
         }
     }
 
+    // Function to update Group profile banner column in database, when user uploads their custom photo.
+    function updateGroupBannerColumn (int $groupId, string $fileName) {
+
+        $stmt = $this->pdo->prepare("UPDATE groups SET group_banner = ? WHERE group_id = ?");
+    
+        if ($stmt->execute([$fileName, $groupId])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     // Function to update User data
     function updateUser($data)
     {
         $stmt = $this->pdo->prepare('UPDATE users SET user_nickname = ?, user_full_name = ?, user_birthdate = ?, user_public_for_unregistered_flag = ?, user_public_for_registered_flag = ?, user_public_for_members_of_group_flag = ? WHERE user_id = ?');
 
-        $user_id = $data['user_id']; // Assuming user_id is present in the $data array
+        $user_id = $data['user_id'];
         $user_nickname = $data['user_nickname'];
         $user_full_name = $data['user_full_name'];
         $user_birthdate = $data['user_birthdate'];
@@ -529,6 +552,26 @@ class AccountService
         $user_public_for_members_of_group_flag = $data['groupMembers'];
 
         if ($stmt->execute([$user_nickname, $user_full_name, $user_birthdate, $user_public_for_unregistered_flag, $user_public_for_registered_flag, $user_public_for_members_of_group_flag, $user_id])) {
+            return true;
+        } else {
+            $this->lastError = $stmt->errorInfo();
+            return false;
+        }
+    }
+
+    // Function to update Group data
+    function updateGroup($data)
+    {
+        $stmt = $this->pdo->prepare('UPDATE groups SET group_handle = ?, group_name = ?, group_bio = ?, group_public_flag = ? WHERE group_id = ?');
+    
+        $group_id = $data['group_id'];
+        $group_handle = $data['group_handle'];
+        $group_name = $data['group_name'];
+        $group_bio = $data['group_bio'];
+        $group_public_flag = $data['public_flag'];
+        
+
+        if ($stmt->execute([$group_handle, $group_name, $group_bio, $group_public_flag, $group_id])) {
             return true;
         } else {
             $this->lastError = $stmt->errorInfo();
