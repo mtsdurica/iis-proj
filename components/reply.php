@@ -18,22 +18,37 @@
             </p>
         </div>
         <hr class="mt-4 divider-colorscheme" />
-        <div class="flex flex-row items-center justify-between px-4 mx-40 mt-2 min-h-fit">
+        <?php
+        if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
+            $posActive = "";
+            $negActive = "";
+            $thread = $service->getThreadRating($threadId, $_SESSION["userId"]);
+            if (!empty($thread) && $thread["thread_rating"] == true) {
+                $threadPositiveRating++;
+                $posActive = "ranking-active";
+            } else if (!empty($thread) && $thread["thread_rating"] == false) {
+                $threadNegativeRating++;
+                $negActive = "ranking-active";
+            }
+        }
+        ?>
+        <form class="flex flex-row items-center justify-between px-4 mx-40 mt-2 rankingForm min-h-fit">
+            <input type="hidden" name="threadId" value="<?= $threadId ?>">
             <div class="h-6 mr-2 border-l divider-colorscheme"></div>
-            <button class="flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600">
+            <button type="submit" name="positive" data-url="<?= $context ?>/scripts/rankPositive.php" class="<?= $posActive ?> flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md rankingButton hover:bg-slate-300 dark:hover:bg-slate-600">
                 <i class="fa-solid fa-angle-up"></i>
                 <div class="pl-4 text-base">
                     <?= $threadPositiveRating ?>
                 </div>
             </button>
             <div class="h-6 mx-2 border-l divider-colorscheme"></div>
-            <button class="flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600">
+            <button type="submit" name="negative" data-url="<?= $context ?>/scripts/rankNegative.php" class="<?= $negActive ?> flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md rankingButton hover:bg-slate-300 dark:hover:bg-slate-600">
                 <i class="text-base fa-solid fa-angle-down"></i>
                 <div class="pl-4 text-base ">
                     <?= $threadNegativeRating ?>
                 </div>
             </button>
-            <div class="h-6 mx-2 border-l divider-colorscheme"></div>
-        </div>
+            <div class="h-6 ml-2 border-l divider-colorscheme"></div>
+        </form>
     </div>
 </div>

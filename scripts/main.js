@@ -3,7 +3,7 @@
     const profileDropDownToggle = document.querySelector('.toggle-profile-dropdown');
     const showMoreToggle = document.querySelectorAll('.thread-text');
     const browseButton = document.querySelector('.browser-button');
-
+    const rankingForms = document.querySelectorAll('.rankingForm');
 
     darkModeToggle.addEventListener('click', (event) => {
         event.preventDefault();
@@ -33,6 +33,40 @@
             event.preventDefault();
             var showMoreElement = document.querySelector('#show-more-' + item.id);
             showMoreElement.classList.toggle('animated-invisible');
+        });
+    });
+
+    rankingForms.forEach(function (item) {
+        // inspired by: https://stackoverflow.com/a/30142095
+        $(item).on('click', '.rankingButton', function (e) {
+            var values = $(item).serialize();
+            if ($(this).siblings('.rankingButton')[0].classList.contains('ranking-active') === true) {
+                $(this).siblings('.rankingButton')[0].classList.toggle('ranking-active');
+                var tmp = $(this).siblings('.rankingButton').children().last().html();
+                tmp--;
+                $(this).siblings('.rankingButton').children().last().html(tmp);
+            }
+            var hasClass = $(this)[0].classList.contains('ranking-active');
+            $(this)[0].classList.toggle('ranking-active');
+            var tmp = $(this).children().last().html();
+            if (hasClass === true) {
+                tmp--;
+            }
+            else {
+                tmp++;
+            }
+            $(this).children().last().html(tmp);
+            $.ajax({
+                url: $(this).data('url'),
+                type: "POST",
+                data: values,
+                success: function (response) {
+                },
+                error: function (response) {
+                    alert("something went wrong");
+                }
+            });
+            e.preventDefault();
         });
     });
 
@@ -72,9 +106,6 @@
     }
 
     document.getElementById(getPage()).className += "-active";
-
-    $(document).ready(function () {
-    });
 })();
 
 // Admin Dashboard tabs animation

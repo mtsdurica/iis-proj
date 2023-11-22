@@ -493,4 +493,38 @@ class AccountService
             return false;
         }
     }
+
+    function rateThread($threadId, $userId, $rating)
+    {
+        $ratingAlreadySet = $this->getThreadRating($threadId, $userId);
+        if (!empty($ratingAlreadySet)) {
+            if ((int)$ratingAlreadySet["thread_rating"] === $rating) {
+                $query = $this->pdo->prepare("DELETE FROM thread_ratings 
+                WHERE thread_id = ? 
+                AND user_id = ?");
+                $query->execute([$threadId, $userId]);
+            } else {
+                $query = $this->pdo->prepare("UPDATE thread_ratings 
+                SET thread_rating = ?
+                WHERE thread_id = ? 
+                AND user_id = ?");
+                $query->execute([$rating, $threadId, $userId]);
+            }
+        } else {
+            $query = $this->pdo->prepare("INSERT INTO thread_ratings (thread_id, user_id, thread_rating)
+                VALUES (?, ?, ?)");
+            $query->execute([$threadId, $userId, $rating]);
+        }
+    }
+
+    function getThreadRating($threadId, $userId)
+    {
+        $query = $this->pdo->prepare("SELECT thread_rating FROM thread_ratings
+            WHERE thread_id = ?
+            AND user_id = ?");
+
+        $query->execute([$threadId, $userId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
 }
