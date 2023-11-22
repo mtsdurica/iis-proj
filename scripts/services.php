@@ -617,12 +617,6 @@ class AccountService
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Methods meant for admin
-    function listAllUsers() {
-        $stmt = $this->pdo->query('SELECT user_nickname, user_full_name, user_id FROM users');
-        return $stmt;
-    }
-
     // Checks if user is banned or not.
     // @return boolean
     function isBannedUser(int $id) 
