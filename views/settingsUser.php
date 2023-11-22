@@ -98,7 +98,7 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                     <div class="flex flex-col">
                         <h1 class="my-3 text-2xl font-bold">General</h1>
                         <!-- form content -->
-                        <form class="flex flex-col gap-2" action="<?= $context ?>/scripts/update_account.php" method="POST">
+                        <form class="flex flex-col gap-2" action="<?= $context ?>/scripts/updateAccount.php" method="POST">
                             <div class="flex flex-row items-center gap-2">
                                 <label class="w-56 px-2 text-sm" for="user_nickname">
                                     Username
@@ -133,21 +133,49 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                                 </p>
 
                                 <div class="flex flex-row gap-2">
-                                    <input type="checkbox" id="everyone" name="everyone" value="Everyone">
+                                    <?php
+                                        if ($userPublicUnregistered == 1)
+                                        {
+                                            $checked = "checked";
+                                        } else {
+                                            $checked = "";
+                                        }
+                                    ?>
+
+                                    <input type="checkbox" id="everyone" name="everyone" value="Everyone" <?=$checked?>>
                                     <label class="text-sm" for="everyone">Everyone</label>
 
-                                    <input class="ml-28" type="checkbox" id="registered" name="registered" value="Registered">
+                                    <?php
+                                        if ($userPublicRegistered == 1)
+                                        {
+                                            $checked = "checked";
+                                        } else {
+                                            $checked = "";
+                                        }
+                                    ?>
+
+                                    <input class="ml-28" type="checkbox" id="registered" name="registered" value="Registered" <?=$checked?>>
                                     <label class="text-sm" for="registered">Only registered users</label>
                                 </div>
                                 <div class="flex flex-row gap-2">
-                                    <input type="checkbox" id="groupMembers" name="groupMembers" value="GroupMembers">
+
+                                    <?php
+                                        if ($userPublicGroupMembers == 1)
+                                        {
+                                            $checked = "checked";
+                                        } else {
+                                            $checked = "";
+                                        }
+                                    ?>
+
+                                    <input type="checkbox" id="groupMembers" name="groupMembers" value="GroupMembers" <?=$checked?>>
                                     <label class="text-sm" for="groupMembers">Only group members</label>
 
-                                    <input class="ml-9" type="checkbox" id="nobody" name="nobody" value="Nobody">
-                                    <label class="text-sm" for="nobody">Nobody</label>
                                 </div>
 
                             </div>
+
+                            <input type="hidden" name="userId" value="<?= $userId ?>">
 
                             <div class="flex items-center justify-center gap-4">
                                 <button type="submit" name="submitted" class="p-2 mt-2 text-sm text-center text-white transition-all rounded-lg w-44 confirm-button-colorscheme">
@@ -163,7 +191,7 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                     <div>
                         <h1 class="my-3 text-2xl font-bold">Password</h1>
 
-                        <form class="flex flex-col gap-2" action="<?= $context ?>/scripts/update_password.php" method="POST">
+                        <form class="flex flex-col gap-2" action="<?= $context ?>/scripts/updatePassword.php" method="POST">
                             <div class="flex flex-row items-center gap-2">
                                 <label class="w-56 px-2 text-sm" for="user_old_password">
                                     Old Password
@@ -185,13 +213,29 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                                 <input class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="New Password" name="user_new_password_conf" id="user_new_password_conf" required>
                             </div>
 
+                            <input type="hidden" name="userId" value="<?= $userId ?>">
+                            <input type="hidden" name="userNickname" value="<?= $userNickname ?>">
+
                             <div class="flex items-center justify-center gap-4">
-                                <button type="submit" name="submitted" class="p-2 mt-2 text-sm text-center text-white transition-all rounded-lg w-44 confirm-button-colorscheme">
+                                <button type="submit" value="Submit" name="update" class="p-2 mt-2 text-sm text-center text-white transition-all rounded-lg w-44 confirm-button-colorscheme">
                                     Save new password
                                 </button>
                             </div>
 
                         </form>
+
+                        <?php
+                        if (isset($_SESSION['statusMessage']))
+                        {
+                            $statusMessage = $_SESSION['statusMessage'];
+                        } else {
+                            $statusMessage = '';
+                        }
+                        ?>
+
+                        <div class="flex justify-center p-4 text-center">
+                            <h1 class="text-lg text-red-600 opacity-100 font-bold"><?= $statusMessage ?></h1>
+                        </div>
 
                     </div> <!-- Password settings form section -->
 

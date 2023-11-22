@@ -64,6 +64,7 @@ class AccountService
         $stmt = $this->pdo->query('SELECT group_id, group_name FROM groups');
         return $stmt;
     }
+    // end
 
     function addThread(string $threadTitle, string $threadContent, int $threadPoster, int $threadGroup): bool
     {
@@ -468,6 +469,7 @@ class AccountService
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Function to update User profile picture column in database, when user uploads their custom photo.
     function updateProfilePicColumn (int $userId, string $fileName) {
         $stmt = $this->pdo->prepare("UPDATE users SET user_profile_pic = ? WHERE user_id = ?");
 
@@ -479,6 +481,7 @@ class AccountService
         
     }
 
+    // Function to update User profile banner column in database, when user uploads their custom photo.
     function updateBannerColumn (int $userId, string $fileName) {
         $stmt = $this->pdo->prepare("UPDATE users SET user_banner = ? WHERE user_id = ?");
 
@@ -487,6 +490,51 @@ class AccountService
         } else {
             return false;
         }
-        
+    }
+
+    // Function to update User data
+    function updateUser($data)
+    {
+        $stmt = $this->pdo->prepare('UPDATE users SET user_nickname = ?, user_full_name = ?, user_birthdate = ?, user_public_for_unregistered_flag = ?, user_public_for_registered_flag = ?, user_public_for_members_of_group_flag = ? WHERE user_id = ?');
+
+        $user_id = $data['user_id']; // Assuming user_id is present in the $data array
+        $user_nickname = $data['user_nickname'];
+        $user_full_name = $data['user_full_name'];
+        $user_birthdate = $data['user_birthdate'];
+        $user_public_for_unregistered_flag = $data['everyone'];
+        $user_public_for_registered_flag = $data['registered'];
+        $user_public_for_members_of_group_flag = $data['groupMembers'];
+
+        if ($stmt->execute([$user_nickname, $user_full_name, $user_birthdate, $user_public_for_unregistered_flag, $user_public_for_registered_flag, $user_public_for_members_of_group_flag, $user_id])) {
+            return true;
+        } else {
+            $this->lastError = $stmt->errorInfo();
+            return false;
+        }
+    }
+
+    // Function to get password from database
+    function getPassword($userId)
+    {
+        $stmt = $this->pdo->prepare('SELECT user_password FROM users WHERE user_id = ?');
+        $stmt->execute([$userId]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result['user_password'];
+    }
+
+    // Function to update user password
+    function updatePassword(int $userId, string $newPassword)
+    {
+        $password = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt = $this->pdo->prepare('UPDATE users SET user_password = ? WHERE user_id = ?');
+
+        if ($stmt->execute([$password, $userId])) {
+            return true;
+        } else {
+            $this->lastError = $stmt->errorInfo();
+            return false;
+        }
     }
 }
