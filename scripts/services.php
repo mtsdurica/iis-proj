@@ -96,7 +96,7 @@ class AccountService
     function getGroupsByUsername($username): array
     {
         $query = $this->pdo->prepare(
-            'SELECT groups.group_name, groups.group_handle FROM group_members
+            'SELECT groups.group_name, groups.group_handle, groups.group_profile_pic FROM group_members
                 LEFT JOIN groups ON groups.group_id = group_members.group_id
                 LEFT JOIN users ON users.user_id = group_members.user_id
                 WHERE group_members.group_member_accepted_flag = 1 
@@ -113,9 +113,9 @@ class AccountService
         return $groups;
     }
 
-    function getAllGroupsNames(): array
+    function getAllGroups(): array
     {
-        $query = $this->pdo->prepare('SELECT group_name, group_handle FROM groups');
+        $query = $this->pdo->prepare('SELECT group_name, group_handle, group_profile_pic FROM groups');
         $query->execute();
 
         $groups = [];
@@ -196,9 +196,9 @@ class AccountService
         return $threads;
     }
 
-    function getAllUserNames(): array
+    function getAllUsers(): array
     {
-        $query = $this->pdo->prepare('SELECT user_nickname FROM users');
+        $query = $this->pdo->prepare('SELECT user_nickname, user_profile_pic FROM users');
         $query->execute();
 
         $users = [];
@@ -266,7 +266,7 @@ class AccountService
 
     function getGroupMembers($groupId)
     {
-        $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_id FROM group_members
+        $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_id, users.user_profile_pic FROM group_members
             LEFT JOIN users ON users.user_id = group_members.user_id
             WHERE group_members.group_member_accepted_flag = 1
             AND group_members.group_admin = 0
@@ -282,7 +282,7 @@ class AccountService
         return $members;
     }
 
-    function getGroupModerators($groupId)
+    function getGroupModeratorsUsernames($groupId)
     {
         $query = $this->pdo->prepare('SELECT users.user_nickname FROM group_moderators
             LEFT JOIN group_members ON group_moderators.member_id = group_members.group_member_id
@@ -296,6 +296,24 @@ class AccountService
 
         while ($member = $query->fetch(PDO::FETCH_ASSOC))
             array_push($members, $member["user_nickname"]);
+
+        return $members;
+    }
+
+    function getGroupModerators($groupId)
+    {
+        $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_profile_pic FROM group_moderators
+            LEFT JOIN group_members ON group_moderators.member_id = group_members.group_member_id
+            LEFT JOIN users ON users.user_id = group_members.user_id
+            WHERE group_moderators.group_moderator_accepted_flag = 1
+            AND group_moderators.group_id = ?');
+
+        $query->execute([$groupId]);
+
+        $members = [];
+
+        while ($member = $query->fetch(PDO::FETCH_ASSOC))
+            array_push($members, $member);
 
         return $members;
     }
@@ -368,7 +386,7 @@ class AccountService
 
     function getGroupAdmin($groupId)
     {
-        $query = $this->pdo->prepare('SELECT users.user_id, users.user_nickname FROM group_members
+        $query = $this->pdo->prepare('SELECT users.user_id, users.user_nickname, users.user_profile_pic FROM group_members
             LEFT JOIN users ON users.user_id = group_members.user_id
             WHERE group_members.group_admin = 1
             AND group_members.group_id = ?');
@@ -380,7 +398,7 @@ class AccountService
 
     function getUserGroupsById($userId)
     {
-        $query = $this->pdo->prepare("SELECT groups.group_name, groups.group_handle FROM group_members 
+        $query = $this->pdo->prepare("SELECT groups.group_name, groups.group_handle, groups.group_profile_pic FROM group_members 
             LEFT JOIN groups ON group_members.group_id = groups.group_id
             WHERE user_id = ?");
 
