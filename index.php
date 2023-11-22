@@ -48,6 +48,9 @@ switch ($exploded[2]) {
     case ('register_success'):
         require_once __DIR__ . "/views/postRegisterView.php";
         break;
+    case ('adminDashboard'):
+        require_once __DIR__ . "/views/dashboardPageView.php";
+        break;
     default:
         http_response_code(404);
         require_once __DIR__ . "/views/error404View.php";
