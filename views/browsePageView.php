@@ -48,16 +48,20 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                     <div class="flex flex-wrap justify-center gap-6">
                         <?php
                         if ($exploded[3] === "users") {
-                            $users = $service->getAllUserNames();
+                            $users = $service->getAllUsers();
                             foreach ($users as $user) {
                                 $userNickname = $user["user_nickname"];
+                                $userProfilePic = $user["user_profile_pic"];
+                                if ($userNickname === "admin")
+                                    continue;
                                 include "./components/browserPageUser.php";
                             }
                         } else if ($exploded[3] === "groups") {
-                            $groups = $service->getAllGroupsNames();
+                            $groups = $service->getAllGroups();
                             foreach ($groups as $group) {
                                 $groupName = $group["group_name"];
                                 $groupHandle = $group["group_handle"];
+                                $groupProfilePic = $group["group_profile_pic"];
                                 include "./components/browserPageGroup.php";
                             }
                         }
