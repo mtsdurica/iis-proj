@@ -55,7 +55,7 @@ class AccountService
     // Methods meant for admin
     function listAllUsers()
     {
-        $stmt = $this->pdo->query('SELECT user_nickname, user_full_name FROM users');
+        $stmt = $this->pdo->query('SELECT user_nickname, user_full_name, user_id FROM users');
         return $stmt;
     }
 
