@@ -43,7 +43,7 @@ $service = new AccountService();
                             $groups = $service->getGroupsByUsername($_SESSION["username"]);
                             foreach ($groups as $group) {
                             ?>
-                                <option value="<?= $group ?>"></option>
+                                <option value="<?= $group["group_handle"] ?>"></option>
                             <?php
                             }
                             ?>
