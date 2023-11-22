@@ -92,7 +92,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 $moderatorRequestsNames = [];
                                 foreach ($moderatorRequests as $moderatorRequest)
                                     array_push($moderatorRequestsNames, $moderatorRequest["user_nickname"]);
-                                $groupModerators = $service->getGroupModerators($groupId);
+                                $groupModerators = $service->getGroupModeratorsUsernames($groupId);
                                 $groupAdmin = $service->getGroupAdmin($groupId);
                                 $pendingMod = in_array($_SESSION["username"], $moderatorRequestsNames);
                                 $isMod = in_array($_SESSION["username"], $groupModerators);
@@ -150,7 +150,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                         </li>
                         <?php
                         $groupAdmin = $service->getGroupAdmin($groupId);
-                        $groupModerators = $service->getGroupModerators($groupId);
+                        $groupModerators = $service->getGroupModeratorsUsernames($groupId);
                         if ((isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) || (!empty($groupModerators) && isset($_SESSION["loggedIn"]) && in_array($_SESSION["username"], $groupModerators))) {
                         ?>
                             <li class="flex">
@@ -197,6 +197,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                     <?php
                                     $groupAdmin = $service->getGroupAdmin($groupId);
                                     $userNickname = $groupAdmin["user_nickname"];
+                                    $userProfilePic =  $groupAdmin["user_profile_pic"];
                                     require "./components/groupPageAdmin.php";
                                     ?>
                                 </div>
@@ -210,6 +211,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                         <?php
                                         foreach ($groupModerators as $groupModerator) {
                                             $userNickname = $groupModerator;
+                                            $userProfilePic = $groupMember["user_profile_pic"];
                                             require "./components/groupPageModerator.php";
                                         }
                                         ?>
@@ -226,6 +228,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                         foreach ($groupMembers as $groupMember) {
                                             $userNickname = $groupMember["user_nickname"];
                                             $userId = $groupMember["user_id"];
+                                            $userProfilePic = $groupMember["user_profile_pic"];
                                             require "./components/groupPageMembers.php";
                                         }
                                         ?>
@@ -265,7 +268,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                             </div>
                         </div>
                         <?php
-                        $groupModerators = $service->getGroupModerators($groupId);
+                        $groupModerators = $service->getGroupModeratorsUsernames($groupId);
                         if (!empty($groupModerators) && isset($_SESSION["loggedIn"]) && in_array($_SESSION["username"], $groupModerators)) {
                         ?>
                             <div id="group-requests" class="hidden">
