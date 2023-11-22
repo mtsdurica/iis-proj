@@ -1,29 +1,23 @@
 <?php
+require_once "./scripts/services.php";
+session_start();
+$service = new AccountService();
 $context = $_SERVER["CONTEXT_PREFIX"];
 $request = $_SERVER["REQUEST_URI"];
 $exploded = explode("/", $request);
-session_start();
 
-try {
-    $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-} catch (PDOException $e) {
-    echo "Connection error: " . $e->getMessage();
-    die();
-}
-
-$userDataQuery = $db->prepare("SELECT users.user_id, users.user_nickname, users.user_full_name, users.user_email, users.user_gender, users.user_birthdate FROM users WHERE users.user_nickname = ?");
-$userDataQuery->execute([$exploded[3]]);
-
-while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
-    $userId = $userData["user_id"];
-    $userNickname = $userData["user_nickname"];
-    $userFullname = $userData["user_full_name"];
-    $userEmail = $userData["user_email"];
-    $userGender = $userData["user_gender"];
-    $userBirthdate = $userData["user_birthdate"];
-}
-
-
+$userData = $service->getUserData($exploded[3]);
+$userId = $userData["user_id"];
+$userNickname = $userData["user_nickname"];
+$userFullname = $userData["user_full_name"];
+$userEmail = $userData["user_email"];
+$userGender = $userData["user_gender"];
+$userBirthdate = $userData["user_birthdate"];
+$userProfilePic = $userData["user_profile_pic"];
+$userBanner = $userData["user_banner"];
+$userPublicUnregistered = $userData["user_public_for_unregistered_flag"];
+$userPublicRegistered = $userData["user_public_for_registered_flag"];
+$userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
 ?>
 <!DOCTYPE html>
 <html class="h-full">
@@ -51,40 +45,28 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
                         <div id="cover-photo-element" class="w-1/2 h-64 mt-0 transition-all cursor-pointer hover:brightness-75">
-                            <img id="cover-photo" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
+                            <?php
+                            if ($userBanner === NULL || $userBanner === '') {
+                                $bannerUrl =  $context . '/images/cover_photo.jpg';
+                            } else {
+                                $bannerUrl = $context . '/uploads/' . $userBanner;
+                            }
+                            ?>
+                            <img id="cover-photo" src="<?= $bannerUrl ?>" class="object-cover w-full h-full">
                         </div>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <div id="change-cover-photo" class="hidden z-1 mt-[-20rem]">
-                            <input type="file" id="cover-photo-input" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                                <a class="block cursor-pointer header-dropdown-element change-cover-photo">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-cover-photo">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
-                            <img id="profile-photo" src="<?= $context ?>/images/profile_photo.jpg" class="object-cover w-full h-full rounded-full">
-                        </profile-photo>
                     </div>
 
                     <div class="flex items-center justify-center">
-                        <div id="change-profile-photo" class="absolute z-50 hidden mt-24">
-                            <input type="file" id="profile-photo-input" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu">
-                                <a class="block cursor-pointer header-dropdown-element change-profile-photo">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-profile-photo">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
+                        <profile-photo id="profile-photo-element" class="z-50 w-40 h-40 transition-all cursor-pointer hover:brightness-75 mt-[-6rem]">
+                            <?php
+                            if ($userProfilePic === NULL || $userProfilePic === '') {
+                                $picUrl =  $context . '/images/profile_photo.jpg';
+                            } else {
+                                $picUrl = $context . '/uploads/' . $userProfilePic;
+                            }
+                            ?>
+                            <img id="profile-photo" src="<?= $picUrl ?>" class="object-cover w-full h-full rounded-full">
+                        </profile-photo>
                     </div>
 
                     <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
@@ -121,36 +103,27 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
                 <div class="flex flex-col items-center w-full mb-2">
                     <div id="user-threads" class="hidden">
                         <?php
-                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_name FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id
-                            LEFT JOIN groups ON threads.group_id = groups.group_id
-                            WHERE users.user_nickname = ?");
-
-                        $threadsQuery->execute([$userNickname]);
-
-                        while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
+                        $threads = $service->getUserThreads($userNickname);
+                        foreach ($threads as $thread) {
                             $threadTitle = $thread["thread_title"];
                             $threadText = $thread["thread_text"];
                             $threadPoster = $thread["thread_poster"];
                             $threadId = $thread["thread_id"];
                             $threadPositiveRating = $thread["thread_positive_rating"];
                             $threadNegativeRating = $thread["thread_negative_rating"];
-                            $groupName = $thread["group_name"];
-                            include "./components/thread.php";
+                            $groupHandle = $thread["group_handle"];
+                            require "./components/thread.php";
                         }
                         ?>
                     </div>
                     <div id="user-groups" class="hidden mt-2">
                         <div class="flex flex-wrap justify-center gap-6">
                             <?php
-                            $groupsQuery = $db->prepare("SELECT groups.group_name FROM group_members 
-                            LEFT JOIN groups ON group_members.group_id = groups.group_id
-                            WHERE user_id = ?");
-
-                            $groupsQuery->execute([$userId]);
-
-                            while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $groupId = $group["group_name"];
+                            $groups = $service->getUserGroupsById($userId);
+                            foreach ($groups as $group) {
+                                $groupName = $group["group_name"];
+                                $groupHandle = $group["group_handle"];
+                                $groupProfilePic = $group["group_profile_pic"];
                                 require "./components/browserPageGroup.php";
                             }
                             ?>
@@ -193,9 +166,8 @@ while ($userData = $userDataQuery->fetch(PDO::FETCH_ASSOC)) {
             </div>
         </div>
     </div>
-
-    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
     <script type="text/javascript" src="<?= $context ?>/scripts/userProfilePage.js"></script>
+    <script type="text/javascript" src="<?= $context ?>/scripts/main.js"></script>
 </body>
 
 </html>

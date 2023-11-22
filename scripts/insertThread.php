@@ -5,7 +5,7 @@ session_start();
 
 $service = new AccountService();
 
-if ($service->addThread($_POST["threadTitle"], $_POST["threadContent"], $_POST["threadPoster"], $_POST["threadGroup"])) {
+if ($service->addThread($_POST["threadTitle"], $_POST["threadContent"], $_POST["threadPoster"], $service->getGroupId($_POST["threadGroup"]))) {
     header("Location:$context/");
     $_SESSION["threadPosted"] = true;
 } else {

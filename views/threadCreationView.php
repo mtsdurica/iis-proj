@@ -1,7 +1,10 @@
 <?php
-$context = $_SERVER["CONTEXT_PREFIX"];
 require_once "./scripts/services.php";
 session_start();
+$context = $_SERVER["CONTEXT_PREFIX"];
+
+if (!isset($_SESSION["loggedIn"]))
+    header("Location:$context/login");
 
 $service = new AccountService();
 ?>
@@ -29,7 +32,7 @@ $service = new AccountService();
             <div class="items-center justify-center w-3/4 text-colorscheme">
                 <form id="newThread" class="flex flex-col items-center justify-center drop-shadow-md" action="<?= $context ?>/scripts/insertThread.php" method="POST">
                     <fieldset class="flex flex-col w-1/2 gap-2 p-4 rounded-lg min-w-fit header-colorscheme">
-                        <input type="hidden" name="threadPoster" value="<?= $_SESSION['username'] ?>">
+                        <input type="hidden" name="threadPoster" value="<?= $_SESSION['userId'] ?>">
                         <label class="px-2 text-lg" for="threadGroup">
                             Choose Group:
                         </label>
@@ -37,11 +40,10 @@ $service = new AccountService();
                         <!-- This might need to be done manually -->
                         <datalist id="groups">
                             <?php
-                            // TODO: This might need rework
-                            $query = $service->getUserGroups($_SESSION["username"]);
-                            while ($queryData = $query->fetch(PDO::FETCH_ASSOC)) {
+                            $groups = $service->getGroupsByUsername($_SESSION["username"]);
+                            foreach ($groups as $group) {
                             ?>
-                                <option value="<?= $queryData["group_id"] ?>"></option>
+                                <option value="<?= $group ?>"></option>
                             <?php
                             }
                             ?>

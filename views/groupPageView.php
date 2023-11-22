@@ -1,27 +1,23 @@
 <?php
+require_once "./scripts/services.php";
+session_start();
+$service = new AccountService();
 $context = $_SERVER["CONTEXT_PREFIX"];
 $request = $_SERVER["REQUEST_URI"];
 $exploded = explode("/", $request);
-session_start();
 
-try {
-    $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-} catch (PDOException $e) {
-    echo "Connection error: " . $e->getMessage();
-    die();
-}
+$groupData = $service->getGroupData($exploded[3]);
+$groupId = $groupData["group_id"];
+$groupHandle = $groupData["group_handle"];
+$groupName = $groupData["group_name"];
+$groupBio = $groupData["group_bio"];
+$groupPublicFlag = $groupData["group_public_flag"];
+$groupDateOfCreation = $groupData["group_date_of_creation"];
 
-$groupDataQuery = $db->prepare("SELECT groups.group_id, groups.group_name, groups.group_bio, groups.group_public_flag, groups.group_date_of_creation FROM groups WHERE groups.group_name = ?");
-$groupDataQuery->execute([$exploded[3]]);
+$userIsMember = false;
 
-while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
-    $groupId = $groupData["group_id"];
-    $groupName = $groupData["group_name"];
-    $groupBio = $groupData["group_bio"];
-    $groupPublicFlag = $groupData["group_public_flag"];
-    $groupDateOfCreation = $groupData["group_date_of_creation"];
-}
-
+if (isset($_SESSION["loggedIn"]) === true)
+    $userIsMember = $service->checkMembership($groupId, $_SESSION["userId"]);
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +34,7 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="items-center h-full main-background-colorscheme">
+<body class="h-full main-background-colorscheme">
     <div class="flex flex-col">
         <?php
         require_once "./components/header.php";
@@ -47,155 +43,312 @@ while ($groupData = $groupDataQuery->fetch(PDO::FETCH_ASSOC)) {
             <div class="items-center justify-center w-3/4 text-colorscheme">
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
-                        <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0 cursor-pointer hover:brightness-75">
+                        <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0">
                             <img id="cover-photo-group" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
                         </div>
                     </div>
-
                     <div class="flex items-center justify-center">
-                        <div id="change-cover-photo-group" class="hidden z-1 mt-[-20rem]">
-                            <input type="file" id="cover-photo-input-group" class="hidden" accept="image/*">
-                            <div class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown cover-photo-menu-group">
-                                <a class="block cursor-pointer header-dropdown-element change-cover-photo-group">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-cover-photo-group">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-center">
-                        <profile-photo id="profile-photo-element-group" class="z-50 w-40 h-40 cursor-pointer mt-[-6rem]">
-                            <img id="profile-photo-group" src="<?= $context ?>/images/group_photo.jpg" class="object-cover w-full h-full rounded-full hover:brightness-75">
+                        <profile-photo id="profile-photo-element-group" class="z-50 w-40 h-40 mt-[-6rem]">
+                            <img id="profile-photo-group" src="<?= $context ?>/images/group_photo.jpg" class="object-cover w-full h-full rounded-full">
                         </profile-photo>
                     </div>
-
-                    <div class="flex items-center justify-center">
-                        <div id="change-profile-photo-group" class="absolute z-50 hidden mt-24">
-                            <input type="file" id="profile-photo-input-group" class="hidden" accept="image/*">
-                            <div id="" class="p-2 m-2 mt-4 transition-all rounded-lg header-colorscheme w-fit drop-shadow-xl profile-dropdown profile-photo-menu-group">
-                                <a class="block cursor-pointer header-dropdown-element change-profile-photo-group">
-                                    <span class="pl-1">Change photo</span>
-                                </a>
-                                <a class="block cursor-pointer header-dropdown-element delete-profile-photo-group">
-                                    <span class="pl-1">Delete photo</span>
-                                </a>
-                            </div>
+                    <div class="flex flex-row mx-12 justify-evenly">
+                        <div class="invisible w-1/2"></div>
+                        <div class="flex flex-col w-1/2">
+                            <h2 class="flex items-center justify-center text-3xl font-bold text-colorscheme name">
+                                <?= $groupName ?>
+                            </h2>
+                            <h3 class="flex items-center justify-center text-2xl"><?= $groupBio ?></h3>
                         </div>
-                    </div>
-
-                    <h2 class="flex items-center justify-center mt-2 text-3xl font-bold text-colorscheme name">
-                        <?= $groupName ?>
-                    </h2>
-
-                    <h3 class="flex items-center justify-center text-2xl"><?= $groupBio ?></h3>
-
-                </div>
-                <hr class="m-2 divider-colorscheme" />
-                <ul class="flex flex-row items-center justify-center text-3xl text-center text-colorscheme drop-shadow">
-                    <li class="flex">
-                        <a id="show-group-threads" class="flex items-center justify-center text-xl header-element ">
-                            Threads
-                        </a>
-                    </li>
-                    <li class="flex">
-                        <a id="show-group-members" class="flex items-center justify-center text-xl header-element">
-                            Members
-                        </a>
-                    </li>
-                    <li class="flex">
-                        <a id="show-group-statistics" class="flex items-center justify-center text-xl header-element">
-                            Statistics
-                        </a>
-                    </li>
-                    <li class="flex">
-                        <a id="show-group-about" class="flex items-center justify-center text-xl header-element">
-                            About
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="flex flex-col items-center w-full mb-2">
-                    <div id="group-threads" class="hidden">
-                        <?php
-                        $threadsQuery = $db->prepare("SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster' FROM threads
-                            LEFT JOIN users ON threads.poster_id = users.user_id
-                            WHERE threads.group_id = ?");
-
-                        $threadsQuery->execute([$groupId]);
-
-                        while ($thread = $threadsQuery->fetch(PDO::FETCH_ASSOC)) {
-                            $threadTitle = $thread["thread_title"];
-                            $threadText = $thread["thread_text"];
-                            $threadPoster = $thread["thread_poster"];
-                            $threadId = $thread["thread_id"];
-                            $threadPositiveRating = $thread["thread_positive_rating"];
-                            $threadNegativeRating = $thread["thread_negative_rating"];
-                            include "./components/thread.php";
-                        }
-                        ?>
-                    </div>
-
-                    <div id="group-statistics" class="hidden">
-                        <ul>
-                            <li>stat 1</li>
-                            <li>stat 2</li>
-                            <li>stat 3</li>
-                            <li>stat 4</li>
-                            <li>stat 5</li>
-                            <li>stat 6</li>
-                            <li>stat 7</li>
-                        </ul>
-                    </div>
-
-
-                    <div id="group-about" class="flex items-center justify-center h-full text-colorscheme">
-                        <div class="flex flex-row">
-                            <div class="flex flex-col gap-4 p-4 rounded-lg">
-                                <div class="flex flex-row gap-2 text-xl ">
-                                    <span class="font-bold">Created by:</span>
+                        <div class="flex flex-row items-center justify-end w-1/2 gap-4">
+                            <?php
+                            if ($userIsMember === false) {
+                            ?>
+                                <form method="POST" action="<?= $context ?>/scripts/joinGroup.php">
+                                    <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                    <input type="hidden" name="groupId" value="<?= $groupId ?>">
                                     <?php
-                                    $groupAdminQuery = $db->prepare('SELECT users.user_nickname FROM group_members
-                                    LEFT JOIN users ON users.user_id = group_members.user_id
-                                    WHERE group_members.group_admin = 1 AND group_members.group_id = ?');
-
-                                    $groupAdminQuery->execute([$groupId]);
-
-                                    while ($groupAdmin = $groupAdminQuery->fetch(PDO::FETCH_ASSOC)) {
+                                    if (isset($_SESSION["loggedIn"])) {
                                     ?>
-                                        <a class="font-normal hover:underline" href="<?= $context ?>/profile/<?= $groupAdmin['user_nickname'] ?>">@<?= $groupAdmin['user_nickname'] ?> </a>
+                                        <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
                                     <?php
                                     }
                                     ?>
-                                </div>
-
-                                <div class="flex flex-row gap-2 text-xl">
-                                    <span class="font-bold">From:</span>
-                                    <span class="font-normal"><?= explode(" ", $groupDateOfCreation)[0] ?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="group-members" class="hidden mt-2">
-                        <div class="flex flex-wrap justify-center gap-6">
+                                    <input type="hidden" name="groupPublicFlag" value="<?= $groupPublicFlag ?>">
+                                    <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 rounded-full max-h-fit confirm-button-colorscheme">
+                                        <i class="fa-solid fa-circle-plus"></i>
+                                        <span>Join Group</span>
+                                    </button>
+                                </form>
                             <?php
-                            $groupMembersQuery = $db->prepare('SELECT users.user_nickname FROM group_members
-                        LEFT JOIN users ON users.user_id = group_members.user_id
-                        WHERE group_members.group_id = ?');
-
-                            $groupMembersQuery->execute([$groupId]);
-
-                            while ($groupMembers = $groupMembersQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $userId = $groupMembers["user_nickname"];
-                                require "./components/browserPageUser.php";
+                            } else if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $userIsMember === "notAccepted") {
+                            ?>
+                                <div type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center border rounded-full dark:text-white divider-colorscheme max-h-fit">
+                                    <span>Request pending</span>
+                                </div>
+                                <?php
+                            } else if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $userIsMember == true) {
+                                $moderatorRequests = $service->getPendingModerators($groupId);
+                                $moderatorRequestsNames = [];
+                                foreach ($moderatorRequests as $moderatorRequest)
+                                    array_push($moderatorRequestsNames, $moderatorRequest["user_nickname"]);
+                                $groupModerators = $service->getGroupModeratorsUsernames($groupId);
+                                $groupAdmin = $service->getGroupAdmin($groupId);
+                                $pendingMod = in_array($_SESSION["username"], $moderatorRequestsNames);
+                                $isMod = in_array($_SESSION["username"], $groupModerators);
+                                if (!$isMod) {
+                                    if (!$pendingMod && ($_SESSION["userId"] !== $groupAdmin["user_id"])) {
+                                ?>
+                                        <form method="POST" action="<?= $context ?>/scripts/requestModerator.php">
+                                            <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                            <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                            <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
+                                            <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center transition-all duration-300 rounded-full dark:text-white max-h-fit confirm-button-colorscheme">
+                                                <span>Request Moderator</span>
+                                            </button>
+                                        </form>
+                                    <?php
+                                    } else if ($pendingMod) {
+                                    ?>
+                                        <div type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center border rounded-full divider-colorscheme max-h-fit">
+                                            <span>Request pending</span>
+                                        </div>
+                                <?php
+                                    }
+                                }
+                                ?>
+                                <form method="POST" action="<?= $context ?>/scripts/leaveGroup.php">
+                                    <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                    <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                    <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
+                                    <input type="hidden" name="groupPublicFlag" value="<?= $groupPublicFlag ?>">
+                                    <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">
+                                        <i class="fa-solid fa-circle-minus"></i>
+                                        <span>Leave Group</span>
+                                    </button>
+                                </form>
+                            <?php
                             }
                             ?>
                         </div>
                     </div>
                 </div>
+                <hr class="m-2 divider-colorscheme" />
+                <?php
+                if ($groupPublicFlag == true || ($userIsMember === true && $userIsMember !== "notAccepted")) {
+                ?>
+                    <ul class="flex flex-row items-center justify-center gap-2 text-3xl text-center text-colorscheme drop-shadow">
+                        <li class="flex">
+                            <a id="show-group-threads" class="flex items-center justify-center text-xl header-element ">
+                                Threads
+                            </a>
+                        </li>
+                        <li class="flex">
+                            <a id="show-group-members" class="flex items-center justify-center text-xl header-element">
+                                Members
+                            </a>
+                        </li>
+                        <?php
+                        $groupAdmin = $service->getGroupAdmin($groupId);
+                        $groupModerators = $service->getGroupModeratorsUsernames($groupId);
+                        if ((isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) || (!empty($groupModerators) && isset($_SESSION["loggedIn"]) && in_array($_SESSION["username"], $groupModerators))) {
+                        ?>
+                            <li class="flex">
+                                <a id="show-group-requests" class="flex items-center justify-center text-xl header-element">
+                                    Requests
+                                </a>
+                            </li>
+                        <?php
+                        }
+                        ?>
+                        <li class="flex">
+                            <a id="show-group-statistics" class="flex items-center justify-center text-xl header-element">
+                                Statistics
+                            </a>
+                        </li>
+                        <li class="flex">
+                            <a id="show-group-about" class="flex items-center justify-center text-xl header-element">
+                                About
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="flex flex-col items-center w-full mb-2">
+                        <div id="group-threads" class="hidden">
+                            <?php
+                            $threads = $service->getGroupThreads($groupId);
+                            if (!empty($threads)) {
+                                foreach ($threads as $thread) {
+                                    $threadTitle = $thread["thread_title"];
+                                    $threadText = $thread["thread_text"];
+                                    $threadPoster = $thread["thread_poster"];
+                                    $threadId = $thread["thread_id"];
+                                    $threadPositiveRating = $thread["thread_positive_rating"];
+                                    $threadNegativeRating = $thread["thread_negative_rating"];
+                                    include "./components/thread.php";
+                                }
+                            }
+                            ?>
+                        </div>
+                        <div id="group-members" class="hidden mt-2">
+                            <div class="flex flex-col w-[32rem]">
+                                <span class="mb-2 text-lg">Admin:</span>
+                                <div class="flex flex-col justify-center gap-2">
+                                    <?php
+                                    $groupAdmin = $service->getGroupAdmin($groupId);
+                                    $userNickname = $groupAdmin["user_nickname"];
+                                    $userProfilePic =  $groupAdmin["user_profile_pic"];
+                                    require "./components/groupPageAdmin.php";
+                                    ?>
+                                </div>
+                                <?php
+                                $groupModerators = $service->getGroupModerators($groupId);
+                                if (!empty($groupModerators)) {
+                                ?>
+                                    <hr class="m-2 divider-colorscheme" />
+                                    <span class="mb-2 text-lg">Moderators:</span>
+                                    <div class="flex flex-col justify-center gap-2">
+                                        <?php
+                                        foreach ($groupModerators as $groupModerator) {
+                                            $userNickname = $groupModerator;
+                                            $userProfilePic = $groupMember["user_profile_pic"];
+                                            require "./components/groupPageModerator.php";
+                                        }
+                                        ?>
+                                    </div>
+                                <?php
+                                }
+                                $groupMembers = $service->getGroupMembers($groupId);
+                                if (!empty($groupMembers)) {
+                                ?>
+                                    <hr class="m-2 divider-colorscheme" />
+                                    <span class="mb-2 text-lg">Members:</span>
+                                    <div class="flex flex-col justify-center gap-2">
+                                        <?php
+                                        foreach ($groupMembers as $groupMember) {
+                                            $userNickname = $groupMember["user_nickname"];
+                                            $userId = $groupMember["user_id"];
+                                            $userProfilePic = $groupMember["user_profile_pic"];
+                                            require "./components/groupPageMembers.php";
+                                        }
+                                        ?>
+                                    </div>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div id="group-statistics" class="hidden">
+                            <ul>
+                                <li>stat 1</li>
+                                <li>stat 2</li>
+                                <li>stat 3</li>
+                                <li>stat 4</li>
+                                <li>stat 5</li>
+                                <li>stat 6</li>
+                                <li>stat 7</li>
+                            </ul>
+                        </div>
+                        <div id="group-about" class="flex items-center justify-center h-full text-colorscheme">
+                            <div class="flex flex-row">
+                                <div class="flex flex-col gap-4 p-4 rounded-lg">
+                                    <div class="flex flex-row gap-2 text-xl ">
+                                        <span class="font-bold">Created by:</span>
+                                        <?php
+                                        $groupAdmin = $service->getGroupAdmin($groupId);
+                                        ?>
+                                        <a class="font-normal hover:underline" href="<?= $context ?>/profile/<?= $groupAdmin['user_nickname'] ?>">@<?= $groupAdmin['user_nickname'] ?> </a>
+                                    </div>
+
+                                    <div class="flex flex-row gap-2 text-xl">
+                                        <span class="font-bold">From:</span>
+                                        <span class="font-normal"><?= explode(" ", $groupDateOfCreation)[0] ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                        $groupModerators = $service->getGroupModeratorsUsernames($groupId);
+                        if (!empty($groupModerators) && isset($_SESSION["loggedIn"]) && in_array($_SESSION["username"], $groupModerators)) {
+                        ?>
+                            <div id="group-requests" class="hidden">
+                                <div class="flex flex-row gap-2">
+                                    <div class="flex flex-col">
+                                        <span class="text-lg">Pending join requests:</span>
+                                        <div class="mt-2 flex flex-col w-[32rem]">
+                                            <div class="flex flex-col gap-2">
+                                                <?php
+                                                $pendingRequests = $service->getPendingJoinRequests($groupId);
+                                                if (!empty($pendingRequests)) {
+                                                    foreach ($pendingRequests as $pendingRequest) {
+                                                        $requestUserNickname = $pendingRequest["user_nickname"];
+                                                        $requestUserId = $pendingRequest["user_id"];
+                                                        require "./components/groupJoinRequest.php";
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        $groupAdmin = $service->getGroupAdmin($groupId);
+                        if (isset($_SESSION["loggedIn"]) && $_SESSION["userId"] === $groupAdmin["user_id"]) {
+                        ?>
+                            <div id="group-requests" class="hidden">
+                                <div class="flex flex-row gap-2">
+                                    <div class="flex flex-col">
+                                        <span class="text-lg">Pending join requests:</span>
+                                        <div class="mt-2 flex flex-col w-[32rem]">
+                                            <div class="flex flex-col gap-2">
+                                                <?php
+                                                $pendingRequests = $service->getPendingJoinRequests($groupId);
+                                                if (!empty($pendingRequests)) {
+                                                    foreach ($pendingRequests as $pendingRequest) {
+                                                        $requestUserNickname = $pendingRequest["user_nickname"];
+                                                        $requestUserId = $pendingRequest["user_id"];
+                                                        require "./components/groupJoinRequest.php";
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-lg">Pending moderator requests:</span>
+                                        <div class="mt-2 flex flex-col w-[32rem]">
+                                            <div class="flex flex-col gap-2">
+                                                <?php
+                                                $pendingModeratorRequests = $service->getPendingModerators($groupId);
+                                                if (!empty($pendingModeratorRequests)) {
+                                                    foreach ($pendingModeratorRequests as $pendingModeratorRequest) {
+                                                        $requestUserNickname = $pendingModeratorRequest["user_nickname"];
+                                                        $requestUserId = $pendingModeratorRequest["user_id"];
+                                                        require "./components/groupModeratorRequest.php";
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                <?php
+                } else {
+                ?>
+                    <div class="flex flex-col items-center justify-center gap-2 text-center">
+                        <span class="flex text-3xl font-bold ">This group is private.</span>
+                        <span class="flex text-2xl">Request joining or log in, if you are already a member!</span>
+                    </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>

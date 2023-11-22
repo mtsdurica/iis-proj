@@ -1,4 +1,11 @@
 <a class="flex flex-col items-center p-2 duration-300 rounded-lg header-colorscheme dark:hover:bg-slate-600 hover:bg-slate-200 drop-shadow" href="<?= $context ?>/profile/<?= $userNickname ?>">
-    <img class="w-40 rounded-lg" src="../images/2206.q713.011.F.m012.c7.people top view flat.jpg">
+    <?php
+    $imgPath = null;
+    if ($userProfilePic)
+        $imgPath = $context . "/uploads/" . $userProfilePic;
+    else
+        $imgPath = $context . "/images/profile_photo.jpg";
+    ?>
+    <img class="w-40 rounded-lg" src="<?= $imgPath ?>">
     <span class="mt-2 text-colorscheme text-md">@<?= $userNickname ?></span>
 </a>

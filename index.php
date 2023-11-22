@@ -8,16 +8,25 @@ switch ($exploded[2]) {
         require_once __DIR__ . "/views/mainPageView.php";
         break;
     case ('profile'):
-        require_once  __DIR__ . "/views/profilePageView.php";
+        if (isset($exploded[4]) && ($exploded[4] === "settings"))
+            require_once __DIR__ . "/views/settingsUser.php";
+        else
+            require_once  __DIR__ . "/views/profilePageView.php";
         break;
     case ('group'):
-        require_once  __DIR__ . "/views/groupPageView.php";
+        if (isset($exploded[4]) && ($exploded[4] === "settings"))
+            require_once __DIR__ . "/views/settingsGroup.php";
+        else
+            require_once  __DIR__ . "/views/groupPageView.php";
         break;
     case ('dashboard'):
         require_once __DIR__ . "/views/dashboardPageView.php";
         break;
     case ('submit'):
         require_once __DIR__ . "/views/threadCreationView.php";
+        break;
+    case ('thread'):
+        require_once __DIR__ . "/views/threadPageView.php";
         break;
     case ('browse'):
         if (isset($exploded[3]) && ($exploded[3] === "groups" || $exploded[3] === "users"))

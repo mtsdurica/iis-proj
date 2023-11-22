@@ -1,15 +1,10 @@
 <?php
+require_once "./scripts/services.php";
+session_start();
+$service = new AccountService();
 $request = $_SERVER["REQUEST_URI"];
 $exploded = explode("/", $request);
 $context = $_SERVER["CONTEXT_PREFIX"];
-session_start();
-
-try {
-    $db = new PDO("mysql:host=localhost;dbname=xduric06;port=/var/run/mysql/mysql.sock", 'xduric06', 'j4sipera');
-} catch (PDOException $e) {
-    echo "Connection error: " . $e->getMessage();
-    die();
-}
 ?>
 
 <!DOCTYPE html>
@@ -53,21 +48,20 @@ try {
                     <div class="flex flex-wrap justify-center gap-6">
                         <?php
                         if ($exploded[3] === "users") {
-                            $usersQuery = $db->prepare('SELECT user_nickname FROM users');
-
-                            $usersQuery->execute();
-
-                            while ($user = $usersQuery->fetch(PDO::FETCH_ASSOC)) {
+                            $users = $service->getAllUsers();
+                            foreach ($users as $user) {
                                 $userNickname = $user["user_nickname"];
+                                $userProfilePic = $user["user_profile_pic"];
+                                if ($userNickname === "admin")
+                                    continue;
                                 include "./components/browserPageUser.php";
                             }
                         } else if ($exploded[3] === "groups") {
-                            $groupsQuery = $db->prepare('SELECT group_id FROM groups');
-
-                            $groupsQuery->execute();
-
-                            while ($group = $groupsQuery->fetch(PDO::FETCH_ASSOC)) {
-                                $groupId = $group["group_id"];
+                            $groups = $service->getAllGroups();
+                            foreach ($groups as $group) {
+                                $groupName = $group["group_name"];
+                                $groupHandle = $group["group_handle"];
+                                $groupProfilePic = $group["group_profile_pic"];
                                 include "./components/browserPageGroup.php";
                             }
                         }

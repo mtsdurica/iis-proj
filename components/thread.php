@@ -13,8 +13,8 @@
 				in
 			</span>
 			<object class="px-1 text-sm text-slate-500 dark:text-slate-400 hover:underline">
-				<a href="<?= $context ?>/group/<?= $groupName ?>">
-					<?= $groupName ?>
+				<a href="<?= $context ?>/group/<?= $groupHandle ?>">
+					<?= $groupHandle ?>
 				</a>
 			</object>
 		</div>
@@ -38,19 +38,33 @@
 			</div>
 		</div>
 		<hr class="mt-4 divider-colorscheme" />
-		<div class="flex flex-row items-center justify-between px-4 mx-40 mt-2 min-h-fit">
+		<?php
+		$positiveRatings = $service->getPositiveRatingsForThread($threadId);
+		$negativeRatings = $service->getNegativeRatingsForThread($threadId);
+		if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
+			$posActive = "";
+			$negActive = "";
+			$thread = $service->getThreadRating($threadId, $_SESSION["userId"]);
+			if (!empty($thread) && $thread["thread_rating"] == true)
+				$posActive = "ranking-active";
+			else if (!empty($thread) && $thread["thread_rating"] == false)
+				$negActive = "ranking-active";
+		}
+		?>
+		<form class="flex flex-row items-center justify-between px-4 mx-40 mt-2 rankingForm min-h-fit">
+			<input type="hidden" name="threadId" value="<?= $threadId ?>">
 			<div class="h-6 mr-2 border-l divider-colorscheme"></div>
-			<button class="flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600">
+			<button type="submit" name="positive" data-url="<?= $context ?>/scripts/rankPositive.php" class="<?= $posActive ?> flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md rankingButton hover:bg-slate-300 dark:hover:bg-slate-600">
 				<i class="fa-solid fa-angle-up"></i>
 				<div class="pl-4 text-base">
-					<?= $threadPositiveRating ?>
+					<?= $threadPositiveRating + (int)$positiveRatings["COUNT(*)"] ?>
 				</div>
 			</button>
 			<div class="h-6 mx-2 border-l divider-colorscheme"></div>
-			<button class="flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600">
+			<button type="submit" name="negative" data-url="<?= $context ?>/scripts/rankNegative.php" class="<?= $negActive ?> flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md rankingButton hover:bg-slate-300 dark:hover:bg-slate-600">
 				<i class="text-base fa-solid fa-angle-down"></i>
 				<div class="pl-4 text-base ">
-					<?= $threadNegativeRating ?>
+					<?= $threadNegativeRating + (int)$negativeRatings["COUNT(*)"] ?>
 				</div>
 			</button>
 			<div class="h-6 mx-2 border-l divider-colorscheme"></div>
@@ -61,17 +75,6 @@
 				</span>
 			</a>
 			<div class="h-6 ml-2 border-l divider-colorscheme"></div>
-		</div>
+		</form>
 	</div>
-
-	<?php
-	// $commentsQuery = $db->prepare('SELECT comments.comment_text, users.user_nick FROM comments LEFT JOIN users ON comments.poster_id = users.user_id WHERE comments.thread_id = ?');
-
-	// $commentsQuery->execute([$threadId]);
-	// while ($comment = $commentsQuery->fetch(PDO::FETCH_ASSOC)) {
-	// 	$commentText  = $comment["comment_text"];
-	// 	$commentPoster = $comment["user_nick"];
-	// 	require "comment.php";
-	// }
-	?>
 </div>
