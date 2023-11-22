@@ -559,6 +559,7 @@ class AccountService
             $this->lastError = $stmt->errorInfo();
             return false;
         }
+    }
 
     function rateThread($threadId, $userId, $rating)
     {
