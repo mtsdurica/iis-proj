@@ -74,17 +74,16 @@ $groupHandle = $threadData["group_handle"];
                                 </div>
                                 <hr class="mt-4 divider-colorscheme" />
                                 <?php
+                                $positiveRatings = $service->getPositiveRatingsForThread($threadId);
+                                $negativeRatings = $service->getNegativeRatingsForThread($threadId);
                                 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
                                     $posActive = "";
                                     $negActive = "";
                                     $thread = $service->getThreadRating($threadId, $_SESSION["userId"]);
-                                    if (!empty($thread) && $thread["thread_rating"] == true) {
-                                        $threadPositiveRating++;
+                                    if (!empty($thread) && $thread["thread_rating"] == true)
                                         $posActive = "ranking-active";
-                                    } else if (!empty($thread) && $thread["thread_rating"] == false) {
-                                        $threadNegativeRating++;
+                                    else if (!empty($thread) && $thread["thread_rating"] == false)
                                         $negActive = "ranking-active";
-                                    }
                                 }
                                 ?>
                                 <form class="flex flex-row items-center justify-between px-4 mx-40 mt-2 rankingForm min-h-fit">
@@ -93,14 +92,14 @@ $groupHandle = $threadData["group_handle"];
                                     <button type="submit" name="positive" data-url="<?= $context ?>/scripts/rankPositive.php" class="<?= $posActive ?> flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md rankingButton hover:bg-slate-300 dark:hover:bg-slate-600">
                                         <i class="fa-solid fa-angle-up"></i>
                                         <div class="pl-4 text-base">
-                                            <?= $threadPositiveRating ?>
+                                            <?= $threadPositiveRating + (int)$positiveRatings["COUNT(*)"] ?>
                                         </div>
                                     </button>
                                     <div class="h-6 mx-2 border-l divider-colorscheme"></div>
                                     <button type="submit" name="negative" data-url="<?= $context ?>/scripts/rankNegative.php" class="<?= $negActive ?> flex flex-row items-center justify-center w-full px-2 py-1 text-base transition-all duration-300 rounded-md rankingButton hover:bg-slate-300 dark:hover:bg-slate-600">
                                         <i class="text-base fa-solid fa-angle-down"></i>
                                         <div class="pl-4 text-base ">
-                                            <?= $threadNegativeRating ?>
+                                            <?= $threadNegativeRating + (int)$negativeRatings["COUNT(*)"] ?>
                                         </div>
                                     </button>
                                     <div class="h-6 ml-2 border-l divider-colorscheme"></div>

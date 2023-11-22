@@ -527,4 +527,26 @@ class AccountService
 
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+    function getPositiveRatingsForThread($threadId)
+    {
+        $query = $this->pdo->prepare("SELECT COUNT(*) FROM thread_ratings
+            WHERE thread_id = ?
+            AND thread_rating = 1");
+
+        $query->execute([$threadId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getNegativeRatingsForThread($threadId)
+    {
+        $query = $this->pdo->prepare("SELECT COUNT(*) FROM thread_ratings
+            WHERE thread_id = ?
+            AND thread_rating = 0");
+
+        $query->execute([$threadId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
 }
