@@ -92,16 +92,6 @@ class AccountService
         return (bool) $result;
     }
 
-    function isPublicUser(int $id) 
-    {
-        $stmt = $this->pdo->prepare('SELECT user_public_flag FROM users WHERE user_id = ?');
-        $stmt->execute([strval($id)]);
-       
-        // Fetch the result from the query
-        $result = $stmt->fetchColumn();
-        return (bool) $result;
-    }
-
     function isPublicGroup(int $id) 
     {
         $stmt = $this->pdo->prepare('SELECT group_public_flag FROM groups WHERE group_id = ?');

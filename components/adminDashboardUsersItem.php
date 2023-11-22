@@ -1,4 +1,4 @@
-<div class="flex flex-row flex-wrap gap-4 w-full align-middle header-colorscheme p-3 rounded-lg justify-center">
+<div class="flex flex-row flex-wrap gap-4 w-full align-middle header-colorscheme p-3 rounded-lg items-center">
     <div class="grow w-10">
         <p> ID: <?= $id ?> </p>
     </div>
@@ -37,28 +37,10 @@
         </form>
     </div>
     <div>
-        <!-- TODO: Redirect to profile settings of user with $userId -->
-        <button type="submit" class="basic-button-colorscheme text-center py-1 w-20 rounded-lg">
-            Edit
-        </button>
-    </div>
-    <div>
-        <?php
-        // Determine button text and color based on $publicFlag
-        $buttonText = $publicFlag ? "Make Private" : "Make Public";
-        $buttonColor = $publicFlag ? " basic-button-colorscheme" : " bg-slate-500";
-        ?>
-
-        <!-- Form to handle the ban/unban action -->
-        <form action="<?= $context ?>/scripts/updateUserPublicity.php" method="POST">
-            <input type="hidden" name="userId" value="<?= $id ?>">
-            <input type="hidden" name="publicFlag" value="<?= $publicFlag ?>">
-            <!-- Button with dynamic text and color -->
-            <button type="submit" class="<?= $buttonColor?> py-1 text-center w-32 rounded-lg">
-                <?= $buttonText ?>
-            </button>
-        </form>
-
+        <a class="basic-button-colorscheme text-center py-2 px-2 w-20 rounded-lg items-center justify-center" href="<?= $context ?>/profile/<?= $nickname ?>/settings">
+            <span class="fa-solid fa-gear"></span>
+            <span class="pl-1">Settings</span>
+        </a>
     </div>
 
 </div>

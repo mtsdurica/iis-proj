@@ -53,7 +53,6 @@ session_start();
                 $nickname = $row['user_nickname'];
                 $id = $row['user_id'];
                 $bannedFlag = $serv->isBannedUser($id);
-                $publicFlag = $serv->isPublicUser($id);
 
                 if ($id != 'admin')
                 {
