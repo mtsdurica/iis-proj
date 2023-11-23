@@ -34,13 +34,15 @@ if (isset($_SESSION["loggedIn"]) === true)
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="h-full main-background-colorscheme">
-    <div class="flex flex-col">
+<body class="h-full ">
+    <!-- Page Container -->
+    <div class="flex flex-col h-full main-background-colorscheme text-colorscheme">
         <?php
         require_once "./components/header.php";
         ?>
-        <div class="flex flex-col items-center justify-center">
-            <div class="items-center justify-center w-3/4 text-colorscheme">
+        <!-- Page Content Container -->
+        <div class="flex flex-col items-center justify-center h-full overflow-hidden">
+            <div class="items-center justify-center w-3/4 h-full overflow-auto no-scrollbar">
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
                         <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0">
@@ -161,11 +163,11 @@ if (isset($_SESSION["loggedIn"]) === true)
                         <?php
                         }
                         ?>
-                        <li class="flex">
+                        <!-- <li class="flex">
                             <a id="show-group-statistics" class="flex items-center justify-center text-xl header-element">
                                 Statistics
                             </a>
-                        </li>
+                        </li> -->
                         <li class="flex">
                             <a id="show-group-about" class="flex items-center justify-center text-xl header-element">
                                 About
@@ -238,7 +240,7 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 ?>
                             </div>
                         </div>
-                        <div id="group-statistics" class="hidden">
+                        <!-- <div id="group-statistics" class="hidden">
                             <ul>
                                 <li>stat 1</li>
                                 <li>stat 2</li>
@@ -248,10 +250,27 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 <li>stat 6</li>
                                 <li>stat 7</li>
                             </ul>
-                        </div>
+                        </div> -->
                         <div id="group-about" class="flex items-center justify-center h-full text-colorscheme">
-                            <div class="flex flex-row">
-                                <div class="flex flex-col gap-4 p-4 rounded-lg">
+                            <div class="flex flex-col">
+                                <div class="flex flex-col">
+                                    <div class="flex flex-row gap-2 text-xl">
+                                        <?php
+                                        $numberOfThreads = $service->getNumberOfGroupUsers($groupId);
+                                        ?>
+                                        <span class="font-bold">Members:</span>
+                                        <span class="font-normal"><?= $numberOfThreads["COUNT(*)"] ?></span>
+                                    </div>
+                                    <div class="flex flex-row gap-2 text-xl">
+                                        <?php
+                                        $numberOfThreads = $service->getNumberOfGroupThreads($groupId);
+                                        ?>
+                                        <span class="font-bold">Number of threads:</span>
+                                        <span class="font-normal"><?= $numberOfThreads["COUNT(*)"] ?></span>
+                                    </div>
+                                </div>
+                                <hr class="m-2 divider-colorscheme" />
+                                <div class="flex flex-col rounded-lg">
                                     <div class="flex flex-row gap-2 text-xl ">
                                         <span class="font-bold">Created by:</span>
                                         <?php
@@ -259,9 +278,8 @@ if (isset($_SESSION["loggedIn"]) === true)
                                         ?>
                                         <a class="font-normal hover:underline" href="<?= $context ?>/profile/<?= $groupAdmin['user_nickname'] ?>">@<?= $groupAdmin['user_nickname'] ?> </a>
                                     </div>
-
                                     <div class="flex flex-row gap-2 text-xl">
-                                        <span class="font-bold">From:</span>
+                                        <span class="font-bold">Since:</span>
                                         <span class="font-normal"><?= explode(" ", $groupDateOfCreation)[0] ?></span>
                                     </div>
                                 </div>
