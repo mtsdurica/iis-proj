@@ -43,8 +43,20 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
         <!-- Page Content Container -->
         <div class="flex flex-col items-center justify-center h-full px-32 overflow-hidden ">
             <div class="h-full overflow-auto no-scrollbar">
+
+                <div class="flex justify-end mt-8 mb-4">
+                    <!-- Form to handle the delete action -->
+                    <form action="<?= $context ?>/scripts/deleteUser.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                        <input type="hidden" name="userId" value="<?= $userId ?>">
+                        <input type="hidden" name="fromProfileFlag" value="1">
+                        <button type="submit" class="cancel-button-colorscheme text-center py-1 px-2 rounded-lg">
+                            Delete User Profile
+                        </button>
+                    </form>    
+                </div>
+
                 <!-- Upper side -->
-                <div class="flex flex-row justify-center w-full gap-32 p-6 mt-10 rounded-lg shadow-lg header-colorscheme">
+                <div class="flex flex-row justify-center w-full gap-32 p-6  rounded-lg shadow-lg header-colorscheme">
                     <!-- Profile picture section -->
                     <div class="flex flex-col w-full gap-2">
                         <h1 class="mb-3 text-2xl font-bold">Profile picture</h1>
