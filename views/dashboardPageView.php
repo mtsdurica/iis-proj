@@ -54,7 +54,8 @@ session_start();
                 $id = $row['user_id'];
                 $bannedFlag = $serv->isBannedUser($id);
 
-                if ($id != 'admin')
+                // show user, if it is not admin
+                if ($id != 1)
                 {
                   include "./components/adminDashboardUsersItem.php";
                 }
@@ -75,11 +76,10 @@ session_start();
             while ($row = $rows->fetch())
             {
                 // TODO: replace placeholder string
-                $name = "Placeholder";
-                $nickname = $row['group_name'];
+                $name = $row['group_name'];
+                $handle = $row['group_handle'];
                 $id = $row['group_id'];
-                // $bannedFlag = $serv->isBannedGroup($id);
-                $publicFlag = $serv->isPublicGroup($id);
+                $bannedFlag = $row['group_banned'];
 
                 include "./components/adminDashboardGroupsItem.php";
             }

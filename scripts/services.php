@@ -61,7 +61,7 @@ class AccountService
 
     function listAllGroups()
     {
-        $stmt = $this->pdo->query('SELECT group_id, group_name FROM groups');
+        $stmt = $this->pdo->query('SELECT group_id, group_handle, group_name, group_banned FROM groups');
         return $stmt;
     }
     // end
@@ -696,9 +696,37 @@ class AccountService
         }
     }
 
+    function changeGroupBannedStatus($data)
+    {
+        $stmt = $this->pdo->prepare('UPDATE groups SET group_banned = :banStatus WHERE group_id = :id');
+        if ($stmt->execute($data))
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
+
     function deleteUser($id)
     {
         $stmt = $this->pdo->prepare('DELETE FROM users WHERE user_id = ?');
+        if ($stmt->execute([$id]))
+        {
+            return TRUE;
+        }
+        else
+        {
+            $this->lastError = $stmt->errorInfo();
+            return FALSE;
+        }
+    }
+
+    function deleteGroup($id)
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM groups WHERE group_id = ?');
         if ($stmt->execute([$id]))
         {
             return TRUE;
