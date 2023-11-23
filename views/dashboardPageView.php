@@ -54,7 +54,8 @@ session_start();
                 $id = $row['user_id'];
                 $bannedFlag = $serv->isBannedUser($id);
 
-                if ($id != 'admin')
+                // show user, if it is not admin
+                if ($id != 1)
                 {
                   include "./components/adminDashboardUsersItem.php";
                 }
