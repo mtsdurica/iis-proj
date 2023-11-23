@@ -34,13 +34,15 @@ if (isset($_SESSION["loggedIn"]) === true)
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
-<body class="h-full main-background-colorscheme">
-    <div class="flex flex-col">
+<body class="h-full ">
+    <!-- Page Container -->
+    <div class="flex flex-col h-full main-background-colorscheme text-colorscheme">
         <?php
         require_once "./components/header.php";
         ?>
-        <div class="flex flex-col items-center justify-center">
-            <div class="items-center justify-center w-3/4 text-colorscheme">
+        <!-- Page Content Container -->
+        <div class="flex flex-col items-center justify-center h-full overflow-hidden">
+            <div class="items-center justify-center w-3/4 h-full overflow-auto no-scrollbar">
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
                         <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0">
