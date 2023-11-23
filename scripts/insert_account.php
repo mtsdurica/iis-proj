@@ -15,8 +15,20 @@ $newPerson = array(
     'user_birthdate' => $_POST['user_birthdate']
 );
 
-// add user to the database
-$serv->addUser($newPerson);
+// Unique nickname validation
+$available = $serv->isUsernameAvailable($_POST['user_nickname']);
+echo $available;
 
-// redirect to the page with registration success
-header("Location:$context/register_success");
+if ($available != 0) {
+    $_SESSION['errorMessage'] = "Username already exists. Try something else, please.";
+
+    // Redirect back to the Register page
+    header("Location:$context/register");
+} else {
+    // add user to the database
+    $serv->addUser($newPerson);
+
+    // redirect to the page with registration success
+    header("Location:$context/register_success");
+}
+

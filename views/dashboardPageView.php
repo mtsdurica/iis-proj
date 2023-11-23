@@ -72,10 +72,8 @@ session_start();
             $serv = new AccountService();
             $rows = $serv->listAllGroups();
 
-            // TODO: group_id change to group_nickname after db update
             while ($row = $rows->fetch())
             {
-                // TODO: replace placeholder string
                 $name = $row['group_name'];
                 $handle = $row['group_handle'];
                 $id = $row['group_id'];
