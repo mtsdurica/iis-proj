@@ -32,6 +32,21 @@ session_start();
             <h1 class="text-2xl text-center">
                 Create an account
             </h1>
+
+            <?php
+            if (isset($_SESSION["errorMessage"])) {
+            ?>
+                <div class="flex justify-center h-12 p-2 text-center bg-red-500 rounded-lg bg-opacity-70">
+                    <h1 class="text-xl text-white opacity-100"><?= $_SESSION["errorMessage"] ?></h1>
+                </div>
+            <?php
+                unset($_SESSION["errorMessage"]);
+            } else {
+            ?>
+                <div class="flex invisible h-12 p-2 text-xl"></div>
+            <?php
+            }
+            ?>
         </div>
             
         <!-- form content -->
@@ -88,7 +103,7 @@ session_start();
                         <label class="px-2 text-lg" for="user_birthdate">
                             Birthday
                         </label>
-                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate">
+                        <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="date" name="user_birthdate" id="user_birthdate" value="1991-01-01">
                     </div>
 
                 </div> <!-- OTHER DATA -->

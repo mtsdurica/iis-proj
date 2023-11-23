@@ -758,6 +758,26 @@ class AccountService
             return FALSE;
         }
     }
+
+    function getNicknames()
+    {
+        $stmt = $this->pdo->query('SELECT user_nickname FROM users');
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    function isUsernameAvailable($newUsername)
+    {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE user_nickname = ?');
+        $stmt->execute([$newUsername]);
+
+        // Fetch the result
+        $count = $stmt->fetchColumn();
+
+        return $count;
+
+    }
 }
 
 
