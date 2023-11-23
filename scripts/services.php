@@ -265,6 +265,28 @@ class AccountService
         return $threads;
     }
 
+    function getNumberOfGroupUsers($groupId)
+    {
+        $query = $this->pdo->prepare("SELECT COUNT(*) FROM group_members
+            WHERE group_members.group_id = ?
+            AND group_members.group_member_accepted_flag = 1");
+
+        $query->execute([$groupId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getNumberOfGroupThreads($groupId)
+    {
+        $query = $this->pdo->prepare("SELECT COUNT(*) FROM threads
+            WHERE threads.group_id = ?
+            AND threads.reply_id IS NULL");
+
+        $query->execute([$groupId]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
     function getGroupMembers($groupId)
     {
         $query = $this->pdo->prepare('SELECT users.user_nickname, users.user_id, users.user_profile_pic FROM group_members
@@ -492,7 +514,8 @@ class AccountService
     }
 
     // Function to update User profile picture column in database, when user uploads their custom photo.
-    function updateProfilePicColumn (int $userId, string $fileName) {
+    function updateProfilePicColumn(int $userId, string $fileName)
+    {
         $stmt = $this->pdo->prepare("UPDATE users SET user_profile_pic = ? WHERE user_id = ?");
 
         if ($stmt->execute([$fileName, $userId])) {
@@ -503,7 +526,8 @@ class AccountService
     }
 
     // Function to update User profile banner column in database, when user uploads their custom photo.
-    function updateBannerColumn (int $userId, string $fileName) {
+    function updateBannerColumn(int $userId, string $fileName)
+    {
 
         $stmt = $this->pdo->prepare("UPDATE users SET user_banner = ? WHERE user_id = ?");
 
@@ -619,21 +643,21 @@ class AccountService
 
     // Checks if user is banned or not.
     // @return boolean
-    function isBannedUser(int $id) 
+    function isBannedUser(int $id)
     {
         $stmt = $this->pdo->prepare('SELECT user_banned FROM users WHERE user_id = ?');
         $stmt->execute([strval($id)]);
-       
+
         // Fetch the result from the query
         $result = $stmt->fetchColumn();
         return (bool) $result;
     }
 
-    function isPublicGroup(int $id) 
+    function isPublicGroup(int $id)
     {
         $stmt = $this->pdo->prepare('SELECT group_public_flag FROM groups WHERE group_id = ?');
         $stmt->execute([strval($id)]);
-       
+
         // Fetch the result from the query
         $result = $stmt->fetchColumn();
         return (bool) $result;
@@ -642,12 +666,9 @@ class AccountService
     function changeBannedStatus($data)
     {
         $stmt = $this->pdo->prepare('UPDATE users SET user_banned = :banStatus WHERE user_id = :id');
-        if ($stmt->execute($data))
-        {
+        if ($stmt->execute($data)) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             $this->lastError = $stmt->errorInfo();
             return FALSE;
         }
@@ -656,12 +677,9 @@ class AccountService
     function deleteUser($id)
     {
         $stmt = $this->pdo->prepare('DELETE FROM users WHERE user_id = ?');
-        if ($stmt->execute([$id]))
-        {
+        if ($stmt->execute([$id])) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             $this->lastError = $stmt->errorInfo();
             return FALSE;
         }
@@ -677,16 +695,11 @@ class AccountService
     function changePublicStatus($data)
     {
         $stmt = $this->pdo->prepare('UPDATE users SET user_public_flag = :publicStatus WHERE user_id = :id');
-        if ($stmt->execute($data))
-        {
+        if ($stmt->execute($data)) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             $this->lastError = $stmt->errorInfo();
             return FALSE;
         }
     }
 }
-
-
