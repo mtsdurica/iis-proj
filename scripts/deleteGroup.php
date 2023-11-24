@@ -9,12 +9,10 @@ $serv = new AccountService();
 $id = $_POST['groupId'];
 echo $id;
 
-if ($serv->deleteGroup($id))
-{
+if ($serv->deleteGroup($id)) {
     // redirect back to the Admin Dashboard
     header("Location:$context/adminDashboard");
 } else {
     // show alert window
-    echo '<script type="text/javascript"> window.onload = function () { alert("Error while deleting user."); } </script>'; 
+    echo '<script type="text/javascript"> window.onload = function () { alert("Error while deleting user."); } </script>';
 }
-

@@ -38,14 +38,24 @@ $groupBanner = $groupData["group_banner"];
         <!-- Page Content Container -->
         <div class="flex flex-col items-center justify-center h-full px-32 overflow-hidden">
             <div class="h-full overflow-auto no-scrollbar">
+
+                <div class="flex justify-end mt-8 mb-4">
+                    <!-- Form to handle the delete action -->
+                    <form action="<?= $context ?>/scripts/deleteGroup.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this group?');">
+                        <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                        <button type="submit" class="cancel-button-colorscheme text-center py-1 px-2 rounded-lg">
+                            Delete Group
+                        </button>
+                    </form>
+                </div>
+
                 <!-- Upper side -->
-                <div class="flex flex-row justify-center w-full gap-32 p-6 mt-10 rounded-lg shadow-lg header-colorscheme">
+                <div class="flex flex-row justify-center w-full gap-32 p-6 rounded-lg shadow-lg header-colorscheme">
                     <!-- Profiile picture section -->
                     <div class="flex flex-col w-full gap-2">
                         <h1 class="mb-3 text-2xl font-bold">Profile picture</h1>
                         <?php
-                        if ($groupProfilePic === NULL || $groupProfilePic === '')
-                        {
+                        if ($groupProfilePic === NULL || $groupProfilePic === '') {
                             $picUrl = $context . '/images/group_photo.jpg';
                         } else {
                             $picUrl = $context . '/uploads/' . $groupProfilePic;
@@ -56,7 +66,7 @@ $groupBanner = $groupData["group_banner"];
                         </div>
 
                         <form class="flex flex-col items-center gap-4" action="<?= $context ?>/scripts/uploadProfilePicGroup.php" method="post" enctype="multipart/form-data">
-                        <input type="file" name="fileToUpload" id="profilePicToUpload">
+                            <input type="file" name="fileToUpload" id="profilePicToUpload">
                             <input type="hidden" name="groupHandle" value="<?= $groupHandle ?>">
                             <input type="hidden" name="groupId" value="<?= $groupId ?>">
                             <input class="px-2 py-1 text-sm text-center text-white transition-all rounded-lg w-44 basic-button-colorscheme" type="submit" name="submit" value="Upload image">
@@ -112,27 +122,26 @@ $groupBanner = $groupData["group_banner"];
                                 <label class="w-56 px-2 text-sm" for="group_bio">
                                     Group Bio
                                 </label>
-                                <textarea class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" name="group_bio" id="group_bio" required><?= $groupBio ?></textarea>                            
+                                <textarea class="p-2 text-sm border rounded-lg main-background-colorscheme divider-colorscheme" name="group_bio" id="group_bio" required><?= $groupBio ?></textarea>
                             </div>
 
                             <div class="pl-2">
                                 <p class="w-56 pt-4 pb-3 text-md font-bold">
-                                   Privacy
+                                    Privacy
                                 </p>
 
                                 <div class="flex flex-row gap-4 items-center pl-2">
                                     <?php
-                                        if ($groupPublicFlag == 1)
-                                        {
-                                            $checked = "checked";
-                                        } else {
-                                            $checked = "";
-                                        }
+                                    if ($groupPublicFlag == 1) {
+                                        $checked = "checked";
+                                    } else {
+                                        $checked = "";
+                                    }
                                     ?>
-                                    <input type="checkbox" id="public_flag" name="public_flag" value="Public" <?=$checked?>>
+                                    <input type="checkbox" id="public_flag" name="public_flag" value="Public" <?= $checked ?>>
                                     <label class="text-sm" for="public_flag">Public</label>
                                 </div>
-                                
+
                             </div>
 
                             <input type="hidden" name="groupId" value="<?= $groupId ?>">
