@@ -44,16 +44,23 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
         <div class="flex flex-col items-center justify-center h-full px-32 overflow-hidden ">
             <div class="h-full overflow-auto no-scrollbar">
 
-                <div class="flex justify-end mt-8 mb-4">
-                    <!-- Form to handle the delete action -->
-                    <form action="<?= $context ?>/scripts/deleteUser.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                        <input type="hidden" name="userId" value="<?= $userId ?>">
-                        <input type="hidden" name="fromProfileFlag" value="1">
-                        <button type="submit" class="cancel-button-colorscheme text-center py-1 px-2 rounded-lg">
-                            Delete User Profile
-                        </button>
-                    </form>    
-                </div>
+                <?php
+                if ($userId != 1) {
+                ?>
+                    <div class="flex justify-end mt-8 mb-4">
+                        <!-- Form to handle the delete action -->
+                        <form action="<?= $context ?>/scripts/deleteUser.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            <input type="hidden" name="userId" value="<?= $userId ?>">
+                            <input type="hidden" name="fromProfileFlag" value="1">
+                            <button type="submit" class="cancel-button-colorscheme text-center py-1 px-2 rounded-lg">
+                                Delete User Profile
+                            </button>
+                        </form>
+                    </div>
+                <?php
+                }
+                ?>
+
 
                 <!-- Upper side -->
                 <div class="flex flex-row justify-center w-full gap-32 p-6  rounded-lg shadow-lg header-colorscheme">
@@ -145,41 +152,38 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
 
                                 <div class="flex flex-row gap-2">
                                     <?php
-                                        if ($userPublicUnregistered == 1)
-                                        {
-                                            $checked = "checked";
-                                        } else {
-                                            $checked = "";
-                                        }
+                                    if ($userPublicUnregistered == 1) {
+                                        $checked = "checked";
+                                    } else {
+                                        $checked = "";
+                                    }
                                     ?>
 
-                                    <input type="checkbox" id="everyone" name="everyone" value="Everyone" <?=$checked?>>
+                                    <input type="checkbox" id="everyone" name="everyone" value="Everyone" <?= $checked ?>>
                                     <label class="text-sm" for="everyone">Everyone</label>
 
                                     <?php
-                                        if ($userPublicRegistered == 1)
-                                        {
-                                            $checked = "checked";
-                                        } else {
-                                            $checked = "";
-                                        }
+                                    if ($userPublicRegistered == 1) {
+                                        $checked = "checked";
+                                    } else {
+                                        $checked = "";
+                                    }
                                     ?>
 
-                                    <input class="ml-28" type="checkbox" id="registered" name="registered" value="Registered" <?=$checked?>>
+                                    <input class="ml-28" type="checkbox" id="registered" name="registered" value="Registered" <?= $checked ?>>
                                     <label class="text-sm" for="registered">Only registered users</label>
                                 </div>
                                 <div class="flex flex-row gap-2">
 
                                     <?php
-                                        if ($userPublicGroupMembers == 1)
-                                        {
-                                            $checked = "checked";
-                                        } else {
-                                            $checked = "";
-                                        }
+                                    if ($userPublicGroupMembers == 1) {
+                                        $checked = "checked";
+                                    } else {
+                                        $checked = "";
+                                    }
                                     ?>
 
-                                    <input type="checkbox" id="groupMembers" name="groupMembers" value="GroupMembers" <?=$checked?>>
+                                    <input type="checkbox" id="groupMembers" name="groupMembers" value="GroupMembers" <?= $checked ?>>
                                     <label class="text-sm" for="groupMembers">Only group members</label>
 
                                 </div>
@@ -236,8 +240,7 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
                         </form>
 
                         <?php
-                        if (isset($_SESSION['statusMessage']))
-                        {
+                        if (isset($_SESSION['statusMessage'])) {
                             $statusMessage = $_SESSION['statusMessage'];
                         } else {
                             $statusMessage = '';
