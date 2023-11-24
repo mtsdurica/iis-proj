@@ -18,6 +18,21 @@ $userBanner = $userData["user_banner"];
 $userPublicUnregistered = $userData["user_public_for_unregistered_flag"];
 $userPublicRegistered = $userData["user_public_for_registered_flag"];
 $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
+
+$loggedInUser = isset($_SESSION["username"]) ? $_SESSION["username"] : "";
+$permission = 0;
+if ($loggedInUser === 'admin')
+{
+    $permission = 1;
+} else if ($loggedInUser === $userNickname) {
+    $permission = 1;
+} else {
+    $permission = 0;
+}
+
+if ($permission == 0) {
+    echo "<body><h1>Permission denied</h1></body>";
+} else {
 ?>
 
 <!DOCTYPE html>
@@ -261,3 +276,6 @@ $userPublicGroupMembers = $userData["user_public_for_members_of_group_flag"];
 </body>
 
 </html>
+<?php
+}
+?>
