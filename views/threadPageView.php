@@ -44,23 +44,49 @@ $groupHandle = $threadData["group_handle"];
                         <!-- Thread -->
                         <div class="flex flex-col px-4 py-2 mt-2 rounded-lg mx-80 thread-colorscheme text-colorscheme drop-shadow-md">
                             <div class="flex flex-col">
-                                <div class="flex flex-row">
-                                    <span class="text-sm text-slate-500 dark:text-slate-400">
-                                        Posted by:
-                                    </span>
-                                    <object class="px-1 text-sm text-slate-500 dark:text-slate-400 hover:underline">
-                                        <a href="<?= $context ?>/profile/<?= $threadPoster ?>">
-                                            <?= $threadPoster ?>
-                                        </a>
-                                    </object>
-                                    <span class="text-sm text-slate-500 dark:text-slate-400">
-                                        in
-                                    </span>
-                                    <object class="px-1 text-sm text-slate-500 dark:text-slate-400 hover:underline">
-                                        <a href="<?= $context ?>/group/<?= $groupHandle ?>">
-                                            <?= $groupHandle ?>
-                                        </a>
-                                    </object>
+                                <div class="flex flex-row justify-between">
+                                    <div class="flex flex-row">
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">
+                                            Posted by:
+                                        </span>
+                                        <object class="px-1 text-sm text-slate-500 dark:text-slate-400 hover:underline">
+                                            <a href="<?= $context ?>/profile/<?= $threadPoster ?>">
+                                                <?= $threadPoster ?>
+                                            </a>
+                                        </object>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">
+                                            in
+                                        </span>
+                                        <object class="px-1 text-sm text-slate-500 dark:text-slate-400 hover:underline">
+                                            <a href="<?= $context ?>/group/<?= $groupHandle ?>">
+                                                <?= $groupHandle ?>
+                                            </a>
+                                        </object>
+                                    </div>
+                                    <?php
+                                    $groupAdmin = $service->getGroupAdmin($service->getGroupId($groupHandle));
+                                    $groupModerators = $service->getGroupModeratorsUsernames($service->getGroupId($groupHandle));
+                                    if((isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $_SESSION['isAdmin'] === true) ||
+                                        (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $_SESSION["username"] === $threadPoster) ||
+                                        (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && $_SESSION["username"] === $groupAdmin["user_nickname"]) ||
+                                        (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true && !empty($groupModerators) && in_array($_SESSION["username"], $groupModerators))) {
+                                    ?>
+                                    <div class="flex flex-row gap-2">
+                                        <object class="text-sm hover:underline text-slate-500 dark:text-slate-400">
+                                            <a href="<?= $context ?>/edit/<?= $threadId ?>">
+                                                Edit
+                                            </a>
+                                        </object>
+                                        <form method="POST" action="<?= $context ?>/scripts/deleteThread.php" class="text-sm hover:underline text-slate-500 dark:text-slate-400">
+                                            <input type="hidden" name="threadId" value="<?= $threadId ?>">
+                                            <button class="hover:underline">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <?php
+                                    }
+                                    ?>
                                 </div>
                                 <div class="flex flex-row">
                                     <h3 class="text-xl">

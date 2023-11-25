@@ -66,13 +66,26 @@ class AccountService
     }
     // end
 
-    function addThread(string $threadTitle, string $threadContent, int $threadPoster, int $threadGroup): bool
+    function addThread(string $threadTitle, string $threadContent, int $threadPoster, int $threadGroup)
     {
         $query = $this->pdo->prepare('INSERT INTO threads (thread_title, thread_text, poster_id, group_id) VALUES (?, ?, ?, ?)');
-        if ($query->execute([$threadTitle, $threadContent, $threadPoster, $threadGroup]))
-            return true;
-        else
-            return false;
+        $query->execute([$threadTitle, $threadContent, $threadPoster, $threadGroup]);
+        return $this->pdo->lastInsertId();
+    }
+
+    function updateThread($threadTitle, $threadContent, $threadId)
+    {
+        $query = $this->pdo->prepare("UPDATE threads SET threads.thread_title = ?,
+            threads.thread_text = ?
+            WHERE threads.thread_id = ?
+            ");
+        $query->execute([$threadTitle, $threadContent, $threadId]);
+    }
+
+    function deleteThread($threadId)
+    {
+        $query = $this->pdo->prepare("DELETE FROM threads WHERE threads.thread_id = ?");
+        $query->execute([$threadId]);
     }
 
     function addReply(string $threadContent, int $threadPoster, int $threadGroup, $threadReply): bool
@@ -226,6 +239,17 @@ class AccountService
             AND threads.reply_id IS NULL");
 
         $query->execute([$threadId]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function getReplyData($replyId)
+    {
+        $query = $this->pdo->prepare("SELECT threads.thread_id, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, threads.reply_id, users.user_nickname AS 'thread_poster' FROM threads
+            LEFT JOIN users ON threads.poster_id = users.user_id
+            WHERE threads.thread_id = ?
+            ");
+
+        $query->execute([$replyId]);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -526,9 +550,10 @@ class AccountService
     }
 
     // Function to update Group profile picture column in database, when user uploads their custom photo.
-    function updateGroupProfilePicColumn (int $groupId, string $fileName) {
+    function updateGroupProfilePicColumn(int $groupId, string $fileName)
+    {
         $stmt = $this->pdo->prepare("UPDATE groups SET group_profile_pic = ? WHERE group_id = ?");
-    
+
         if ($stmt->execute([$fileName, $groupId])) {
             return true;
         } else {
@@ -550,10 +575,11 @@ class AccountService
     }
 
     // Function to update Group profile banner column in database, when user uploads their custom photo.
-    function updateGroupBannerColumn (int $groupId, string $fileName) {
+    function updateGroupBannerColumn(int $groupId, string $fileName)
+    {
 
         $stmt = $this->pdo->prepare("UPDATE groups SET group_banner = ? WHERE group_id = ?");
-    
+
         if ($stmt->execute([$fileName, $groupId])) {
             return true;
         } else {
@@ -587,13 +613,13 @@ class AccountService
     function updateGroup($data)
     {
         $stmt = $this->pdo->prepare('UPDATE groups SET group_handle = ?, group_name = ?, group_bio = ?, group_public_flag = ? WHERE group_id = ?');
-    
+
         $group_id = $data['group_id'];
         $group_handle = $data['group_handle'];
         $group_name = $data['group_name'];
         $group_bio = $data['group_bio'];
         $group_public_flag = $data['public_flag'];
-        
+
 
         if ($stmt->execute([$group_handle, $group_name, $group_bio, $group_public_flag, $group_id])) {
             return true;
@@ -720,12 +746,9 @@ class AccountService
     function changeGroupBannedStatus($data)
     {
         $stmt = $this->pdo->prepare('UPDATE groups SET group_banned = :banStatus WHERE group_id = :id');
-        if ($stmt->execute($data))
-        {
+        if ($stmt->execute($data)) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             $this->lastError = $stmt->errorInfo();
             return FALSE;
         }
@@ -745,12 +768,9 @@ class AccountService
     function deleteGroup($id)
     {
         $stmt = $this->pdo->prepare('DELETE FROM groups WHERE group_id = ?');
-        if ($stmt->execute([$id]))
-        {
+        if ($stmt->execute([$id])) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             $this->lastError = $stmt->errorInfo();
             return FALSE;
         }
@@ -791,6 +811,5 @@ class AccountService
         $count = $stmt->fetchColumn();
 
         return $count;
-
     }
 }
