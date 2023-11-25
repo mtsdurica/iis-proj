@@ -25,6 +25,9 @@ switch ($exploded[2]) {
     case ('submit'):
         require_once __DIR__ . "/views/threadCreationView.php";
         break;
+    case ('edit'):
+        require_once __DIR__ . "/views/threadEditView.php";
+        break;
     case ('thread'):
         require_once __DIR__ . "/views/threadPageView.php";
         break;
