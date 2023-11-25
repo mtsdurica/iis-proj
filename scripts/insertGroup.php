@@ -13,14 +13,14 @@ else
 if (str_contains($groupHandle, " "))
     $groupHandle = str_replace(" ", "_", $groupHandle);
 
-if ($_POST["groupPrivate"] === 'on')
+if (isset($_POST["groupPrivate"]) && $_POST["groupPrivate"] === 'on')
     $groupPrivate = 0;
 else
     $groupPrivate = 1;
 
 $alreadyExists = $service->getGroupId($groupHandle);
 
-if (!empty($alreadyExists)) {
+if ($alreadyExists) {
     $_SESSION["invalid"] = true;
     header("Location:$context/create/group");
 } else {
