@@ -30,7 +30,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                 <div class="flex-col items-center p-2 ">
                     <!-- Checking for being logged in done in the submit script -->
                     <div class="flex flex-row justify-center ">
-                        <a href="<?= $context ?>/submit" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 rounded-full confirm-button-colorscheme">
+                        <a href="<?= $context ?>/create/thread" class="p-2 px-4 mx-12 text-2xl font-bold text-center text-white transition-all duration-300 rounded-full confirm-button-colorscheme">
                             <i class="fa-solid fa-circle-plus"></i>
                             <span class="">
                                 New Thread
@@ -38,10 +38,13 @@ $context = $_SERVER["CONTEXT_PREFIX"];
                         </a>
                     </div>
                     <hr class="flex-col mt-4 divider-colorscheme" />
-                    <div class="flex-col p-2 text-2xl font-bold text-colorscheme items-left">
-                        <h2>
+                    <div class="flex flex-row items-baseline justify-between p-2 text-2xl font-bold text-colorscheme">
+                        <div class="flex">
                             My Groups
-                        </h2>
+                        </div>
+                        <a href="<?= $context ?>/create/group" class="flex p-1 rounded-full hover:bg-slate-200 hover:dark:bg-slate-600">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
                     </div>
                     <?php
                     if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {

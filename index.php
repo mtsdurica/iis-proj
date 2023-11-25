@@ -22,8 +22,11 @@ switch ($exploded[2]) {
     case ('dashboard'):
         require_once __DIR__ . "/views/dashboardPageView.php";
         break;
-    case ('submit'):
-        require_once __DIR__ . "/views/threadCreationView.php";
+    case ('create'):
+        if (isset($exploded[3]) && ($exploded[3] === "thread"))
+            require_once __DIR__ . "/views/threadCreationView.php";
+        else if (isset($exploded[3]) && ($exploded[3] === "group"))
+            require_once __DIR__ . "/views/groupCreationView.php";
         break;
     case ('edit'):
         require_once __DIR__ . "/views/threadEditView.php";
