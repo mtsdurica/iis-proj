@@ -66,6 +66,15 @@ class AccountService
     }
     // end
 
+    function addGroup($groupHandle, $groupName, $groupBio, $groupPublic,  $groupAdmin)
+    {
+        $query = $this->pdo->prepare("INSERT INTO groups (group_handle, group_name, group_bio, group_public_flag) VALUES (?, ?, ?, ?)");
+        $query->execute([$groupHandle, $groupName, $groupBio, $groupPublic]);
+        $newGroupId = $this->pdo->lastInsertId();
+        $query = $this->pdo->prepare("INSERT INTO group_members (group_id, user_id, group_admin) VALUES (?, ?, ?)");
+        $query->execute([$newGroupId, $groupAdmin, 1]);
+    }
+
     function addThread(string $threadTitle, string $threadContent, int $threadPoster, int $threadGroup)
     {
         $query = $this->pdo->prepare('INSERT INTO threads (thread_title, thread_text, poster_id, group_id) VALUES (?, ?, ?, ?)');
