@@ -113,7 +113,9 @@ class AccountService
         $query->execute([$groupHandle]);
 
         $data = $query->fetch(PDO::FETCH_ASSOC);
-        return $data["group_id"];
+        if (!empty($data))
+            return $data["group_id"];
+        else return false;
     }
 
     function getGroupsByUsername($username): array
