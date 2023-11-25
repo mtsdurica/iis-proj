@@ -6,7 +6,7 @@
     else
         $imgPath = $context . "/images/profile_photo.jpg";
     ?>
-    <img class="w-12 rounded-lg" src="<?= $imgPath ?>">
+    <img class="object-cover w-12 h-12 rounded-lg" src="<?= $imgPath ?>">
     <a class="hover:underline" href="<?= $context ?>/profile/<?= $userNickname ?>">@<?= $userNickname ?></a>
     <div class="invisible"></div>
 </div>

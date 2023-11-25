@@ -13,6 +13,10 @@ $groupName = $groupData["group_name"];
 $groupBio = $groupData["group_bio"];
 $groupPublicFlag = $groupData["group_public_flag"];
 $groupDateOfCreation = $groupData["group_date_of_creation"];
+$groupProfilePic = $groupData["group_profile_pic"];
+$groupBanner =  $groupData["group_banner"];
+
+
 
 $userIsMember = false;
 
@@ -46,12 +50,26 @@ if (isset($_SESSION["loggedIn"]) === true)
                 <div class="flex flex-col">
                     <div class="flex items-center justify-center">
                         <div id="cover-photo-element-group" class="w-1/2 h-64 mt-0">
-                            <img id="cover-photo-group" src="<?= $context ?>/images/cover_photo.jpg" class="object-cover w-full h-full">
+                            <?php
+                            if ($groupBanner === NULL || $groupBanner === '') {
+                                $bannerUrl =  $context . '/images/cover_photo.jpg';
+                            } else {
+                                $bannerUrl = $context . '/uploads/' . $groupBanner;
+                            }
+                            ?>
+                            <img id="cover-photo-group" src="<?= $bannerUrl ?>" class="object-cover w-full h-full">
                         </div>
                     </div>
                     <div class="flex items-center justify-center">
                         <profile-photo id="profile-photo-element-group" class="z-50 w-40 h-40 mt-[-6rem]">
-                            <img id="profile-photo-group" src="<?= $context ?>/images/group_photo.jpg" class="object-cover w-full h-full rounded-full">
+                            <?php
+                            if ($groupProfilePic === NULL || $groupProfilePic === '') {
+                                $picUrl =  $context . '/images/profile_photo.jpg';
+                            } else {
+                                $picUrl = $context . '/uploads/' . $groupProfilePic;
+                            }
+                            ?>
+                            <img id="profile-photo-group" src="<?= $picUrl ?>" class="object-cover w-full h-full rounded-full">
                         </profile-photo>
                     </div>
                     <div class="flex flex-row mx-12 justify-evenly">
@@ -115,21 +133,32 @@ if (isset($_SESSION["loggedIn"]) === true)
                                         <div type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center border rounded-full divider-colorscheme max-h-fit">
                                             <span>Request pending</span>
                                         </div>
-                                <?php
+                                    <?php
                                     }
                                 }
+                                if ($_SESSION["username"] !== $groupAdmin["user_nickname"]) {
+                                    ?>
+                                    <form method="POST" action="<?= $context ?>/scripts/leaveGroup.php">
+                                        <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
+                                        <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                        <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
+                                        <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">
+                                            <i class="fa-solid fa-circle-minus"></i>
+                                            <span>Leave Group</span>
+                                        </button>
+                                    </form>
+                                <?php
+                                } else {
                                 ?>
-                                <form method="POST" action="<?= $context ?>/scripts/leaveGroup.php">
-                                    <input type="hidden" name="groupRedirect" value="<?= $groupHandle ?>">
-                                    <input type="hidden" name="groupId" value="<?= $groupId ?>">
-                                    <input type="hidden" name="userId" value="<?= $_SESSION["userId"] ?>">
-                                    <input type="hidden" name="groupPublicFlag" value="<?= $groupPublicFlag ?>">
-                                    <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">
-                                        <i class="fa-solid fa-circle-minus"></i>
-                                        <span>Leave Group</span>
-                                    </button>
-                                </form>
+                                    <form method="POST" action="<?= $context ?>/scripts/deleteGroupByAdmin.php">
+                                        <input type="hidden" name="groupId" value="<?= $groupId ?>">
+                                        <button type="submit" name="submitted" class="p-2 px-4 text-lg font-bold text-center text-white transition-all duration-300 bg-red-400 rounded-full max-h-fit hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">
+                                            <i class="fa-solid fa-circle-minus"></i>
+                                            <span>Delete Group</span>
+                                        </button>
+                                    </form>
                             <?php
+                                }
                             }
                             ?>
                         </div>
@@ -163,18 +192,12 @@ if (isset($_SESSION["loggedIn"]) === true)
                         <?php
                         }
                         ?>
-                        <!-- <li class="flex">
-                            <a id="show-group-statistics" class="flex items-center justify-center text-xl header-element">
-                                Statistics
-                            </a>
-                        </li> -->
                         <li class="flex">
                             <a id="show-group-about" class="flex items-center justify-center text-xl header-element">
                                 About
                             </a>
                         </li>
                     </ul>
-
                     <div class="flex flex-col items-center w-full mb-2">
                         <div id="group-threads" class="hidden">
                             <?php
@@ -212,8 +235,8 @@ if (isset($_SESSION["loggedIn"]) === true)
                                     <div class="flex flex-col justify-center gap-2">
                                         <?php
                                         foreach ($groupModerators as $groupModerator) {
-                                            $userNickname = $groupModerator;
-                                            $userProfilePic = $groupMember["user_profile_pic"];
+                                            $userNickname = $groupModerator["user_nickname"];
+                                            $userProfilePic = $groupModerator["user_profile_pic"];
                                             require "./components/groupPageModerator.php";
                                         }
                                         ?>
@@ -240,17 +263,6 @@ if (isset($_SESSION["loggedIn"]) === true)
                                 ?>
                             </div>
                         </div>
-                        <!-- <div id="group-statistics" class="hidden">
-                            <ul>
-                                <li>stat 1</li>
-                                <li>stat 2</li>
-                                <li>stat 3</li>
-                                <li>stat 4</li>
-                                <li>stat 5</li>
-                                <li>stat 6</li>
-                                <li>stat 7</li>
-                            </ul>
-                        </div> -->
                         <div id="group-about" class="flex items-center justify-center h-full text-colorscheme">
                             <div class="flex flex-col">
                                 <div class="flex flex-col">
