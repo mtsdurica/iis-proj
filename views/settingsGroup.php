@@ -18,7 +18,7 @@ $groupBanner = $groupData["group_banner"];
 ?>
 
 <head>
-    <title>Group</title>
+    <title><?= $groupName ?> - Settings | Threadit</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
@@ -43,7 +43,7 @@ $groupBanner = $groupData["group_banner"];
                     <!-- Form to handle the delete action -->
                     <form action="<?= $context ?>/scripts/deleteGroup.php" method="POST" onsubmit="return confirm('Are you sure you want to delete this group?');">
                         <input type="hidden" name="groupId" value="<?= $groupId ?>">
-                        <button type="submit" class="cancel-button-colorscheme text-center py-1 px-2 rounded-lg">
+                        <button type="submit" class="px-2 py-1 text-center rounded-lg cancel-button-colorscheme">
                             Delete Group
                         </button>
                     </form>
@@ -97,7 +97,7 @@ $groupBanner = $groupData["group_banner"];
                 </div> <!-- Upper side -->
 
                 <!-- Lower side -->
-                <div class="flex w-full p-6 my-4 rounded-lg shadow-lg header-colorscheme justify-center">
+                <div class="flex justify-center w-full p-6 my-4 rounded-lg shadow-lg header-colorscheme">
 
                     <!-- General settings form section -->
                     <div class="flex flex-col">
@@ -126,11 +126,11 @@ $groupBanner = $groupData["group_banner"];
                             </div>
 
                             <div class="pl-2">
-                                <p class="w-56 pt-4 pb-3 text-md font-bold">
+                                <p class="w-56 pt-4 pb-3 font-bold text-md">
                                     Privacy
                                 </p>
 
-                                <div class="flex flex-row gap-4 items-center pl-2">
+                                <div class="flex flex-row items-center gap-4 pl-2">
                                     <?php
                                     if ($groupPublicFlag == 1) {
                                         $checked = "checked";

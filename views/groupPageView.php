@@ -28,7 +28,7 @@ if (isset($_SESSION["loggedIn"]) === true)
 <html class="h-full">
 
 <head>
-    <title>Group</title>
+    <title><?= $groupName ?> | Threadit</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
