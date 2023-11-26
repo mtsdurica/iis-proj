@@ -171,8 +171,8 @@ class AccountService
                     LEFT JOIN users ON group_members.user_id = users.user_id 
                     WHERE group_members.group_member_accepted_flag = 1 
                     AND users.user_nickname = ?)
-            AND threads.reply_id IS NULL"
-
+            AND threads.reply_id IS NULL
+            ORDER BY threads.thread_date DESC"
         );
         $query->execute([$username]);
 
@@ -191,7 +191,8 @@ class AccountService
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
             WHERE groups.group_public_flag = 1
-            AND threads.reply_id IS NULL"
+            AND threads.reply_id IS NULL
+            ORDER BY threads.thread_date DESC"
         );
         $query->execute();
 
@@ -270,7 +271,9 @@ class AccountService
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
             WHERE users.user_nickname = ?
-            AND threads.reply_id IS NULL");
+            AND threads.reply_id IS NULL
+            ORDER BY threads.thread_date DESC
+            ");
 
         $query->execute([$username]);
 
@@ -288,6 +291,7 @@ class AccountService
             LEFT JOIN users ON threads.poster_id = users.user_id
             WHERE threads.group_id = ?
             AND threads.reply_id IS NULL
+            ORDER BY threads.thread_date DESC
             ");
 
         $query->execute([$groupId]);
