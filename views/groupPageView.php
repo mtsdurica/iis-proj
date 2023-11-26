@@ -157,6 +157,10 @@ if (isset($_SESSION["loggedIn"]) === true)
                                             <span>Delete Group</span>
                                         </button>
                                     </form>
+                                    <a href="<?= $context ?>/group/<?= $groupHandle ?>/settings" class="p-2 px-4 text-lg font-bold transition-all duration-300 rounded-full header-colorscheme hover:bg-slate-200 hover:dark:bg-slate-600">
+                                        <span class="fa-solid fa-gear"></span>
+                                        <span>Group Settings</span>
+                                    </a>
                             <?php
                                 }
                             }
