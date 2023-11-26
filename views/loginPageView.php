@@ -10,7 +10,7 @@ $context = $_SERVER["CONTEXT_PREFIX"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | Threadit</title>
     <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/56e0bbdeed.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="<?= $context ?>/scripts/darkModeSetter.js"></script>

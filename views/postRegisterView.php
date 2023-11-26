@@ -7,7 +7,7 @@ session_start();
 <html class="h-full">
 
 <head>
-    <title>New Account</title>
+    <title>New Account | Threadit</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 

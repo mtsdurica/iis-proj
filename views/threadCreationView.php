@@ -13,7 +13,7 @@ $service = new AccountService();
 <html class="h-full">
 
 <head>
-    <title>New Thread</title>
+    <title>New Thread | Threadit</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?= $context ?>/dist/style.css" rel="stylesheet">

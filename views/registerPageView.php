@@ -4,13 +4,13 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<html lang="en "class="h-full">
+<html lang="en " class="h-full">
 
 <head>
-    <title>New Account</title>
+    <title>New Account | Threadit</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Tailwind -->
     <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -23,10 +23,10 @@ session_start();
 </head>
 
 <body class="h-full ">
-    
+
     <!-- main container -->
     <div class="flex flex-col items-center justify-center h-full main-background-colorscheme text-colorscheme">
-        
+
         <!-- HEADING -->
         <div class="p-4">
             <h1 class="text-2xl text-center">
@@ -48,14 +48,14 @@ session_start();
             }
             ?>
         </div>
-            
+
         <!-- form content -->
         <form class="flex flex-col gap-4 p-4 rounded-lg w-96 min-w-fit header-colorscheme" action="<?= $context ?>/scripts/insert_account.php" method="POST">
-            
-           <div class="flex flex-row">
+
+            <div class="flex flex-row">
                 <!-- MANDATORY DATA -->
                 <div class="flex flex-col gap-4 p-4 rounded-lg" id="reg_first_step">
-                
+
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_nickname">
                             Username *
@@ -76,7 +76,7 @@ session_start();
                         </label>
                         <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="email" placeholder="Email" name="user_email" id="user_email" required>
                     </div>
-                    
+
                 </div>
 
                 <!-- OTHER DATA -->
@@ -87,18 +87,18 @@ session_start();
                         </label>
                         <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Full name" name="user_full_name" id="user_full_name">
                     </div>
-                    
+
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_gender">
                             Gender
                         </label>
-                        <select class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme"  name="user_gender" id="user_gender">
+                        <select class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" name="user_gender" id="user_gender">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other" selected>Other</option>
                         </select>
                     </div>
-                    
+
                     <div class="flex flex-col gap-2">
                         <label class="px-2 text-lg" for="user_birthdate">
                             Birthday
@@ -111,20 +111,20 @@ session_start();
 
             <!-- BUTTON -->
             <div class="flex items-center justify-center gap-4">
-                <button type="submit" name="submitted" class="p-2 mt-2 text-lg text-center w-96 text-white transition-all rounded-lg confirm-button-colorscheme">
+                <button type="submit" name="submitted" class="p-2 mt-2 text-lg text-center text-white transition-all rounded-lg w-96 confirm-button-colorscheme">
                     Register
                 </button>
             </div>
 
         </form>
-   
-            
+
+
         <!-- FOOTER -->
         <div class="p-4">
             <span>
                 Already have an account?
             </span>
-            <a class=" hover:text-blue-500" href="<?= $context ?>/login" >Log in</a>
+            <a class=" hover:text-blue-500" href="<?= $context ?>/login">Log in</a>
         </div>
 
     </div>
@@ -134,4 +134,3 @@ session_start();
 </body>
 
 </html>
-

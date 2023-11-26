@@ -7,7 +7,7 @@ session_start();
 <html class="h-full">
 
 <head>
-    <title>ERROR 404</title>
+    <title>Page Not Found | Threadit</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?= $context ?>/dist/style.css" rel="stylesheet">
@@ -19,27 +19,27 @@ session_start();
 
 <body class="items-center justify-center h-full overflow-hidden main-background-colorscheme">
     <?php
-        require_once "./components/header.php";
+    require_once "./components/header.php";
     ?>
     <!-- main container -->
     <div class="flex flex-col items-center self-center justify-center h-full overflow-hidden transition-all duration-300 text-colorscheme">
-       
+
         <div class="m-0">
             <img src="<?= $context ?>/images/404-error.png" alt="Page not found" style="width: 20rem;">
-        </div> 
-    
+        </div>
+
         <h1 class="text-2xl font-bold">
             Oooops! Something went wrong.
-        </h1>  
+        </h1>
 
         <p class="mt-3">
             The page you are looking for was moved, removed, renamed or does not exist.
         </p>
 
         <div class="flex flex-row items-center justify-center px-5 py-2 mt-20 text-2xl bg-red-500 rounded-full bg-opacity-70 hover:bg-red-800">
-            <a href="<?= $context ?>/" class="flex items-center justify-center gap-2 px-2 py-1 flew-row"> 
+            <a href="<?= $context ?>/" class="flex items-center justify-center gap-2 px-2 py-1 flew-row">
                 <i class="fa-solid fa-chevron-left"></i>
-                <span class="text-sm"> Back to Home </span> 
+                <span class="text-sm"> Back to Home </span>
             </a>
         </div>
     </div>
