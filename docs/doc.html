@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-2" />
+	<title>Projekt IIS</title>
+	<style type="text/css">
+		table {
+			border-collapse: collapse;
+		}
+
+		td,
+		th {
+			border: 1px solid black;
+			padding: 0.3em 0.5em;
+			text-align: left;
+		}
+
+		dt {
+			font-weight: bold;
+			margin-top: 0.5em;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- Zkontrolujte pros�m nastaven� k�dov�n� v hlavi�ce dokumentu 
+     podle pou�it�ho editoru -->
+
+	<h1>Sociálna sieť</h1> <!-- Nahradte n�zvem sv�ho zad�n� -->
+
+	<dl>
+		<dt>Autoři</dt>
+		<dd>Matúš Ďurica
+			<a href="mailto:xduric06@stud.fit.vutbr.cz">xduric06@stud.fit.vutbr.cz</a> -
+			založenie projektu, implementované časti projektu: Hlavná stránka, Hlavička soc. siete, Diskusné vlákna,
+			Prehľadávanie skupín a užívateľov, Prihlasovanie, implementácia databázy, implementácia grafického dizajnu,
+		</dd>
+		<dd>Romana Ďuráčiová
+			<a href="mailto:xdurac01@stud.fit.vutbr.cz">xdurac01@stud.fit.vutbr.cz</a> -
+			dokumentácia a video, wireframe, implementované časti projektu: Nastavenia profilov skupín a užívateľov,
+			Stránka admina soc. siete, Registrácia, implementácia databázy, implementácia grafického dizajnu,
+		</dd>
+		<dd>Klára Smoleňová
+			<a href="mailto:xsmole02@stud.fit.vutbr.cz">xsmole02@stud.fit.vutbr.cz</a> -
+			implementované časti projektu: grafický dizajn profilovej stránky užívateľa a skupiny
+		</dd>
+		<dt>URL aplikace</dt>
+		<dd><a href="https://www.stud.fit.vutbr.cz/~xdurac01/">https://www.stud.fit.vutbr.cz/~xdurac01/</a></dd>
+		<dd><a href="https://www.stud.fit.vutbr.cz/~xduric06/">https://www.stud.fit.vutbr.cz/~xduric06/</a></dd>
+	</dl>
+
+	<h2>Uživatelé systému pro testování</h2>
+	<p>Uveďte prosím existující zástupce<strong> všech rolí uživatelů.</strong>.</p>
+	<table>
+		<tr>
+			<th>Login</th>
+			<th>Heslo</th>
+			<th>Role</th>
+		</tr>
+		<tr>
+			<td>admin</td>
+			<td>admin</td>
+			<td>Administrátor</td>
+		</tr>
+		<tr>
+			<td>fitking</td>
+			<td>password123</td>
+			<td>Registrovaný užívateľ</td>
+		</tr>
+		<tr>
+			<td>---</td>
+			<td>---</td>
+			<td>Neregistrovaný užívateľ</td>
+		</tr>
+	</table>
+
+	<p>(Diagram případů užití není nutné vkládat, pokud IS implementuje role a případy užití definované zadáním.)</p>
+
+	<h3>Video</h3>
+
+	<p><a href="https://youtu.be/Tk5rifqwp94">https://youtu.be/Tk5rifqwp94</a></p>
+
+	<h2>Implementace</h2>
+	<p>Stručná dokumentace k implementaci, která popisuje, které části projektu (např. PHP skripty) implementují
+		jednotlivé případy použití.</p>
+
+	<p>Pri implementacii sme sa inšpirovali modelom MVC a demo kódmi z prednášok. <b>Prezentačná vrstva</b> je
+		implementovaná v súboroch uložených v adresári "views". <b>Aplikačná vrstva</b> je obsiahnutá v
+		PHP a JavaScript skriptoch v adresári "scripts", kde sa zároveň nachádza
+		aj súbor "services.php", ktorý obsahuje triedu AccountService implementujúcu <b>funkcie pre prácu s
+			databázou</b>. V súbore "main.js" sú implementované nevyhnutné JavaScript funkcie.</p>
+	<ul>
+		<li><b>správa užívateľov a skupín: </b><u>views</u>/dashboardPageView.php + <u>scripts</u>/services.php | main.js | changeBannedStatus.php | changeGroupBannedStatus.php | deleteGroup.php | deleteUser.php + <u>components</u>/header.php | adminDashboardGroupsItem.php | adminDashboardUsersItem.php </li>
+		<li><b>prechádzanie užívateľov a skupín: </b><u>views</u>/browsePageView.php + <u>scripts</u>/services.php | main.js + <u>components</u>/header.php | browserPageGroup.php | browserPageUser.php </li>
+		<li><b>editácia profilu: </b><u>views</u>/settingsGroup.php | settingsUser.php + <u>scripts</u>/services.php | main.js | updateAccount.php | updateGroupSettings.php | updatePassword.php | updateUserPublicity.php | uploadBannerPic.php | uploadGroupBannerPic.php | uploadProfilePic.php | uploadProfilePicGroup.php + <u>components</u>/header.php </li>
+		<li><b>založenie skupiny: </b><u>views</u>/browsePageView.php + <u>scripts</u>/services.php | main.js + <u>components</u>/header.php | browserPageGroup.php | browserPageUser.php </li>
+
+	</ul>
+
+	<h3>Databáze</h3>
+	<p>(Pre lepšie rozlíšenie otvorte v novej karte.)</p>
+	<img src="./images/db_scheme.png" width="900px" alt="Schema databazy">
+
+	<h2>Instalace</h2>
+
+	Stručně popište:
+	<ul>
+		<li>postup instalace na server,</li>
+		<li>softwarové požadavky (verze PHP apod.),</li>
+		<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
+	</ul>
+
+	<h2>Známé problémy</h2>
+	<p>Nie sme si vedomí žiadneho bodu zadania, ktorý by nebol implementovaný. Zobrazenie profilových fotiek
+		(užívateľskej a titulnej) po novom uploade niekedy vypíše error 403.
+		Kvôli právam na serveri eva, ktoré sa každú noc aktualizujú, toto bohužiaľ nevieme ovplyvniť, ale snažili sme sa
+		aspoň v ukážkovom videu reprezenotvať správnu funkčnosť tejto funkcie. </p>
+
+</body>
+
+</html>
