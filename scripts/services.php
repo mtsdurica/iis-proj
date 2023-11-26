@@ -210,7 +210,8 @@ class AccountService
             "SELECT threads.thread_id, threads.thread_title, threads.thread_text, threads.group_id, threads.thread_positive_rating, threads.thread_negative_rating, users.user_nickname AS 'thread_poster', groups.group_handle FROM threads
             LEFT JOIN users ON threads.poster_id = users.user_id
             LEFT JOIN groups ON threads.group_id = groups.group_id
-            WHERE threads.reply_id = ?"
+            WHERE threads.reply_id = ?
+            ORDER BY threads.thread_date DESC"
         );
         $query->execute([$threadId]);
 
