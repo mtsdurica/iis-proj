@@ -9,13 +9,11 @@ if (/\/group\/.*\/members$/.test(location.pathname)) {
 function hideAllElementsGroup() {
     var ThreadsElementGroup = document.getElementById('group-threads');
     var AboutElementGroup = document.getElementById('group-about');
-    //var StatisticsElementGroup = document.getElementById('group-statistics');
     var MembersElementGroup = document.getElementById('group-members');
     var RequestsElementGroup = document.getElementById('group-requests');
 
     ThreadsElementGroup.classList.add('hidden');
     AboutElementGroup.classList.add('hidden');
-    //StatisticsElementGroup.classList.add('hidden');
     MembersElementGroup.classList.add("hidden");
     if (RequestsElementGroup) {
         RequestsElementGroup.classList.add("hidden");
@@ -40,12 +38,6 @@ function showGroupAbout() {
     AboutElementGroup.classList.remove('hidden');
 }
 
-// function showGroupStatistics() {
-//     hideAllElementsGroup();
-//     var StatisticsElementGroup = document.getElementById('group-statistics');
-//     StatisticsElementGroup.classList.remove('hidden');
-// }
-
 function showGroupRequests() {
     hideAllElementsGroup();
     var RequestsElementGroup = document.getElementById('group-requests');
@@ -57,9 +49,6 @@ GroupThreadsButton.addEventListener('click', showGroupThreads);
 
 const GroupAboutButton = document.getElementById('show-group-about');
 GroupAboutButton.addEventListener('click', showGroupAbout);
-
-// const GroupStatisticsButton = document.getElementById('show-group-statistics');
-// GroupStatisticsButton.addEventListener('click', showGroupStatistics);
 
 const GroupMembersButton = document.getElementById('show-group-members');
 GroupMembersButton.addEventListener('click', showGroupMembers);

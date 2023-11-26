@@ -6,6 +6,6 @@
     else
         $imgPath = $context . "/images/profile_photo.jpg";
     ?>
-    <img class="w-40 rounded-lg" src="<?= $imgPath ?>">
+    <img class="object-cover w-40 h-40 rounded-lg" src="<?= $imgPath ?>">
     <span class="mt-2 text-colorscheme text-md">@<?= $userNickname ?></span>
 </a>
