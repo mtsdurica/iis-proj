@@ -5,7 +5,7 @@ switch ($exploded[2]) {
     case ('index'):
     case ('index.php'):
     case ('IIS'):
-        require_once __DIR__ . "/doc.html";
+        require_once __DIR__ . "/docs/doc.html";
         break;
     case (''):
         require_once __DIR__ . "/views/mainPageView.php";

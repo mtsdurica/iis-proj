@@ -921,12 +921,12 @@ body * {
   margin-top: 1rem;
 }
 
-.mt-\[-6rem\] {
-  margin-top: -6rem;
-}
-
 .mt-8 {
   margin-top: 2rem;
+}
+
+.mt-\[-6rem\] {
+  margin-top: -6rem;
 }
 
 .block {
