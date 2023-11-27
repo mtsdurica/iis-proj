@@ -2,11 +2,11 @@
 $request = $_SERVER["REQUEST_URI"];
 $exploded = explode("/", $request);
 switch ($exploded[2]) {
-    case ('index'):
-    case ('index.php'):
     case ('IIS'):
         require_once __DIR__ . "/docs/doc.html";
         break;
+    case ('index'):
+    case ('index.php'):
     case (''):
         require_once __DIR__ . "/views/mainPageView.php";
         break;
