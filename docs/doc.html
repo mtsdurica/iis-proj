@@ -83,33 +83,126 @@
 	<p><a href="https://youtu.be/Tk5rifqwp94">https://youtu.be/Tk5rifqwp94</a></p>
 
 	<h2>Implementace</h2>
-	<p>Stručná dokumentace k implementaci, která popisuje, které části projektu (např. PHP skripty) implementují
-		jednotlivé případy použití.</p>
 
 	<p>Pri implementacii sme sa inšpirovali modelom MVC a demo kódmi z prednášok. <b>Prezentačná vrstva</b> je
 		implementovaná v súboroch uložených v adresári "views". <b>Aplikačná vrstva</b> je obsiahnutá v
 		PHP a JavaScript skriptoch v adresári "scripts", kde sa zároveň nachádza
 		aj súbor "services.php", ktorý obsahuje triedu AccountService implementujúcu <b>funkcie pre prácu s
-			databázou</b>. V súbore "main.js" sú implementované nevyhnutné JavaScript funkcie.</p>
-	<ul>
-		<li><b>správa užívateľov a skupín: </b><u>views</u>/dashboardPageView.php + <u>scripts</u>/services.php | main.js | changeBannedStatus.php | changeGroupBannedStatus.php | deleteGroup.php | deleteUser.php + <u>components</u>/header.php | adminDashboardGroupsItem.php | adminDashboardUsersItem.php </li>
-		<li><b>prechádzanie užívateľov a skupín: </b><u>views</u>/browsePageView.php + <u>scripts</u>/services.php | main.js + <u>components</u>/header.php | browserPageGroup.php | browserPageUser.php </li>
-		<li><b>editácia profilu: </b><u>views</u>/settingsGroup.php | settingsUser.php + <u>scripts</u>/services.php | main.js | updateAccount.php | updateGroupSettings.php | updatePassword.php | updateUserPublicity.php | uploadBannerPic.php | uploadGroupBannerPic.php | uploadProfilePic.php | uploadProfilePicGroup.php + <u>components</u>/header.php </li>
-		<li><b>založenie skupiny: </b><u>views</u>/browsePageView.php + <u>scripts</u>/services.php | main.js + <u>components</u>/header.php | browserPageGroup.php | browserPageUser.php </li>
+			databázou</b>. V súbore "main.js" sú implementované nevyhnutné JavaScript funkcie. Pre dizajn frontendu sme
+		použili tailwindCSS framework.</p>
+	<dl>
+		<dt>správa užívateľov a skupín: </dt>
+		<dd>
+			<u>views</u>/dashboardPageView.php + <br>
+			<u>scripts</u>/services.php | main.js | changeBannedStatus.php | changeGroupBannedStatus.php |
+			deleteGroup.php | deleteUser.php + <br>
+			<u>components</u>/header.php | adminDashboardGroupsItem.php | adminDashboardUsersItem.php
+		</dd>
+		<dt>prechádzanie užívateľov a skupín:</dt>
+		<dd>
+			<u>views</u>/browsePageView.php + <br>
+			<u>scripts</u>/services.php | main.js + <br>
+			<u>components</u>/header.php | browserPageGroup.php | browserPageUser.php
+		</dd>
+		<dt>editácia profilu: </dt>
+		<dd>
+			<u>views</u>/settingsGroup.php | settingsUser.php + <br>
+			<u>scripts</u>/services.php | main.js | updateAccount.php | updateGroupSettings.php | updatePassword.php |
+			updateUserPublicity.php | uploadBannerPic.php | uploadGroupBannerPic.php | uploadProfilePic.php |
+			uploadProfilePicGroup.php + <br>
+			<u>components</u>/header.php
+		</dd>
 
-	</ul>
+		<dt>založenie skupiny: </dt>
+		<dd><u>views</u>/browsePageView.php + <br>
+			<u>scripts</u>/services.php | main.js + <br>
+			<u>components</u>/header.php | browserPageGroup.php | browserPageUser.php
+		</dd>
+
+		<dt>spravovanie skupiny: </dt>
+		<dd>
+			<u>views</u>/groupPageView.php | settingsGroup.php + <br>
+			<u>scripts</u>/services.php
+			| main.js | deleteGroup.php | deleteGroupByAdmin.php | deleteThread.php | handleJoinRequest.php |
+			handleModeratorRequest.php | kickFromGroup.php | removeModerator.php | requestModerator.php |
+			updateGroupSettings.php | uploadGroupBannerPic.php | uploadProfilePicGroup.php + <br>
+			<u>components</u>/header.php | groupJoinRequest.php | groupModeratorRequest.php | groupPageAdmin.php |
+			groupPageMembers.php | groupPageModerator.php
+		</dd>
+
+		<dt>registrácia do skupiny (a odhlásenie zo skupiny): </dt>
+		<dd>
+			<u>views</u>/groupPageView.php + <br>
+			<u>scripts</u>/services.php | main.js | joinGroup.php | leaveGroup.php + <u>components</u>/header.php |
+			browserPageGroup.php | browserPageUser.php
+		</dd>
+
+		<dt>vytvorenie nového vlákna: </dt>
+		<dd>
+			<u>views</u>/threadCreationView.php + <br>
+			<u>scripts</u>/services.php | main.js | insertThread.php + <u>components</u>/header.php
+		</dd>
+
+		<dt>pridanie odpovede na vlákno, úprava vlákna autorom, vymazanie vlákna autorom </dt>
+		<dd>
+			<u>views</u>/threadPageView.php | threadEditView.php + <br>
+			<u>scripts</u>/services.php | main.js | insertReply.php | updateThread.php | deleteThread.php + <br>
+			<u>components</u>/header.php | thread.php | reply.php | comment.php
+		</dd>
+
+		<dt>žiadosť o pridanie za moderátora: </dt>
+		<dd>
+			<u>views</u>/groupPageView.php + <br>
+			<u>scripts</u>/services.php | main.js | requestModerator.php + <br>
+			<u>components</u>/header.php
+		</dd>
+
+		<dt>založenie skupiny: </dt>
+		<dd>
+			<u>views</u>/browsePageView.php + <br>
+			<u>scripts</u>/services.php | main.js + <br>
+			<u>components</u>/header.php | browserPageGroup.php | browserPageUser.php
+		</dd>
+
+		<dt>registrácia užívateľa </dt>
+		<dd>
+			<u>views</u>/registerPageView.php | postRegisterView.php + <br>
+			<u>scripts</u>/services.php | main.js | insert_account.php
+		</dd>
+
+		<dt>prihlásenie (odhlásenie) užívateľa: </dt>
+		<dd>
+			<u>views</u>/loginPageView.php | mainPageView.php + <br>
+			<u>scripts</u>/services.php | main.js | login.php | logout.php + <br>
+			<u>components</u>/header.php
+		</dd>
+
+		<dt>hlavná stránka IS s prehľadom vlákien a možnosťou pridávania hodnotenia, skupín užívateľa, hlavičkou s
+			funkciami: </dt>
+		<dd>
+			<u>views</u>/mainPageView.php + <br>
+			<u>scripts</u>/services.php | main.js | rankNegative.php | rankPositive.php + <br>
+			<u>components</u>/header.php | thread.php | mainPageGroup.php | comment.php
+		</dd>
+	</dl>
 
 	<h3>Databáze</h3>
 	<p>(Pre lepšie rozlíšenie otvorte v novej karte.)</p>
 	<img src="./images/db_scheme.png" width="900px" alt="Schema databazy">
 
 	<h2>Instalace</h2>
+	<dl>
+		<dt>Postup konfigurácie na serveri eva.fit.vutbr.cz</dt>
+		<dd>Odovzdaný archív je potrebné rozbaliť do priečinku WWW v domovskom adresári užívateľa. V súbore
+			WWW/scripts/db_connect.php nastaviť údaje pre pripojenie na databázu. Pre inicializáciu databázy so
+			vzorovými dátami je pripravený SQL skript v koreňovom adresári s názvom "db_setup.sql".
+		</dd>
 
-	Stručně popište:
-	<ul>
-		<li>postup instalace na server,</li>
-		<li>softwarové požadavky (verze PHP apod.),</li>
-		<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
+		<dt>Softwarové požiadavky</dt>
+		<dd> PHP: 8.1 <br>
+			MySQL: 5.7
+		</dd>
+	</dl>
 	</ul>
 
 	<h2>Známé problémy</h2>
