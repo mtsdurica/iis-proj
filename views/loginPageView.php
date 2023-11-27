@@ -41,12 +41,11 @@ $context = $_SERVER["CONTEXT_PREFIX"];
             <form class="flex flex-col justify-center drop-shadow-md" action="<?= $context ?>/scripts/login.php" method="POST">
                 <div class="flex flex-col gap-2 p-4 rounded-lg w-96 min-w-fit header-colorscheme">
                     <label class="px-2 text-lg" for="username">
-                        Username or email address
+                        Username
                     </label>
                     <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="text" placeholder="Username" name="username" required>
                     <label class="flex flex-row items-baseline justify-between px-2" for="password">
                         <span class="text-lg">Password</span>
-                        <a class="flex text-md hover:text-blue-500" href="<?= $context ?>/recover">Forgot your password?</a>
                     </label>
                     <input class="p-2 border rounded-lg main-background-colorscheme divider-colorscheme" type="password" placeholder="Password" name="password" required>
                     <button class="items-center justify-center p-2 mt-2 text-lg text-center text-white transition-all rounded-lg confirm-button-colorscheme" type="submit" name="submitted">
